@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package protos;
+
+// check connection status to server
+
+message requestPermission {
+    optional string DIDShare = 1;
+    optional string PublicShare = 2;
+}
+
+message web3WalletPermission {
+    string DID = 1;
+    string peerID = 2;
+    int32 code = 3;
+}
+
+message ConnectionStatus {
+  optional bool connected = 1;
+  optional string code = 2;
+  optional string message = 3;
+}
+
+// message Wallet {
+//     optional string name = 1;
+//     string address = 2;
+//     optional string password = 3;
+//     optional string description = 4;
+//     string created_at = 5;
+    
+//     enum ConnectionType {
+//         DIDGEN = 0;
+//         PROXY = 1;
+//     }
+//     enum ChainType {
+//         RUBIX = 0;
+//         BITCOIN = 1;
+//     }
+// }
