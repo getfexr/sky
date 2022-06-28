@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package protos;
+
+option go_package = "github.com/getfexr/gofexr/protos";
+import "google/protobuf/empty.proto";
+
+// DART COMMAND: 
+
+// GO COMMAND (lib root dir): protoc --proto_path=sync-v1/protos --go_out=sync-v1/protos/pop --go_opt=paths=source_relative pop.proto
+
+message rubixWalletData {
+    optional string DIDShare = 1;
+    optional string PublicShare = 2;
+    optional string PrivateShare = 3;
+    optional double balance = 5;
+    repeated TransactionHistory th = 6;
+    repeated QuorumSignedTransaction qst = 7;
+    repeated TokenChain tc = 8;
+}
+
+message TokenChain {
+    string tokenHash = 1;
+    string tokenContent = 2;
+    string chainData = 3;
+    bool holding = 4;
+}
+
+message QuorumSignedTransaction {
+    string senderDID = 1;
+    string credits = 2;
+    string sign = 3;
+    string tid = 4;
+    optional bool minestatus = 5;
+    optional string consensusID = 6;
+}
+
+message TransactionHistory {
+    string txn = 1;
+    string senderDID = 2;
+    string receiverDID = 3;
+    string amount = 4;
+    string date = 5;
+    string role = 6;
+    string totalTime = 7;
+    string comment = 8;
+    string status = 9;
+    optional string quorumList = 10;
+}
+
+message web3WalletPermission {
+    optional string DID = 1;
+    int32 code = 2;
+    optional string peerID = 3;
+}
+
+message p2pConnectionStatus {
+    bool connected = 1;
+    string code = 2;
+    optional string message = 3;
+}
+message txnPayload {
+    string senderDID = 1;
+    string receiverDID = 2;
+    string amount = 3;
+    string comment = 4;
+    optional string quorumList = 5;
+}
+
+message PushNotification {
+    enum NOTIFICATION_TYPE {
+        PAY = 0;
+        SIGN = 1;
+        REMINDER = 2;
+        PROMOTION = 3;
+    }
+    NOTIFICATION_TYPE notification = 1;
+    optional string message = 2;
+    optional TransactionHistory txn = 3;
+}
+
+message txnStatus {
+    string tid = 1;
+    enum TRANSACTION_STATUS {
+        SUCCESS = 0;
+        FAILED = 1;
+        VALIDATING = 2;
+        CANCELED = 3;
+    }
+    TRANSACTION_STATUS status = 2;
+    optional string message = 3;
+}
+
+service POPService {
+  rpc validateCertificate (web3WalletPermission) returns (p2pConnectionStatus) {}
+  rpc fetchWalletData (web3WalletPermission) returns (stream rubixWalletData) {}
+  rpc uploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}
+  rpc invalidateCertificate (web3WalletPermission) returns (p2pConnectionStatus) {}
+  rpc initRubixTxn (txnPayload) returns (stream txnStatus) {}
+  rpc Listen(google.protobuf.Empty) returns (stream PushNotification) {}
+}
