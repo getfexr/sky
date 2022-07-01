@@ -5,7 +5,10 @@ import (
 	"net"
 	"fmt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+
+	pb "gofexr/sync-v1/protos/pop"
+
+	// "google.golang.org/grpc/credentials"
 	// "gofexr/sync-v1/pop"
 )
 
@@ -15,31 +18,40 @@ const (
 
 const (
 	version string = "0.6.0"
+	gatewayPort string = ":6942"
 )
 
 func ShowVersion() {
 	fmt.Printf("\n****************************************\n\n")
 	fmt.Printf("gofexr Version : %s\n", version)
+	fmt.Printf("Initializing Fexr RPC Gateway..\n")
 	fmt.Printf("\n****************************************\n\n")
 }
 
-func main() {
+type fexrGateaway struct {
+	pb
+}
 
-	lis, err := net.Listen("tcp", ":6942")
+func main() {
+	ShowVersion()
+	lis, err := net.Listen("tcp", gatewayPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	serverCert, err := credentials.NewServerTLSFromFile("../certs/server.crt","../certs/server.key")
-	if err != nil {
-		log.Fatalln("failed to create cert", err)
-	}
+	// var opts []grpc.DialOption
 
-	grpcServer := grpc.NewServer(grpc.Creds(serverCert))
+	// serverCert, err := credentials.NewServerTLSFromFile("../certs/server.crt","../certs/server.key")
+	// if err != nil {
+	// 	log.Fatalln("failed to create cert", err)
+	// }
 
-	// passport.
+	// grpcServer := grpc.NewServer(grpc.Creds(serverCert))
+	fexrGateaway := grpc.NewServer()
 
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %s", err)
+	pb.RegisterFexrGateway(fexrGateaway, &FexrGateway{})
+
+	if err := fexrGateaway.Serve(lis); err != nil {
+		log.Fatalf("failed to initialize Fexr RPC Gateway: %s", err)
 	}
 }

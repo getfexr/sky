@@ -7,7 +7,7 @@ import "google/protobuf/empty.proto";
 
 // DART COMMAND: 
 
-// GO COMMAND (lib root dir): protoc --proto_path=sync-v1/protos --go_out=sync-v1/protos/pop --go_opt=paths=source_relative pop.proto
+// GO COMMAND (lib root dir): protoc --go_out=sync-v1/protos/pop --go_opt=paths=source_relative --go-grpc_out=sync-v1/protos/pop --go-grpc_opt=paths=source_relative --proto_path=sync-v1/protos pop.proto
 
 message rubixWalletData {
     optional string DIDShare = 1;
@@ -56,7 +56,7 @@ message web3WalletPermission {
 
 message p2pConnectionStatus {
     bool connected = 1;
-    string code = 2;
+    int32 code = 2;
     optional string message = 3;
 }
 message txnPayload {
@@ -92,10 +92,10 @@ message txnStatus {
 }
 
 service POPService {
-  rpc validateCertificate (web3WalletPermission) returns (p2pConnectionStatus) {}
-  rpc fetchWalletData (web3WalletPermission) returns (stream rubixWalletData) {}
-  rpc uploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}
-  rpc invalidateCertificate (web3WalletPermission) returns (p2pConnectionStatus) {}
-  rpc initRubixTxn (txnPayload) returns (stream txnStatus) {}
-  rpc Listen(google.protobuf.Empty) returns (stream PushNotification) {}
+  rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
+  rpc SyncWalletData (web3WalletPermission) returns (stream rubixWalletData) {}
+  rpc UploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}
+  rpc InvalidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
+  rpc InitRubixTxn (txnPayload) returns (stream txnStatus) {}
+  rpc WalletNotification(google.protobuf.Empty) returns (stream PushNotification) {}
 }
