@@ -28,11 +28,12 @@ func ShowVersion() {
 	fmt.Printf("\n****************************************\n\n")
 }
 
-type fexrGateaway struct {
-	pb
-}
+// type fexrGateaway struct {
+// 	pb
+// }
 
 func main() {
+	
 	ShowVersion()
 	lis, err := net.Listen("tcp", gatewayPort)
 	if err != nil {

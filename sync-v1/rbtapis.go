@@ -2,7 +2,10 @@ package syncv1
 
 import (
 	"io/ioutil"
+	"math/rand"
 	"net/http"
+	"net/url"
+	"time"
 
 	"github.com/EnsurityTechnologies/logger"
 )
@@ -13,7 +16,7 @@ type Rubix struct {
 
 //APIs
 const (
-	createDID string = "localhost:1898/createDID"
+	createDID string = "localhost:1898/create"
 	initTxn   string = "localhost:1898/initiateTransaction"
 	sync      string = "localhost:1898/sync"
 	account   string = "localhost:1898/getAccountInfo"
@@ -53,7 +56,12 @@ func (r *Rubix) Account() {
 }
 
 func (r *Rubix) Create() {
-	resp, err := http.PostForm(account, nil)
+	resp, err := http.PostForm(createDID, url.Values{
+		"data": {"Rubix"},
+		"image": {"../certs/FEXR_DID.png"},
+
+
+	})
 	if err != nil {
 		r.log.Error(err.Error())
 	}
