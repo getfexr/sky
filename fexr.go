@@ -1,13 +1,13 @@
 package main
 
 import (
+	"fmt"
+	g "gofexr/sync-v1/pop"
+	pb "gofexr/sync-v1/protos/pop"
 	"log"
 	"net"
-	"fmt"
+
 	"google.golang.org/grpc"
-
-	pb "gofexr/sync-v1/protos/pop"
-
 	// "google.golang.org/grpc/credentials"
 	// "gofexr/sync-v1/pop"
 )
@@ -17,8 +17,8 @@ const (
 )
 
 const (
-	version string = "0.6.0"
-	gatewayPort string = ":6942"
+	version     string = "0.6.0"
+	gatewayPort string = "0.0.0.0:6942"
 )
 
 func ShowVersion() {
@@ -28,12 +28,12 @@ func ShowVersion() {
 	fmt.Printf("\n****************************************\n\n")
 }
 
-// type fexrGateaway struct {
-// 	pb
-// }
+type FexrGateaway struct {
+	pb.POPServiceServer
+}
 
 func main() {
-	
+
 	ShowVersion()
 	lis, err := net.Listen("tcp", gatewayPort)
 	if err != nil {
@@ -50,7 +50,7 @@ func main() {
 	// grpcServer := grpc.NewServer(grpc.Creds(serverCert))
 	fexrGateaway := grpc.NewServer()
 
-	pb.RegisterFexrGateway(fexrGateaway, &FexrGateway{})
+	pb.RegisterPOPServiceServer(fexrGateaway, &g.FexrGateway{})
 
 	if err := fexrGateaway.Serve(lis); err != nil {
 		log.Fatalf("failed to initialize Fexr RPC Gateway: %s", err)

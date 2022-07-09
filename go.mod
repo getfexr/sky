@@ -13,7 +13,6 @@ require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	google.golang.org/genproto v0.0.0-20200806141610-86f49bd18e98 // indirect
-	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0 // indirect
 )
 
 require (

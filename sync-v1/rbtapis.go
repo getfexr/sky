@@ -2,10 +2,8 @@ package syncv1
 
 import (
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"net/url"
-	"time"
 
 	"github.com/EnsurityTechnologies/logger"
 )
@@ -26,6 +24,10 @@ const (
 // const {
 
 // }
+
+func (r *Rubix) Config() {
+
+}
 
 func (r *Rubix) Sync() {
 	resp, err := http.Get(sync)
