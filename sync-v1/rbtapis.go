@@ -29,6 +29,10 @@ func (r *Rubix) Config() {
 
 }
 
+func CreateRubix(log logger.Logger) *Rubix {
+	return &Rubix{log : log}
+}
+
 func (r *Rubix) Sync() {
 	resp, err := http.Get(sync)
 	if err != nil {

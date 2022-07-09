@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 
+	l "github.com/EnsurityTechnologies/logger"
 	"google.golang.org/grpc"
 	// "google.golang.org/grpc/credentials"
 	// "gofexr/sync-v1/pop"
@@ -50,9 +51,14 @@ func main() {
 	// grpcServer := grpc.NewServer(grpc.Creds(serverCert))
 	fexrGateaway := grpc.NewServer()
 
-	pb.RegisterPOPServiceServer(fexrGateaway, &g.FexrGateway{})
+	log := l.New(&l.LoggerOptions{Name: "Fexr Gateway 0.6.0"})
+
+	// rbt := g
+
+	pb.RegisterPOPServiceServer(fexrGateaway, g.NewFexrGateaway(log))
 
 	if err := fexrGateaway.Serve(lis); err != nil {
-		log.Fatalf("failed to initialize Fexr RPC Gateway: %s", err)
+		log.Error("failed to initialize Fexr RPC Gateway", "err", err)
+		return
 	}
 }

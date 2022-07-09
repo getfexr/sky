@@ -5,17 +5,24 @@ import (
 	syncv1 "gofexr/sync-v1"
 	pb "gofexr/sync-v1/protos/pop"
 
-	"github.com/EnsurityTechnologies/logger"
+	l "github.com/EnsurityTechnologies/logger"
 )
 
 type FexrGateway struct {
 	pb.POPServiceServer
-	log logger.Logger
+	log l.Logger
 	rbt *syncv1.Rubix
 }
 
+func NewFexrGateaway(log l.Logger) *FexrGateway {
+	return &FexrGateway{
+		log: log,
+		rbt: syncv1.CreateRubix(log),
+	}
+}
+
 func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
-	g.log.Info("I/Fexr: New Lite Wallet Connected. Remembering Connection...")
+	g.log.Info("New Lite Wallet Connected. Remembering Connection for permission: ", "code ", perm.Code)
 	return &pb.P2PConnectionStatus{
 		Connected: true,
 		Code:      200,
@@ -23,12 +30,12 @@ func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3Walle
 }
 
 func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, data pb.POPService_SyncWalletDataServer) error {
-	g.log.Info("I/Fexr: New Lite Wallet Connected. Syncing wallet data...")
-	g.rbt.Sync()
-	g.log.Info("I/Fexr: Creating DID, Public and Private Shares if not already exists..")
-	g.log.Info("I/Fexr: Moving Private Share to Lite Wallet..")
-	g.log.Info("I/Fexr: Finishing Lite Wallet sync..")
-	g.log.Info("I/Fexr: Finished Lite Wallet sync")
+	g.log.Info("New Lite Wallet Connected. Syncing wallet data...")
+	// g.rbt.Sync()
+	g.log.Info("Creating DID, Public and Private Shares if not already exists..")
+	g.log.Info("Moving Private Share to Lite Wallet..")
+	g.log.Info("Finishing Lite Wallet sync..")
+	g.log.Info("Finished Lite Wallet sync")
 
 	return nil
 }
