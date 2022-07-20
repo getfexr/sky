@@ -6,6 +6,7 @@ import (
 	pb "gofexr/sync-v1/protos/pop"
 	"log"
 	"net"
+	"os"
 
 	l "github.com/EnsurityTechnologies/logger"
 	"google.golang.org/grpc"
@@ -15,16 +16,17 @@ import (
 
 const (
 	ConfigFile string = "config.json"
+	logFile    string = "FexrLogger.log"
+	appName    string = "Fexr Gateway 0.6.0"
 )
 
 const (
-	version     string = "0.6.0"
 	gatewayPort string = "0.0.0.0:6942"
 )
 
 func ShowVersion() {
 	fmt.Printf("\n****************************************\n\n")
-	fmt.Printf("gofexr Version : %s\n", version)
+	fmt.Printf(appName + "\n")
 	fmt.Printf("Initializing Fexr RPC Gateway..\n")
 	fmt.Printf("\n****************************************\n\n")
 }
@@ -51,7 +53,13 @@ func main() {
 	// grpcServer := grpc.NewServer(grpc.Creds(serverCert))
 	fexrGateaway := grpc.NewServer()
 
-	log := l.New(&l.LoggerOptions{Name: "Fexr Gateway 0.6.0"})
+	fp, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		log.Fatalln("error opening file: ", err)
+	}
+
+	log := l.New(&l.LoggerOptions{Name: appName, Color: l.AutoColor, Output: fp})
 
 	// rbt := g
 

@@ -4,18 +4,31 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	l "github.com/EnsurityTechnologies/logger"
-	mod "gofexr/sync-v1/models"
+	mdl "gofexr/sync-v1/models"
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"os"
+	"runtime"
+
+	l "github.com/EnsurityTechnologies/logger"
 )
 
 const (
-	create string = "localhost:1898/create"
-	// initTxn string = "localhost:1898/initiateTransaction"
-	sync    string = "localhost:1898/sync"
-	account string = "localhost:1898/getAccountInfo"
+	create string = "http://127.0.0.1:1898/create"
+	// initTxn string = "http://127.0.0.1:1898/initiateTransaction"
+	sync    string = "http://127.0.0.1:1898/sync"
+	account string = "http://127.0.0.1:1898/getAccountInfo"
+	// sign    string = "http://127.0.0.1:1898/sign"
+	txn    string = "http://127.0.0.1:1898/getTxnByCount"
+)
+
+const (
+	didImage    string = "../certs/FEXR_DID.png"
+	linuxConfig string = "/Rubix/config.json"
+	macConfig   string = "/Applications/Rubix/config.json"
+	winConfig   string = "C:\\Rubix\\config.json"
 )
 
 type FexrGateway struct {
@@ -47,7 +60,7 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 	if perm.Code == 0 {
 		g.log.Info("New Lite Wallet Connected. Syncing wallet data...")
 
-		resp, err := http.Get(account)
+		resp, err := http.Get(sync)
 		if err != nil {
 			return err
 		}
@@ -56,14 +69,21 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 			return err
 		}
 
-		gac, err := getAccount([]byte(body))
-		fmt.Printf("%+v\n", gac)
-		_ = gac
+		sync, err := syncNode([]byte(body))
+		_ = sync
 
-		if err != nil || gac.Data.Response.Did == "" {
+		if err != nil || sync.Status == "false" {
 
 			g.log.Info("Creating Decentralized IDentity in this node if not already exists..")
-			resp, err := http.PostForm(create, url.Values{"did": {"did:ethr:0x" + keys.Did}})
+
+			file, err := os.Open(didImage)
+
+			if err != nil {
+				return err
+			}
+			defer file.Close()
+
+			resp, err := http.PostForm(create, url.Values{"data": {"dadad"}, "image": {"dadad"}})
 
 			if err != nil {
 				return nil
@@ -76,26 +96,101 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 
 			if err != nil {
 				g.log.Info("Added new DID..")
-
-				return stream.Send(&pb.RubixWalletData{
-					DIDShare:     new(string),
-					PublicShare:  new(string),
-					PrivateShare: new(string),
-					Balance:      new(float64),
-					Th:           []*pb.TransactionHistory{},
-					Qst:          []*pb.QuorumSignedTransaction{},
-					Tc:           []*pb.TokenChain{},
-				})
-
-				g.log.Info("Finishing Lite Wallet sync..")
-				g.log.Info("Finished Lite Wallet sync")
 				return nil
 			}
 
-		} else {
-			return nil
 		}
+		g.log.Info("Finishing Lite Wallet sync with new DID..")
+
+		//TODO: getting file path of config.json
+
+		osType := runtime.GOOS
+		g.log.Info("OS Type: ", osType)
+		var homeDir = os.Getenv("HOME")
+		var rubixCfg = ""
+
+		if osType == "windows" {
+			rubixCfg = homeDir + winConfig
+		} else if osType == "linux" {
+			rubixCfg = homeDir + linuxConfig
+		} else if osType == "darwin" {
+			rubixCfg = macConfig
+		}
+
+		g.log.Info("Rubix config file path: ", "path ", rubixCfg)
+
+		file, err := os.Open(rubixCfg)
+		if err != nil {
+			return err
+		}
+
+		byteValue, err := ioutil.ReadAll(file)
+		defer file.Close()
+
+		if err != nil {
+			return err
+		}
+
+		var cgfArr mdl.RubixConfig
+		err = json.Unmarshal(byteValue, &cgfArr)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("%+v\n", cgfArr)
+
+		// Account Info from API
+
+		res, err := http.Get(account)
+		if err != nil {
+			return err
+		}
+		accBytes, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		gac, err := getAccount([]byte(accBytes))
+
+		if err != nil {
+			return err
+		}
+
+		// Transaction Data from API
+
+		txRes, err := http.Get(txn)
+		if err != nil {
+			return err
+		}
+		txBytes, err := ioutil.ReadAll(txRes.Body)
+		if err != nil {
+			return err
+		}
+
+		txList, err := getAccount([]byte(txBytes))
+		_ = txList
+
+		if err != nil {
+			return err
+		}
+
+		// remove the field amount-spent from transaction list
+		// for i := 0; i < len(txList.Data.Response); i++ {
+		// 	txList.Data.Response[i].AmountSpent = 0
+		// }
+
+
+		return stream.Send(&pb.RubixWalletData{
+			DIDShare:     &gac.Data.Response.Did,
+			PublicShare:  new(string),
+			PrivateShare: new(string),
+			Balance:      &gac.Data.Response.AvailableBalance,
+			Th:           []*pb.TransactionHistory{},
+			Qst:          []*pb.QuorumSignedTransaction{},
+			Tc:           []*pb.TokenChain{},
+		})
 	}
+	g.log.Info("Finished Lite Wallet sync")
 	return nil
 }
 
@@ -116,8 +211,8 @@ func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3Wal
 	}, nil
 }
 
-func getAccount(body []byte) (*mod.AccountAPIResponse, error) {
-	var s = new(mod.AccountAPIResponse)
+func getAccount(body []byte) (*mdl.AccountAPIResponse, error) {
+	var s = new(mdl.AccountAPIResponse)
 	err := json.Unmarshal(body, &s)
 	if err != nil {
 		fmt.Println("whoops:", err)
@@ -125,8 +220,26 @@ func getAccount(body []byte) (*mod.AccountAPIResponse, error) {
 	return s, err
 }
 
-func createAccount(body []byte) (*mod.CreateAPIResponse, error) {
-	var s = new(mod.CreateAPIResponse)
+func syncNode(body []byte) (*mdl.SyncAPIResponse, error) {
+	var s = new(mdl.SyncAPIResponse)
+	err := json.Unmarshal(body, &s)
+	if err != nil {
+		fmt.Println("whoops:", err)
+	}
+	return s, err
+}
+
+func createAccount(body []byte) (*mdl.CreateAPIResponse, error) {
+	var s = new(mdl.CreateAPIResponse)
+	err := json.Unmarshal(body, &s)
+	if err != nil {
+		fmt.Println("whoops:", err)
+	}
+	return s, err
+}
+
+func getRubixConfig(body []byte) (*mdl.RubixConfig, error) {
+	var s = new(mdl.RubixConfig)
 	err := json.Unmarshal(body, &s)
 	if err != nil {
 		fmt.Println("whoops:", err)
