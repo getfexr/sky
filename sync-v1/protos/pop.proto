@@ -12,9 +12,9 @@ import "google/protobuf/empty.proto";
 message rubixWalletData {
     string dIDHash = 1;
     string peerID = 2;
-    optional string credits = 3;
-    optional int64 totalTxn = 4;
-    optional int64 stakedTokens = 5;
+    optional int32 credits = 3;
+    optional int32 totalTxn = 4;
+    optional int32 stakedTokens = 5;
     optional string dIDShare = 6;
     optional string publicShare = 7;
     optional string privateShare = 8;
