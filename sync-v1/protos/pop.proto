@@ -10,13 +10,18 @@ import "google/protobuf/empty.proto";
 // GO COMMAND (lib root dir): protoc --go_out=sync-v1/protos/pop --go_opt=paths=source_relative --go-grpc_out=sync-v1/protos/pop --go-grpc_opt=paths=source_relative --proto_path=sync-v1/protos pop.proto
 
 message rubixWalletData {
-    optional string DIDShare = 1;
-    optional string PublicShare = 2;
-    optional string PrivateShare = 3;
-    optional double balance = 5;
-    repeated TransactionHistory th = 6;
-    repeated QuorumSignedTransaction qst = 7;
-    repeated TokenChain tc = 8;
+    string dIDHash = 1;
+    string peerID = 2;
+    optional string credits = 3;
+    optional string totalTxn = 4;
+    optional string stakedTokens = 5;
+    optional string dIDShare = 6;
+    optional string publicShare = 7;
+    optional string privateShare = 8;
+    optional double balance = 9;
+    repeated TransactionHistory txnHistory = 10;
+    repeated QuorumSignedTransaction qSignedTxns = 11;
+    repeated TokenChain tChains = 12;
 }
 
 message TokenChain {
@@ -49,9 +54,9 @@ message TransactionHistory {
 }
 
 message web3WalletPermission {
-    optional string DID = 1;
+    optional string dID = 1;
     int32 code = 2;
-    optional string peerID = 3;
+    optional string payload = 3;
 }
 
 message p2pConnectionStatus {

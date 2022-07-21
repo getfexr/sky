@@ -70,9 +70,11 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 		}
 
 		sync, err := syncNode([]byte(body))
-		_ = sync
 
-		if err != nil || sync.Status == "false" {
+		// print sync
+		fmt.Println(sync.Status)
+
+		if err != nil || sync.Status != "true" {
 
 			g.log.Info("Creating Decentralized IDentity in this node if not already exists..")
 
@@ -158,21 +160,21 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 
 		// Transaction Data from API
 
-		txRes, err := http.Get(txn)
-		if err != nil {
-			return err
-		}
-		txBytes, err := ioutil.ReadAll(txRes.Body)
-		if err != nil {
-			return err
-		}
+		// txRes, err := http.Get(txn)
+		// if err != nil {
+		// 	return err
+		// }
+		// txBytes, err := ioutil.ReadAll(txRes.Body)
+		// if err != nil {
+		// 	return err
+		// }
 
-		txList, err := getAccount([]byte(txBytes))
-		_ = txList
+		// txList, err := getAccount([]byte(txBytes))
+		// _ = txList
 
-		if err != nil {
-			return err
-		}
+		// if err != nil {
+		// 	return err
+		// }
 
 		// remove the field amount-spent from transaction list
 		// for i := 0; i < len(txList.Data.Response); i++ {
