@@ -183,13 +183,18 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 
 
 		return stream.Send(&pb.RubixWalletData{
-			DIDShare:     &gac.Data.Response.Did,
+			DIDHash:      gac.Data.Response.Did,
+			PeerID:       "",
+			Credits:      &gac.Data.Response.Credits.UnspentCredits,
+			TotalTxn:     &gac.Data.Response.TotalTxn,
+			StakedTokens: &gac.Data.Response.StakedTokens,
+			DIDShare:     new(string),
 			PublicShare:  new(string),
 			PrivateShare: new(string),
 			Balance:      &gac.Data.Response.AvailableBalance,
-			Th:           []*pb.TransactionHistory{},
-			Qst:          []*pb.QuorumSignedTransaction{},
-			Tc:           []*pb.TokenChain{},
+			TxnHistory:   []*pb.TransactionHistory{},
+			QSignedTxns:  []*pb.QuorumSignedTransaction{},
+			TChains:      []*pb.TokenChain{},
 		})
 	}
 	g.log.Info("Finished Lite Wallet sync")
@@ -201,7 +206,7 @@ func (g *FexrGateway) UploadWalletKeys(ctx context.Context, keys *pb.RubixWallet
 	return &pb.Web3WalletPermission{
 		DID:    new(string),
 		Code:   0,
-		PeerID: new(string),
+		Payload: new(string),
 	}, nil
 }
 

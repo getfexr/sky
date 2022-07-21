@@ -13,8 +13,8 @@ message rubixWalletData {
     string dIDHash = 1;
     string peerID = 2;
     optional string credits = 3;
-    optional string totalTxn = 4;
-    optional string stakedTokens = 5;
+    optional int64 totalTxn = 4;
+    optional int64 stakedTokens = 5;
     optional string dIDShare = 6;
     optional string publicShare = 7;
     optional string privateShare = 8;
@@ -47,9 +47,9 @@ message TransactionHistory {
     string amount = 4;
     string date = 5;
     string role = 6;
-    string totalTime = 7;
+    double totalTime = 7;
     string comment = 8;
-    string status = 9;
+    string statusCode = 9;
     optional string quorumList = 10;
 }
 
@@ -67,7 +67,7 @@ message p2pConnectionStatus {
 message txnPayload {
     string senderDID = 1;
     string receiverDID = 2;
-    string amount = 3;
+    double amount = 3;
     string comment = 4;
     optional string quorumList = 5;
 }
