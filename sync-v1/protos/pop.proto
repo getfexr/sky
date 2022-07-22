@@ -69,7 +69,7 @@ message txnPayload {
     string receiverDID = 2;
     double amount = 3;
     string comment = 4;
-    optional string quorumList = 5;
+    repeated string quorumList = 5;
 }
 
 message PushNotification {
