@@ -185,9 +185,9 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 		return stream.Send(&pb.RubixWalletData{
 			DIDHash:      gac.Data.Response.Did,
 			PeerID:       "",
-			Credits:      &gac.Data.Response.Credits.UnspentCredits,
-			TotalTxn:     &gac.Data.Response.TotalTxn,
-			StakedTokens: &gac.Data.Response.StakedTokens,
+			Credits:      new(int32),
+			TotalTxn:     new(int32),
+			StakedTokens: new(int32),
 			DIDShare:     new(string),
 			PublicShare:  new(string),
 			PrivateShare: new(string),

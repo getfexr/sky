@@ -98,7 +98,7 @@ message txnStatus {
 
 service POPService {
   rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
-  rpc SyncWalletData (web3WalletPermission) returns (stream rubixWalletData) {}
+  rpc SyncWalletData (web3WalletPermission) returns (rubixWalletData) {}
   rpc UploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}
   rpc InvalidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
   rpc InitRubixTxn (txnPayload) returns (stream txnStatus) {}
