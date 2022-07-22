@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type POPServiceClient interface {
 	ValidatePermission(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PConnectionStatus, error)
-	SyncWalletData(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (POPService_SyncWalletDataClient, error)
+	SyncWalletData(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*RubixWalletData, error)
 	UploadWalletKeys(ctx context.Context, in *RubixWalletData, opts ...grpc.CallOption) (*Web3WalletPermission, error)
 	InvalidatePermission(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PConnectionStatus, error)
 	InitRubixTxn(ctx context.Context, in *TxnPayload, opts ...grpc.CallOption) (POPService_InitRubixTxnClient, error)
@@ -48,36 +48,13 @@ func (c *pOPServiceClient) ValidatePermission(ctx context.Context, in *Web3Walle
 	return out, nil
 }
 
-func (c *pOPServiceClient) SyncWalletData(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (POPService_SyncWalletDataClient, error) {
-	stream, err := c.cc.NewStream(ctx, &POPService_ServiceDesc.Streams[0], "/protos.POPService/SyncWalletData", opts...)
+func (c *pOPServiceClient) SyncWalletData(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*RubixWalletData, error) {
+	out := new(RubixWalletData)
+	err := c.cc.Invoke(ctx, "/protos.POPService/SyncWalletData", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &pOPServiceSyncWalletDataClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type POPService_SyncWalletDataClient interface {
-	Recv() (*RubixWalletData, error)
-	grpc.ClientStream
-}
-
-type pOPServiceSyncWalletDataClient struct {
-	grpc.ClientStream
-}
-
-func (x *pOPServiceSyncWalletDataClient) Recv() (*RubixWalletData, error) {
-	m := new(RubixWalletData)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 func (c *pOPServiceClient) UploadWalletKeys(ctx context.Context, in *RubixWalletData, opts ...grpc.CallOption) (*Web3WalletPermission, error) {
@@ -99,7 +76,7 @@ func (c *pOPServiceClient) InvalidatePermission(ctx context.Context, in *Web3Wal
 }
 
 func (c *pOPServiceClient) InitRubixTxn(ctx context.Context, in *TxnPayload, opts ...grpc.CallOption) (POPService_InitRubixTxnClient, error) {
-	stream, err := c.cc.NewStream(ctx, &POPService_ServiceDesc.Streams[1], "/protos.POPService/InitRubixTxn", opts...)
+	stream, err := c.cc.NewStream(ctx, &POPService_ServiceDesc.Streams[0], "/protos.POPService/InitRubixTxn", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +108,7 @@ func (x *pOPServiceInitRubixTxnClient) Recv() (*TxnStatus, error) {
 }
 
 func (c *pOPServiceClient) WalletNotification(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (POPService_WalletNotificationClient, error) {
-	stream, err := c.cc.NewStream(ctx, &POPService_ServiceDesc.Streams[2], "/protos.POPService/WalletNotification", opts...)
+	stream, err := c.cc.NewStream(ctx, &POPService_ServiceDesc.Streams[1], "/protos.POPService/WalletNotification", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +144,7 @@ func (x *pOPServiceWalletNotificationClient) Recv() (*PushNotification, error) {
 // for forward compatibility
 type POPServiceServer interface {
 	ValidatePermission(context.Context, *Web3WalletPermission) (*P2PConnectionStatus, error)
-	SyncWalletData(*Web3WalletPermission, POPService_SyncWalletDataServer) error
+	SyncWalletData(context.Context, *Web3WalletPermission) (*RubixWalletData, error)
 	UploadWalletKeys(context.Context, *RubixWalletData) (*Web3WalletPermission, error)
 	InvalidatePermission(context.Context, *Web3WalletPermission) (*P2PConnectionStatus, error)
 	InitRubixTxn(*TxnPayload, POPService_InitRubixTxnServer) error
@@ -182,8 +159,8 @@ type UnimplementedPOPServiceServer struct {
 func (UnimplementedPOPServiceServer) ValidatePermission(context.Context, *Web3WalletPermission) (*P2PConnectionStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidatePermission not implemented")
 }
-func (UnimplementedPOPServiceServer) SyncWalletData(*Web3WalletPermission, POPService_SyncWalletDataServer) error {
-	return status.Errorf(codes.Unimplemented, "method SyncWalletData not implemented")
+func (UnimplementedPOPServiceServer) SyncWalletData(context.Context, *Web3WalletPermission) (*RubixWalletData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncWalletData not implemented")
 }
 func (UnimplementedPOPServiceServer) UploadWalletKeys(context.Context, *RubixWalletData) (*Web3WalletPermission, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadWalletKeys not implemented")
@@ -228,25 +205,22 @@ func _POPService_ValidatePermission_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _POPService_SyncWalletData_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Web3WalletPermission)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _POPService_SyncWalletData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Web3WalletPermission)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(POPServiceServer).SyncWalletData(m, &pOPServiceSyncWalletDataServer{stream})
-}
-
-type POPService_SyncWalletDataServer interface {
-	Send(*RubixWalletData) error
-	grpc.ServerStream
-}
-
-type pOPServiceSyncWalletDataServer struct {
-	grpc.ServerStream
-}
-
-func (x *pOPServiceSyncWalletDataServer) Send(m *RubixWalletData) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(POPServiceServer).SyncWalletData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.POPService/SyncWalletData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(POPServiceServer).SyncWalletData(ctx, req.(*Web3WalletPermission))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _POPService_UploadWalletKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -339,6 +313,10 @@ var POPService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _POPService_ValidatePermission_Handler,
 		},
 		{
+			MethodName: "SyncWalletData",
+			Handler:    _POPService_SyncWalletData_Handler,
+		},
+		{
 			MethodName: "UploadWalletKeys",
 			Handler:    _POPService_UploadWalletKeys_Handler,
 		},
@@ -348,11 +326,6 @@ var POPService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "SyncWalletData",
-			Handler:       _POPService_SyncWalletData_Handler,
-			ServerStreams: true,
-		},
 		{
 			StreamName:    "InitRubixTxn",
 			Handler:       _POPService_InitRubixTxn_Handler,
