@@ -21,6 +21,29 @@ type AccountAPIResponse struct {
 	Status  string `json:"status"`
 }
 
+type InitTxnAPIResponse struct {
+	Data struct {
+		Response struct {
+			Receiver   string   `json:"receiver"`
+			Totaltime  int      `json:"totaltime"`
+			Quorumlist []string `json:"quorumlist"`
+			Message    string   `json:"message"`
+			Tid        string   `json:"tid"`
+			Did        string   `json:"did"`
+			Status     string   `json:"status"`
+		} `json:"response"`
+	} `json:"data"`
+	Message string `json:"message"`
+	Status  string `json:"status"`
+}
+
+type InitTxnAPIRequest struct {
+	Receiver   string `json:"receiver"`
+	TokenCount float64    `json:"tokenCount"`
+	Comment    string `json:"comment"`
+	Type       int    `json:"type"`
+}
+
 type CreateAPIResponse struct {
 	ExecutionTime string `json:"executionTime"`
 	Status        string `json:"status"`

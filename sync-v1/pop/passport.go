@@ -21,7 +21,6 @@ const (
 	sync    string = "http://127.0.0.1:1898/sync"
 	account string = "http://127.0.0.1:1898/getAccountInfo"
 	// sign    string = "http://127.0.0.1:1898/sign"
-	txn    string = "http://127.0.0.1:1898/getTxnByCount"
 )
 
 const (
@@ -55,18 +54,20 @@ func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3Walle
 	}, nil
 }
 
-func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.POPService_SyncWalletDataServer) error {
+func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.RubixWalletData, error) {
+
+	var accAPI *mdl.AccountAPIResponse
 
 	if perm.Code == 0 {
 		g.log.Info("New Lite Wallet Connected. Syncing wallet data...")
 
 		resp, err := http.Get(sync)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		sync, err := syncNode([]byte(body))
@@ -81,24 +82,24 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 			file, err := os.Open(didImage)
 
 			if err != nil {
-				return err
+				return nil, err
 			}
 			defer file.Close()
 
 			resp, err := http.PostForm(create, url.Values{"data": {"dadad"}, "image": {"dadad"}})
 
 			if err != nil {
-				return nil
+				return nil, err
 			}
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
-				return nil
+				return nil, err
 			}
 			_ = body
 
 			if err != nil {
 				g.log.Info("Added new DID..")
-				return nil
+				return nil, err
 			}
 
 		}
@@ -123,20 +124,20 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 
 		file, err := os.Open(rubixCfg)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		byteValue, err := ioutil.ReadAll(file)
 		defer file.Close()
 
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		var cgfArr mdl.RubixConfig
 		err = json.Unmarshal(byteValue, &cgfArr)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		fmt.Printf("%+v\n", cgfArr)
@@ -145,17 +146,19 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 
 		res, err := http.Get(account)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		accBytes, err := ioutil.ReadAll(res.Body)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		gac, err := getAccount([]byte(accBytes))
 
+		accAPI = gac
+
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		// Transaction Data from API
@@ -180,10 +183,11 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 		// for i := 0; i < len(txList.Data.Response); i++ {
 		// 	txList.Data.Response[i].AmountSpent = 0
 		// }
+	}
+	g.log.Info("Finished Lite Wallet sync")
 
-
-		return stream.Send(&pb.RubixWalletData{
-			DIDHash:      gac.Data.Response.Did,
+		return &pb.RubixWalletData{
+			DIDHash:      accAPI.Data.Response.Did,
 			PeerID:       "",
 			Credits:      new(int32),
 			TotalTxn:     new(int32),
@@ -191,14 +195,11 @@ func (g *FexrGateway) SyncWalletData(perm *pb.Web3WalletPermission, stream pb.PO
 			DIDShare:     new(string),
 			PublicShare:  new(string),
 			PrivateShare: new(string),
-			Balance:      &gac.Data.Response.AvailableBalance,
+			Balance:      &accAPI.Data.Response.AvailableBalance,
 			TxnHistory:   []*pb.TransactionHistory{},
 			QSignedTxns:  []*pb.QuorumSignedTransaction{},
 			TChains:      []*pb.TokenChain{},
-		})
-	}
-	g.log.Info("Finished Lite Wallet sync")
-	return nil
+		}, nil
 }
 
 func (g *FexrGateway) UploadWalletKeys(ctx context.Context, keys *pb.RubixWalletData) (*pb.Web3WalletPermission, error) {
