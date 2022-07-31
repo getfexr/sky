@@ -38,10 +38,15 @@ type InitTxnAPIResponse struct {
 }
 
 type InitTxnAPIRequest struct {
-	Receiver   string `json:"receiver"`
-	TokenCount float64    `json:"tokenCount"`
-	Comment    string `json:"comment"`
-	Type       int    `json:"type"`
+	Receiver   string  `json:"receiver"`
+	TokenCount float64 `json:"tokenCount"`
+	Comment    string  `json:"comment"`
+	Type       int     `json:"type"`
+}
+
+// Read implements io.Reader
+func (*InitTxnAPIRequest) Read(p []byte) (n int, err error) {
+	panic("unimplemented")
 }
 
 type CreateAPIResponse struct {

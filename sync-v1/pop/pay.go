@@ -11,6 +11,7 @@ import (
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	// "io/ioutil"
 	// "net/http"
@@ -39,21 +40,43 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 
 	//inputBodyPayload,_ := simplejson.NewJson((inputBody))
 
-
+	newPayload := strings.NewReader(`
+	{"receiver":"QmejWEVoUYRBSWfTJ9gnpczsZWQEGj8nSJESjR7qDbFq1d",
+	"tokenCount":0.001,
+	"comment":"Boliviano boliviano Money Market Account Integrated",
+	"type":1}`)
 
 	payloadBuf := new(bytes.Buffer)
 	//fmt.Printf(" '%s' ", inputBody)
 	json.NewEncoder(payloadBuf).Encode(inputBody)
-	fmt.Printf("payloadBuf: '%s'", payloadBuf)
-	resp, err := http.NewRequest("POST", txn, payloadBuf)
+	fmt.Println("payloadBuf: ", string(payloadBuf.String()))
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", txn, newPayload)
+
 	//TODO: txn params from input
 	if err != nil {
+		fmt.Printf("error in -type")
 		return nil
 	}
-	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		fmt.Printf("error in content-")
+
 		return nil
 	}
+	req.Header.Add("Content-Type", "application/json")
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("error in content-type")
+		return nil
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Printf("error in body")
+
+		return nil
+	}
+	//fmt.Println(string(body))
 
 	//TODO: check if txn is running in another thread and response is going on while the API is running.
 	txnStatus, err := initTxn([]byte(body))

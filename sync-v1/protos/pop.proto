@@ -70,6 +70,7 @@ message txnPayload {
     double amount = 3;
     string comment = 4;
     repeated string quorumList = 5;
+    optional string fexrId = 6;
 }
 
 message PushNotification {
