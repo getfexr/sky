@@ -11,7 +11,6 @@ import (
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
 	// "io/ioutil"
 	// "net/http"
@@ -25,11 +24,11 @@ import (
 )
 
 const (
-	txn string = "http://127.0.0.1:1898/getTxnByCount"
+	txn string = "http://127.0.0.1:1898/initiateTransaction"
 )
 
 func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubixTxnServer) error {
-	g.log.Info("Initializing Rubix Txn to DID: ", in.ReceiverDID)
+	g.log.Info("Initializing Rubix Txn with Details: ", in)
 
 	inputBody := &mdl.InitTxnAPIRequest{
 		Receiver:   in.ReceiverDID,
@@ -38,29 +37,22 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 		Type:       1,
 	}
 
-	//inputBodyPayload,_ := simplejson.NewJson((inputBody))
-
-	newPayload := strings.NewReader(`
-	{"receiver":"QmejWEVoUYRBSWfTJ9gnpczsZWQEGj8nSJESjR7qDbFq1d",
-	"tokenCount":0.001,
-	"comment":"Boliviano boliviano Money Market Account Integrated",
-	"type":1}`)
+	// if quorumList in TxnPayload is not empty, then we need to change Type as 3
+	if len(in.QuorumList) == 21 {
+		inputBody.Type = 3
+		// inputBody.QuorumList = in.QuorumList
+	}
 
 	payloadBuf := new(bytes.Buffer)
 	//fmt.Printf(" '%s' ", inputBody)
 	json.NewEncoder(payloadBuf).Encode(inputBody)
 	fmt.Println("payloadBuf: ", string(payloadBuf.String()))
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", txn, newPayload)
+	req, err := http.NewRequest("POST", txn, payloadBuf)
 
 	//TODO: txn params from input
 	if err != nil {
 		fmt.Printf("error in -type")
-		return nil
-	}
-	if err != nil {
-		fmt.Printf("error in content-")
-
 		return nil
 	}
 	req.Header.Add("Content-Type", "application/json")

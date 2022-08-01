@@ -1,6 +1,7 @@
 package pop
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,8 +17,8 @@ import (
 )
 
 const (
-	create string = "http://127.0.0.1:1898/create"
-	// initTxn string = "http://127.0.0.1:1898/initiateTransaction"
+	create  string = "http://127.0.0.1:1898/create"
+	txnData string = "http://127.0.0.1:1898/getTxnByCount"
 	sync    string = "http://127.0.0.1:1898/sync"
 	account string = "http://127.0.0.1:1898/getAccountInfo"
 	// sign    string = "http://127.0.0.1:1898/sign"
@@ -57,6 +58,7 @@ func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3Walle
 func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.RubixWalletData, error) {
 
 	var accAPI *mdl.AccountAPIResponse
+	var txnHistory []*pb.TransactionHistory
 
 	if perm.Code == 0 {
 		g.log.Info("New Lite Wallet Connected. Syncing wallet data...")
@@ -161,52 +163,85 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 			return nil, err
 		}
 
-		// Transaction Data from API
+		postBody, _ := json.Marshal(map[string]string{
+			"txnCount":  "25",
+		})
+		responseBody := bytes.NewBuffer(postBody)
 
-		// txRes, err := http.Get(txn)
-		// if err != nil {
-		// 	return err
-		// }
-		// txBytes, err := ioutil.ReadAll(txRes.Body)
-		// if err != nil {
-		// 	return err
-		// }
+		txRes, err := http.Post(txnData, "application/json", responseBody)
+		if err != nil {
+			return nil, err
+		}
 
-		// txList, err := getAccount([]byte(txBytes))
-		// _ = txList
+		txBytes, err := ioutil.ReadAll(txRes.Body)
+		if err != nil {
+			return nil, err
+		}
 
-		// if err != nil {
-		// 	return err
-		// }
+		txList, err := TxnHistoryData([]byte(txBytes))
+		_ = txList
 
-		// remove the field amount-spent from transaction list
-		// for i := 0; i < len(txList.Data.Response); i++ {
-		// 	txList.Data.Response[i].AmountSpent = 0
+		if err != nil {
+			return nil, err
+		}
+
+		fmt.Println(txList)
+
+		// format txList to be used in pb.TransactionHistory
+
+		for _, tx := range txList.Data.Response {
+			var txnHist pb.TransactionHistory
+			txnHist.Txn = tx.Txn
+			txnHist.SenderDID = tx.SenderDID
+			txnHist.ReceiverDID = tx.ReceiverDID
+			txnHist.Amount = fmt.Sprintf("%f", tx.Amount)
+			txnHist.Date = tx.Date
+			txnHist.Role = tx.Role
+			txnHist.TotalTime = 0
+			txnHist.Comment = tx.Comment
+			txnHist.StatusCode = "Success"
+			txnHistory = append(txnHistory, &txnHist)
+		}
+
+		// var txHistory []*pb.TransactionHistory
+		// for tx := range txList.Transactions {
+		// 	txHistory = append(txHistory, &pb.TransactionHistory{
+		// 		Txn:         tx.,
+		// 		SenderDID:   "",
+		// 		ReceiverDID: "",
+		// 		Amount:      "",
+		// 		Date:        "",
+		// 		Role:        "",
+		// 		TotalTime:   0,
+		// 		Comment:     "",
+		// 		StatusCode:  "",
+		// 		QuorumList:  new(string),
+		// 	})
 		// }
 	}
 	g.log.Info("Finished Lite Wallet sync")
 
-		return &pb.RubixWalletData{
-			DIDHash:      accAPI.Data.Response.Did,
-			PeerID:       "",
-			Credits:      new(int32),
-			TotalTxn:     new(int32),
-			StakedTokens: new(int32),
-			DIDShare:     new(string),
-			PublicShare:  new(string),
-			PrivateShare: new(string),
-			Balance:      &accAPI.Data.Response.AvailableBalance,
-			TxnHistory:   []*pb.TransactionHistory{},
-			QSignedTxns:  []*pb.QuorumSignedTransaction{},
-			TChains:      []*pb.TokenChain{},
-		}, nil
+	return &pb.RubixWalletData{
+		DIDHash:      accAPI.Data.Response.Did,
+		PeerID:       "",
+		Credits:      new(int32),
+		TotalTxn:     new(int32),
+		StakedTokens: new(int32),
+		DIDShare:     new(string),
+		PublicShare:  new(string),
+		PrivateShare: new(string),
+		Balance:      &accAPI.Data.Response.AvailableBalance,
+		TxnHistory:   txnHistory,
+		QSignedTxns:  []*pb.QuorumSignedTransaction{},
+		TChains:      []*pb.TokenChain{},
+	}, nil
 }
 
 func (g *FexrGateway) UploadWalletKeys(ctx context.Context, keys *pb.RubixWalletData) (*pb.Web3WalletPermission, error) {
 	g.log.Info("Updating wallet keys")
 	return &pb.Web3WalletPermission{
-		DID:    new(string),
-		Code:   0,
+		DID:     new(string),
+		Code:    0,
 		Payload: new(string),
 	}, nil
 }
@@ -221,6 +256,15 @@ func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3Wal
 
 func getAccount(body []byte) (*mdl.AccountAPIResponse, error) {
 	var s = new(mdl.AccountAPIResponse)
+	err := json.Unmarshal(body, &s)
+	if err != nil {
+		fmt.Println("whoops:", err)
+	}
+	return s, err
+}
+
+func TxnHistoryData(body []byte) (*mdl.TxHistoryAPIResponse, error) {
+	var s = new(mdl.TxHistoryAPIResponse)
 	err := json.Unmarshal(body, &s)
 	if err != nil {
 		fmt.Println("whoops:", err)

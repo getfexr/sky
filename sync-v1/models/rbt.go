@@ -67,17 +67,17 @@ type DirPaths struct {
 }
 
 type TxHistoryAPIResponse struct {
-	Data struct {
+Data struct {
 		Response []struct {
 			SenderDID   string   `json:"senderDID"`
-			Amount      int      `json:"amount"`
+			Amount      float32      `json:"amount"`
 			Role        string   `json:"role"`
 			TotalTime   int      `json:"totalTime"`
-			QuorumList  []string `json:"quorumList"`
+			// QuorumList  []string `json:"quorumList"`
 			Tokens      []string `json:"tokens"`
 			Comment     string   `json:"comment"`
 			Txn         string   `json:"txn"`
-			AmountSpent int      `json:"amount-spent"`
+			AmountSpent float32      `json:"amount-spent"`
 			ReceiverDID string   `json:"receiverDID"`
 			Date        string   `json:"Date"`
 		} `json:"response"`
