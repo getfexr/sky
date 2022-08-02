@@ -11,6 +11,7 @@ import (
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	// "io/ioutil"
 	// "net/http"
@@ -28,7 +29,7 @@ const (
 )
 
 func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubixTxnServer) error {
-	g.log.Info("Initializing Rubix Txn with Details: ", in)
+	g.log.Info("Initializing Rubix Transaction from lite wallet ", "metadata", in)
 
 	inputBody := &mdl.InitTxnAPIRequest{
 		Receiver:   in.ReceiverDID,
@@ -129,9 +130,17 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 
 func (g *FexrGateway) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
 	g.log.Info("Sending new Rubix Txn notification")
-	// return &pb.PushNotification{
-	// 	Notification: pb.PushNotification_PAY,
-	// },
+	// send notification to lite wallet every 1 min
+	var notificationMsg = "New Transaction"
+	for i := 0; i < 45; i++ {
+		time.Sleep(time.Minute)
+		return stream.Send(&pb.PushNotification{
+			Notification: pb.PushNotification_REMINDER,
+			Message:      &notificationMsg,
+			Txn:          &pb.TransactionHistory{},
+		})
+	}
+
 	return nil
 }
 

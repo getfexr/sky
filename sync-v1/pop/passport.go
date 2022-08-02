@@ -203,6 +203,11 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 			txnHistory = append(txnHistory, &txnHist)
 		}
 
+		// reverse the order of the txnHistory
+		for i, j := 0, len(txnHistory)-1; i < j; i, j = i+1, j-1 {
+			txnHistory[i], txnHistory[j] = txnHistory[j], txnHistory[i]
+		}
+
 		// var txHistory []*pb.TransactionHistory
 		// for tx := range txList.Transactions {
 		// 	txHistory = append(txHistory, &pb.TransactionHistory{
