@@ -105,7 +105,7 @@ message txnStatus {
 }
 
 service POPService {
-  rpc RequestChallenge (web3WalletPermission) returns (p2pConnectionStatus) {}
+  rpc RequestChallenge (web3WalletPermission) returns (p2pChallengeResponse) {}
   rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
   rpc SyncWalletData (web3WalletPermission) returns (rubixWalletData) {}
   rpc UploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}

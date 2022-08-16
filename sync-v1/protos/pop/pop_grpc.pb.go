@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type POPServiceClient interface {
+	RequestChallenge(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PChallengeResponse, error)
 	ValidatePermission(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PConnectionStatus, error)
 	SyncWalletData(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*RubixWalletData, error)
 	UploadWalletKeys(ctx context.Context, in *RubixWalletData, opts ...grpc.CallOption) (*Web3WalletPermission, error)
@@ -37,6 +38,15 @@ type pOPServiceClient struct {
 
 func NewPOPServiceClient(cc grpc.ClientConnInterface) POPServiceClient {
 	return &pOPServiceClient{cc}
+}
+
+func (c *pOPServiceClient) RequestChallenge(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PChallengeResponse, error) {
+	out := new(P2PChallengeResponse)
+	err := c.cc.Invoke(ctx, "/protos.POPService/RequestChallenge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *pOPServiceClient) ValidatePermission(ctx context.Context, in *Web3WalletPermission, opts ...grpc.CallOption) (*P2PConnectionStatus, error) {
@@ -143,6 +153,7 @@ func (x *pOPServiceWalletNotificationClient) Recv() (*PushNotification, error) {
 // All implementations must embed UnimplementedPOPServiceServer
 // for forward compatibility
 type POPServiceServer interface {
+	RequestChallenge(context.Context, *Web3WalletPermission) (*P2PChallengeResponse, error)
 	ValidatePermission(context.Context, *Web3WalletPermission) (*P2PConnectionStatus, error)
 	SyncWalletData(context.Context, *Web3WalletPermission) (*RubixWalletData, error)
 	UploadWalletKeys(context.Context, *RubixWalletData) (*Web3WalletPermission, error)
@@ -156,6 +167,9 @@ type POPServiceServer interface {
 type UnimplementedPOPServiceServer struct {
 }
 
+func (UnimplementedPOPServiceServer) RequestChallenge(context.Context, *Web3WalletPermission) (*P2PChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestChallenge not implemented")
+}
 func (UnimplementedPOPServiceServer) ValidatePermission(context.Context, *Web3WalletPermission) (*P2PConnectionStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidatePermission not implemented")
 }
@@ -185,6 +199,24 @@ type UnsafePOPServiceServer interface {
 
 func RegisterPOPServiceServer(s grpc.ServiceRegistrar, srv POPServiceServer) {
 	s.RegisterService(&POPService_ServiceDesc, srv)
+}
+
+func _POPService_RequestChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Web3WalletPermission)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(POPServiceServer).RequestChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.POPService/RequestChallenge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(POPServiceServer).RequestChallenge(ctx, req.(*Web3WalletPermission))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _POPService_ValidatePermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -308,6 +340,10 @@ var POPService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "protos.POPService",
 	HandlerType: (*POPServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RequestChallenge",
+			Handler:    _POPService_RequestChallenge_Handler,
+		},
 		{
 			MethodName: "ValidatePermission",
 			Handler:    _POPService_ValidatePermission_Handler,
