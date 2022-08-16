@@ -11,7 +11,6 @@ import (
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
-	"time"
 
 	// "io/ioutil"
 	// "net/http"
@@ -131,16 +130,15 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 func (g *FexrGateway) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
 	g.log.Info("Sending new Rubix Txn notification")
 	// send notification to lite wallet every 1 min
-	var notificationMsg = "New Transaction"
-	for i := 0; i < 45; i++ {
-		time.Sleep(time.Minute)
+	if false {
+		var notificationMsg = "Your wallet is safe with Fexr"
+
 		return stream.Send(&pb.PushNotification{
 			Notification: pb.PushNotification_REMINDER,
 			Message:      &notificationMsg,
 			Txn:          &pb.TransactionHistory{},
 		})
 	}
-
 	return nil
 }
 

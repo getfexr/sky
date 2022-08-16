@@ -25,7 +25,7 @@ const (
 
 // }
 
-func (r *Rubix) Config() {
+func (r *Rubix) ConfigPaths()  {
 
 }
 

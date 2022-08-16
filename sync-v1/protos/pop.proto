@@ -64,6 +64,13 @@ message p2pConnectionStatus {
     int32 code = 2;
     optional string message = 3;
 }
+
+message p2pChallengeResponse {
+    bool connected = 1;
+    string challenge = 2;
+    optional string message = 3;
+}
+
 message txnPayload {
     string senderDID = 1;
     string receiverDID = 2;
@@ -98,6 +105,7 @@ message txnStatus {
 }
 
 service POPService {
+  rpc RequestChallenge (web3WalletPermission) returns (p2pConnectionStatus) {}
   rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
   rpc SyncWalletData (web3WalletPermission) returns (rubixWalletData) {}
   rpc UploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}

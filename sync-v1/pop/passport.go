@@ -47,8 +47,7 @@ func NewFexrGateaway(log l.Logger) *FexrGateway {
 func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
 	g.log.Info("New Lite Wallet Connected. Remembering Connection for permission: ", "code ", perm.Code)
 
-	//? if code == 0, then its full permission (including private share)
-	//? if code == 6, then its stranger permission (only public share)
+	//? if the request is coming from the Fexr app / fexr authenticated app, send a challenge back to the service and check signature response.
 	return &pb.P2PConnectionStatus{
 		Connected: true,
 		Code:      200,
@@ -164,7 +163,7 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 		}
 
 		postBody, _ := json.Marshal(map[string]string{
-			"txnCount":  "25",
+			"txnCount":  "38",
 		})
 		responseBody := bytes.NewBuffer(postBody)
 
