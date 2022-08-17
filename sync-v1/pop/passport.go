@@ -8,6 +8,7 @@ import (
 	mdl "gofexr/sync-v1/models"
 	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -42,6 +43,18 @@ func NewFexrGateaway(log l.Logger) *FexrGateway {
 		log: log,
 		// rbt: syncv1.CreateRubix(log),
 	}
+}
+func (g *FexrGateway) RequestChallenge(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PChallengeResponse, error) {
+	g.log.Info("Incoming challenge request for", "DID ", perm.DID)
+
+	//? if the request is coming from the Fexr app / fexr authenticated app, send a challenge back to the service and check signature response.
+
+	var challenge = generateOTP(*perm.DID)
+
+	return &pb.P2PChallengeResponse{
+		Connected: true,
+		Challenge: challenge,
+	}, nil
 }
 
 func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
@@ -256,6 +269,23 @@ func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3Wal
 		Connected: false,
 		Code:      200,
 	}, nil
+}
+
+// generate a 4 digit one time code every time this function runs
+// format for OTP is not defined by fexr. It is defined and validated by third party users
+// we do not validate the OTP format, 
+// but we do reccommend that it be of the format one-time nonce for <did> in <platform-code> is <OTP>
+func generateOTP(did string) string {
+	var message = "one-time nonce for "
+	message = message + did + " in fexr-gateway is "
+
+	var digits = "0123456789"
+	var otp = ""
+	for i := 0; i < 4; i++ {
+		otp = otp + string(digits[rand.Intn(len(digits))])
+	}
+	otp = message + otp
+	return otp
 }
 
 func getAccount(body []byte) (*mdl.AccountAPIResponse, error) {
