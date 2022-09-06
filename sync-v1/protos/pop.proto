@@ -58,8 +58,8 @@ message TransactionHistory {
 
 message web3WalletPermission {
     optional string dID = 1;
-    int32 code = 2;
-    optional string payload = 3;
+    string code = 2;
+    string payload = 3;
 }
 
 message p2pConnectionStatus {

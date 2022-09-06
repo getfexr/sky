@@ -238,15 +238,18 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 	}
 	g.log.Info("Finished Lite Wallet sync")
 
+	dID := accAPI.Data.Response.Did
+
 	return &pb.RubixWalletData{
-		DIDHash:      accAPI.Data.Response.Did,
-		PeerID:       "",
-		Credits:      new(int32),
-		TotalTxn:     new(int32),
-		StakedTokens: new(int32),
+		Signature:    new(string),
 		DIDShare:     new(string),
 		PublicShare:  new(string),
 		PrivateShare: new(string),
+		DIDHash:      &dID,
+		PeerID:       new(string),
+		TotalTxn:     new(int32),
+		StakedTokens: new(int32),
+		Credits:      new(int32),
 		Balance:      &accAPI.Data.Response.AvailableBalance,
 		TxnHistory:   txnHistory,
 		QSignedTxns:  []*pb.QuorumSignedTransaction{},
