@@ -1,9 +1,9 @@
 package main
 
 import (
+	g "fexrtalk/sync-v1/pop"
+	pb "fexrtalk/sync-v1/protos/pop"
 	"fmt"
-	g "gofexr/sync-v1/pop"
-	pb "gofexr/sync-v1/protos/pop"
 	"log"
 	"net"
 	"os"
@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	// "google.golang.org/grpc/credentials/alts"
 	// "google.golang.org/grpc/credentials"
-	// "gofexr/sync-v1/pop"
+	// "fexrtalk/sync-v1/pop"
 )
 
 const (

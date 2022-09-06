@@ -7,7 +7,7 @@
     <img src="https://getfexr.com/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">gofexr</h3>
+  <h3 align="center">fexrtalk</h3>
 
   <p align="center">
     Secure wrapper and lite wallet authenticator for your Rubix Wallet (node)
@@ -17,26 +17,24 @@
     <br />
     <a href="">View Demo</a>
     ·
-    <a href="https://github.com/getfexr/gofexr/issues">Report Bug</a>
+    <a href="https://github.com/getfexr/fexrtalk/issues">Report Bug</a>
     ·
-    <a href="https://github.com/getfexr/gofexr/issues">Request Feature</a>
+    <a href="https://github.com/getfexr/fexrtalk/issues">Request Feature</a>
   </p>
 </div>
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-gofexr is a wrapper for Rubix Blockchain Protocol that helps to:
+fexrtalk is a wrapper for Rubix Blockchain Protocol that helps to:
 
-- Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet. 
+- Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet.
 
 - Connect your wallet to authenticate or sign third party accounts which are integrated with Rubix Blockchain Platform and uses Fexr APIs. Strict permission requirements built in Fexr apps will protect the access to your data also while allowing seamless integration.
 
 _For more examples, please refer to the [Documentation](https://getfexr.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -54,8 +52,6 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
@@ -63,31 +59,14 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
 ## Contact
 
 Your Name - [@getfexr](https://twitter.com/getfexr) - support@getfexr.com
 
-Project Link: [https://github.com/getfexr/gofexr](https://github.com/getfexr/gofexr)
+Project Link: [https://github.com/getfexr/fexrtalk](https://github.com/getfexr/fexrtalk)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png

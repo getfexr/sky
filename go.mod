@@ -1,4 +1,4 @@
-module gofexr
+module fexrtalk
 
 go 1.18
 

@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	mdl "fexrtalk/sync-v1/models"
+	pb "fexrtalk/sync-v1/protos/pop"
 	"fmt"
-	mdl "gofexr/sync-v1/models"
-	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -176,7 +176,7 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 		}
 
 		postBody, _ := json.Marshal(map[string]string{
-			"txnCount":  "38",
+			"txnCount": "38",
 		})
 		responseBody := bytes.NewBuffer(postBody)
 
@@ -276,7 +276,7 @@ func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3Wal
 
 // generate a 4 digit one time code every time this function runs
 // format for OTP is not defined by fexr. It is defined and validated by third party users
-// we do not validate the OTP format, 
+// we do not validate the OTP format,
 // but we do reccommend that it be of the format one-time nonce for <did> in <platform-code> is <OTP>
 func generateOTP(did string) string {
 	var message = "one-time nonce for "

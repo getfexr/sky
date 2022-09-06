@@ -6,9 +6,9 @@ import (
 	// "fmt"
 	"bytes"
 	"encoding/json"
+	mdl "fexrtalk/sync-v1/models"
+	pb "fexrtalk/sync-v1/protos/pop"
 	"fmt"
-	mdl "gofexr/sync-v1/models"
-	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
 
@@ -126,11 +126,12 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 	// }
 	return nil
 }
-//TODO: make sure the signature request for transaction is send in the newly designed proto for all kinds of notifications useful for open core today
+
+// TODO: make sure the signature request for transaction is send in the newly designed proto for all kinds of notifications useful for open core today
 // TODO: then validate permission API is called to update signature request for transaction.
 // TODO: Any signing is considered as a transaction. So after signing, validatePermission API is called to add the provinence of signing to the blockchain.
-//TODO: today this functionality will just add signing to the blockchain in TransactionHistory File.
-// TODO: gofexr understanding this will updated the file in rubix folder with signed data.
+// TODO: today this functionality will just add signing to the blockchain in TransactionHistory File.
+// TODO: fexrtalk understanding this will updated the file in rubix folder with signed data.
 // This will complete the sign-incoming-pay branch
 func (g *FexrGateway) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
 	g.log.Info("Sending new Rubix Txn notification")
