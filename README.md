@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://getfexr.com">
-    <img src="https://getfexr.com/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://getfexr.com/img/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">fexrtalk</h3>

@@ -242,6 +242,11 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 
 	return &pb.RubixWalletData{
 		Signature:    new(string),
+		DIDHash:      &accAPI.Data.Response.Did,
+		PeerID:       new(string),
+		Credits:      new(int32),
+		TotalTxn:     new(int32),
+		StakedTokens: new(int32),
 		DIDShare:     new(string),
 		PublicShare:  new(string),
 		PrivateShare: new(string),
