@@ -18,7 +18,7 @@ import (
 const (
 	ConfigFile string = "config.json"
 	logFile    string = "FexrLogger.log"
-	appName    string = "Fexr sky 0.6.0"
+	appName    string = "Fexr sky 0.1.0"
 )
 
 const (
