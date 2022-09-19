@@ -1,4 +1,4 @@
-module gofexr
+module sky
 
 go 1.18
 

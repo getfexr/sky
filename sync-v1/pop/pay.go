@@ -7,10 +7,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	mdl "gofexr/sync-v1/models"
-	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"net/http"
+	mdl "sky/sync-v1/models"
+	pb "sky/sync-v1/protos/pop"
 
 	// "io/ioutil"
 	// "net/http"
@@ -27,7 +27,7 @@ const (
 	txn string = "http://127.0.0.1:1898/initiateTransaction"
 )
 
-func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubixTxnServer) error {
+func (g *Fexrsky) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubixTxnServer) error {
 	g.log.Info("Initializing Rubix Transaction from lite wallet ", "metadata", in)
 
 	inputBody := &mdl.InitTxnAPIRequest{
@@ -127,7 +127,7 @@ func (g *FexrGateway) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitR
 	return nil
 }
 
-func (g *FexrGateway) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
+func (g *Fexrsky) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
 	g.log.Info("Sending new Rubix Txn notification")
 	// send notification to lite wallet every 1 min
 	if false {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protos;
 
-option go_package = "github.com/getfexr/gofexr/protos";
+option go_package = "github.com/getfexr/sky/protos";
 import "google/protobuf/empty.proto";
 
 // DART COMMAND: 

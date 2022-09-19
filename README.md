@@ -7,7 +7,7 @@
     <img src="https://getfexr.com/img/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">gofexr</h3>
+  <h3 align="center">sky</h3>
 
   <p align="center">
     Secure wrapper and lite wallet authenticator for your Rubix Wallet (node)
@@ -17,9 +17,9 @@
     <br />
     <a href="">View Demo</a>
     ·
-    <a href="https://github.com/getfexr/gofexr/issues">Report Bug</a>
+    <a href="https://github.com/getfexr/sky/issues">Report Bug</a>
     ·
-    <a href="https://github.com/getfexr/gofexr/issues">Request Feature</a>
+    <a href="https://github.com/getfexr/sky/issues">Request Feature</a>
   </p>
 </div>
 
@@ -27,7 +27,7 @@
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-gofexr is a wrapper for Rubix Blockchain Protocol that helps to:
+sky is a wrapper for Rubix Blockchain Protocol that helps to:
 
 - Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet. 
 
@@ -70,7 +70,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Your Name - [@getfexr](https://twitter.com/getfexr) - support@getfexr.com
 
-Project Link: [https://github.com/getfexr/gofexr](https://github.com/getfexr/gofexr)
+Project Link: [https://github.com/getfexr/sky](https://github.com/getfexr/sky)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

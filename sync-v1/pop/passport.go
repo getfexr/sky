@@ -5,14 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	mdl "gofexr/sync-v1/models"
-	pb "gofexr/sync-v1/protos/pop"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
 	"runtime"
+	mdl "sky/sync-v1/models"
+	pb "sky/sync-v1/protos/pop"
 
 	l "github.com/EnsurityTechnologies/logger"
 )
@@ -32,19 +32,19 @@ const (
 	winConfig   string = "C:\\Rubix\\config.json"
 )
 
-type FexrGateway struct {
+type Fexrsky struct {
 	pb.POPServiceServer
 	log l.Logger
 	// rbt *syncv1.Rubix
 }
 
-func NewFexrGateaway(log l.Logger) *FexrGateway {
-	return &FexrGateway{
+func NewFexrGateaway(log l.Logger) *Fexrsky {
+	return &Fexrsky{
 		log: log,
 		// rbt: syncv1.CreateRubix(log),
 	}
 }
-func (g *FexrGateway) RequestChallenge(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PChallengeResponse, error) {
+func (g *Fexrsky) RequestChallenge(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PChallengeResponse, error) {
 	g.log.Info("Incoming challenge request for", "DID ", perm.DID)
 
 	//? if the request is coming from the Fexr app / fexr authenticated app, send a challenge back to the service and check signature response.
@@ -57,7 +57,7 @@ func (g *FexrGateway) RequestChallenge(ctx context.Context, perm *pb.Web3WalletP
 	}, nil
 }
 
-func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
+func (g *Fexrsky) ValidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
 	g.log.Info("New Lite Wallet Connected. Remembering Connection for permission: ", "code ", perm.Code)
 
 	//? if the request is coming from the Fexr app / fexr authenticated app, send a challenge back to the service and check signature response.
@@ -67,7 +67,7 @@ func (g *FexrGateway) ValidatePermission(ctx context.Context, perm *pb.Web3Walle
 	}, nil
 }
 
-func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.RubixWalletData, error) {
+func (g *Fexrsky) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.RubixWalletData, error) {
 
 	var accAPI *mdl.AccountAPIResponse
 	var txnHistory []*pb.TransactionHistory
@@ -254,7 +254,7 @@ func (g *FexrGateway) SyncWalletData(ctx context.Context, perm *pb.Web3WalletPer
 	}, nil
 }
 
-func (g *FexrGateway) UploadWalletKeys(ctx context.Context, keys *pb.RubixWalletData) (*pb.Web3WalletPermission, error) {
+func (g *Fexrsky) UploadWalletKeys(ctx context.Context, keys *pb.RubixWalletData) (*pb.Web3WalletPermission, error) {
 	g.log.Info("Updating wallet keys")
 	return &pb.Web3WalletPermission{
 		DID:     new(string),
@@ -263,7 +263,7 @@ func (g *FexrGateway) UploadWalletKeys(ctx context.Context, keys *pb.RubixWallet
 	}, nil
 }
 
-func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
+func (g *Fexrsky) InvalidatePermission(ctx context.Context, perm *pb.Web3WalletPermission) (*pb.P2PConnectionStatus, error) {
 	g.log.Info("Invalidating certificate")
 	return &pb.P2PConnectionStatus{
 		Connected: false,
@@ -277,7 +277,7 @@ func (g *FexrGateway) InvalidatePermission(ctx context.Context, perm *pb.Web3Wal
 // but we do reccommend that it be of the format one-time nonce for <did> in <platform-code> is <OTP>
 func generateOTP(did string) string {
 	var message = "one-time nonce for "
-	message = message + did + " in fexr-gateway is "
+	message = message + did + " in fexr-sky is "
 
 	var digits = "0123456789"
 	var otp = ""

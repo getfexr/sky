@@ -2,33 +2,33 @@ package main
 
 import (
 	"fmt"
-	g "gofexr/sync-v1/pop"
-	pb "gofexr/sync-v1/protos/pop"
 	"log"
 	"net"
 	"os"
+	g "sky/sync-v1/pop"
+	pb "sky/sync-v1/protos/pop"
 
 	l "github.com/EnsurityTechnologies/logger"
 	"google.golang.org/grpc"
 	// "google.golang.org/grpc/credentials/alts"
 	// "google.golang.org/grpc/credentials"
-	// "gofexr/sync-v1/pop"
+	// "sky/sync-v1/pop"
 )
 
 const (
 	ConfigFile string = "config.json"
 	logFile    string = "FexrLogger.log"
-	appName    string = "Fexr Gateway 0.6.0"
+	appName    string = "Fexr sky 0.6.0"
 )
 
 const (
-	gatewayPort string = "0.0.0.0:6942"
+	skyPort string = "0.0.0.0:6942"
 )
 
 func ShowVersion() {
 	fmt.Printf("\n****************************************\n\n")
 	fmt.Printf(appName + "\n")
-	fmt.Printf("Initializing Fexr RPC Gateway..\n")
+	fmt.Printf("Initializing Fexr RPC sky..\n")
 	fmt.Printf("\n****************************************\n\n")
 }
 
@@ -39,7 +39,7 @@ type FexrGateaway struct {
 func main() {
 
 	ShowVersion()
-	lis, err := net.Listen("tcp", gatewayPort)
+	lis, err := net.Listen("tcp", skyPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -67,7 +67,7 @@ func main() {
 	pb.RegisterPOPServiceServer(fexrGateaway, g.NewFexrGateaway(log))
 
 	if err := fexrGateaway.Serve(lis); err != nil {
-		log.Error("failed to initialize Fexr RPC Gateway", "err", err)
+		log.Error("failed to initialize Fexr RPC sky", "err", err)
 		return
 	}
 }
