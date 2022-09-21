@@ -33,7 +33,22 @@ sky is a wrapper for Rubix Blockchain Protocol that helps to:
 
 - Connect your wallet to authenticate or sign third party accounts which are integrated with Rubix Blockchain Platform and uses Fexr APIs. Strict permission requirements built in Fexr apps will protect the access to your data also while allowing seamless integration.
 
-_For more examples, please refer to the [Documentation](https://getfexr.com)_
+_For more examples, please refer to the [Documentation](https://getfexr.com/developers/roadmap)_
+
+<!-- BUILDING -->
+## Running Locally
+
+## Build
+
+```bash
+./fexrsky-<build>.<ext>
+```
+
+## Code
+
+```bash
+go run fexr.go
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -42,29 +57,29 @@ _For more examples, please refer to the [Documentation](https://getfexr.com)_
 
 ## Windows
 
-```
+```bash
 GOOS=windows GOARCH=amd64 go build -o bin/fexrsky-amd64.exe fexr.go
 ```
 
 ## Linux
 
-#### 64-bit
+### 64-bit
 
-```
+```bash
 GOOS=linux GOARCH=amd64 go build -o bin/fexrsky-amd64-linux fexr.go
 ```
 
 #### 32-bit
 
-```
+```bash
 GOOS=linux GOARCH=386 go build -o bin/fexrsky-386-linux fexr.go
 ```
 
 ## Macos
 
-#### 64-bit
+### 64-bit
 
-```
+```bash
 GOOS=darwin GOARCH=amd64 go build -o bin/fexrsky-amd64-darwin fexr.go
 ```
 
