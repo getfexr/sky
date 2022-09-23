@@ -107,7 +107,7 @@ message txnStatus {
     optional string message = 3;
 }
 
-service POPService {
+service Sky {
   rpc RequestChallenge (web3WalletPermission) returns (p2pChallengeResponse) {}
   rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
   rpc SyncWalletData (web3WalletPermission) returns (rubixWalletData) {}

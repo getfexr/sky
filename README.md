@@ -23,13 +23,12 @@
   </p>
 </div>
 
-
 <!-- USAGE EXAMPLES -->
 ## Usage
 
 sky is a wrapper for Rubix Blockchain Protocol that helps to:
 
-- Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet. 
+- Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet.
 
 - Connect your wallet to authenticate or sign third party accounts which are integrated with Rubix Blockchain Platform and uses Fexr APIs. Strict permission requirements built in Fexr apps will protect the access to your data also while allowing seamless integration.
 
@@ -94,7 +93,6 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
@@ -111,16 +109,12 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -131,20 +125,5 @@ Project Link: [https://github.com/getfexr/sky](https://github.com/getfexr/sky)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
