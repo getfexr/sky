@@ -10,7 +10,7 @@ import (
 
 type Rubix struct {
 	log logger.Logger
-}
+
 
 //APIs
 const (

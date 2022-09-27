@@ -9,81 +9,49 @@ import "google/protobuf/empty.proto";
 
 // GO COMMAND (lib root dir): protoc --go_out=sync-v1/protos/pop --go_opt=paths=source_relative --go-grpc_out=sync-v1/protos/pop --go-grpc_opt=paths=source_relative --proto_path=sync-v1/protos pop.proto
 
-message rubixWalletData {
-    optional string signature = 1;
-    optional string dIDShare = 2;
-    optional string publicShare = 3;
-    optional string privateShare = 4;
+service Sky {
+    //? COMING FROM Sky
+    //? TO Opencore
+    rpc Challenge (google.protobuf.Empty) returns (p2pChallenge) {} // Sign challenge to populate params in Validate API
+    rpc Notification (google.protobuf.Empty) returns (stream p2pNotification) {} // Send notifications directly to app.
+    rpc Sign (web3WalletPermission) returns (stream p2pConnectionStatus) {} // Sign or validate a third party app using Fexr.
+    rpc Interaction (web3WalletPermission) returns (stream p2pConnectionStatus) {} //saved locally, invoked later as bottom popup.
+    //?  TO Club
+    rpc Telemetry (google.protobuf.Empty) returns (p2pChallengeResponse) {}
+    option (google.api.http) = {
+      post: "/sync-v1/echo"
+      body: "*"
+    };
 
-    optional string dIDHash = 5;
-    optional string peerID = 6;
+    //---
 
-    optional int32 totalTxn = 7;
-    optional int32 stakedTokens = 8;
-    optional int32 credits = 9;
-    optional double balance = 10;
-    repeated TransactionHistory txnHistory = 11;
-    repeated QuorumSignedTransaction qSignedTxns = 12;
-    repeated TokenChain tChains = 13;
+    //? GOING TO Sky
+    //? FROM Opencore
+    rpc Validate (web3WalletPermission) returns (p2pConnectionStatus) {} // requesting hot wallet to validate users.
+    rpc Invalidate (web3WalletPermission) returns (p2pConnectionStatus) {} // Requesting hot wallet to validate key owner
+    rpc Sync (web3WalletPermission) returns (rubixWalletData) {} // Fetch latest data from hot wallet to be backed up in app. 
+    // Sync updates node about signed challenge codes and initiated transactions.
+    rpc Find (web3WalletPermission) returns (rubixWalletData) {} // search for contents or data in hot wallet or synced content in app.
+    rpc Host (rubixWalletData) returns (web3WalletPermission) {} // create new wallet in hot wallet and upload keys
+    rpc RbtPay (txnPayload) returns (stream txnStatus) {} // initiate a regular RBT transaction
+    rpc RbtPOS (txnPayload) returns (stream txnStatus) {} // initiate a POS RBT transaction.
+    //? FROM Club
+    rpc Fee (txnPayload) returns (stream txnStatus) {} // initiate a POS RBT transaction.
+    option (google.api.http) = {
+      post: "/v1/echo"
+      body: "*"
+    };
+    //? FROM Rubix Node
 }
 
-message TokenChain {
-    string tokenHash = 1;
-    string tokenContent = 2;
-    string chainData = 3;
-    bool holding = 4;
-}
-
-message QuorumSignedTransaction {
-    string senderDID = 1;
-    string credits = 2;
-    string sign = 3;
-    string tid = 4;
-    optional bool minestatus = 5;
-    optional string consensusID = 6;
-}
-
-message TransactionHistory {
-    string txn = 1;
-    string senderDID = 2;
-    string receiverDID = 3;
-    string amount = 4;
-    string date = 5;
-    string role = 6;
-    double totalTime = 7;
-    string comment = 8;
-    string statusCode = 9;
-    optional string quorumList = 10;
-}
-
-message web3WalletPermission {
-    optional string dID = 1;
-    int32 code = 2;
-    optional string payload = 3;
-}
-
-message p2pConnectionStatus {
-    bool connected = 1;
-    int32 code = 2;
-    optional string message = 3;
-}
-
-message p2pChallengeResponse {
-    bool connected = 1;
+message p2pChallenge {
+    bool trusted = 1; // If trusted, access sign challenge has expiry of 24 days, otherwise, 1 day
     string challenge = 2;
-    optional string message = 3;
+    int expiry = 3;
+    optional string message = 4;
 }
 
-message txnPayload {
-    string senderDID = 1;
-    string receiverDID = 2;
-    double amount = 3;
-    string comment = 4;
-    repeated string quorumList = 5;
-    optional string fexrId = 6;
-}
-
-message PushNotification {
+message p2pNotification {
     enum NOTIFICATION_TYPE {
         PAY = 0;
         SIGN = 1;
@@ -95,24 +63,90 @@ message PushNotification {
     optional TransactionHistory txn = 3;
 }
 
-message txnStatus {
-    string tid = 1;
-    enum TRANSACTION_STATUS {
-        SUCCESS = 0;
-        FAILED = 1;
-        VALIDATING = 2;
-        CANCELED = 3;
-    }
-    TRANSACTION_STATUS status = 2;
-    optional string message = 3;
-}
 
-service Sky {
-  rpc RequestChallenge (web3WalletPermission) returns (p2pChallengeResponse) {}
-  rpc ValidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
-  rpc SyncWalletData (web3WalletPermission) returns (rubixWalletData) {}
-  rpc UploadWalletKeys (rubixWalletData) returns (web3WalletPermission) {}
-  rpc InvalidatePermission (web3WalletPermission) returns (p2pConnectionStatus) {}
-  rpc InitRubixTxn (txnPayload) returns (stream txnStatus) {}
-  rpc WalletNotification(google.protobuf.Empty) returns (stream PushNotification) {}
-}
+
+// message rubixWalletData {
+//     optional string signature = 1;
+//     optional string dIDShare = 2;
+//     optional string publicShare = 3;
+//     optional string privateShare = 4;
+
+//     optional string dIDHash = 5;
+//     optional string peerID = 6;
+
+//     optional int32 totalTxn = 7;
+//     optional int32 stakedTokens = 8;
+//     optional int32 credits = 9;
+//     optional double balance = 10;
+//     repeated TransactionHistory txnHistory = 11;
+//     repeated QuorumSignedTransaction qSignedTxns = 12;
+//     repeated TokenChain tChains = 13;
+// }
+
+// message TokenChain {
+//     string tokenHash = 1;
+//     string tokenContent = 2;
+//     string chainData = 3;
+//     bool holding = 4;
+// }
+
+// message QuorumSignedTransaction {
+//     string senderDID = 1;
+//     string credits = 2;
+//     string sign = 3;
+//     string tid = 4;
+//     optional bool minestatus = 5;
+//     optional string consensusID = 6;
+// }
+
+// message TransactionHistory {
+//     string txn = 1;
+//     string senderDID = 2;
+//     string receiverDID = 3;
+//     string amount = 4;
+//     string date = 5;
+//     string role = 6;
+//     double totalTime = 7;
+//     string comment = 8;
+//     string statusCode = 9;
+//     optional string quorumList = 10;
+// }
+
+// message web3WalletPermission {
+//     optional string dID = 1;
+//     int32 code = 2;
+//     optional string payload = 3;
+// }
+
+// message p2pConnectionStatus {
+//     bool connected = 1;
+//     int32 code = 2;
+//     optional string message = 3;
+// }
+
+// message p2pChallengeResponse {
+//     bool connected = 1;
+//     string challenge = 2;
+//     optional string message = 3;
+// }
+
+// message txnPayload {
+//     string senderDID = 1;
+//     string receiverDID = 2;
+//     double amount = 3;
+//     string comment = 4;
+//     repeated string quorumList = 5;
+//     optional string fexrId = 6;
+// }
+
+// message txnStatus {
+//     string tid = 1;
+//     enum TRANSACTION_STATUS {
+//         SUCCESS = 0;
+//         FAILED = 1;
+//         VALIDATING = 2;
+//         CANCELED = 3;
+//     }
+//     TRANSACTION_STATUS status = 2;
+//     optional string message = 3;
+// }
