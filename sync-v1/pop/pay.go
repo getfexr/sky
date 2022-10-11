@@ -27,7 +27,7 @@ const (
 	txn string = "http://127.0.0.1:1898/initiateTransaction"
 )
 
-func (g *Fexrsky) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubixTxnServer) error {
+func (g *Fexrsky) InitRubixTxn(in *pb.TxnPayload, stream pb.Sky_RbtPayServer) error {
 	g.log.Info("Initializing Rubix Transaction from lite wallet ", "metadata", in)
 
 	inputBody := &mdl.InitTxnAPIRequest{
@@ -127,14 +127,14 @@ func (g *Fexrsky) InitRubixTxn(in *pb.TxnPayload, stream pb.POPService_InitRubix
 	return nil
 }
 
-func (g *Fexrsky) WalletNotification(in *emptypb.Empty, stream pb.POPService_WalletNotificationServer) error {
+func (g *Fexrsky) WalletNotification(in *emptypb.Empty, stream pb.Sky_NotificationServer) error {
 	g.log.Info("Sending new Rubix Txn notification")
 	// send notification to lite wallet every 1 min
 	if false {
 		var notificationMsg = "Your wallet is safe with Fexr"
 
-		return stream.Send(&pb.PushNotification{
-			Notification: pb.PushNotification_REMINDER,
+		return stream.Send(&pb.P2PNotification{
+			Notification: pb.P2PNotification_REMINDER,
 			Message:      &notificationMsg,
 			Txn:          &pb.TransactionHistory{},
 		})

@@ -33,7 +33,7 @@ func ShowVersion() {
 }
 
 type FexrGateaway struct {
-	pb.POPServiceServer
+	pb.SkyServer
 }
 
 func main() {
@@ -64,7 +64,7 @@ func main() {
 
 	// rbt := g
 
-	pb.RegisterPOPServiceServer(fexrGateaway, g.NewFexrGateaway(log))
+	pb.RegisterSkyServer(fexrGateaway, g.NewFexrGateaway(log))
 
 	if err := fexrGateaway.Serve(lis); err != nil {
 		log.Error("failed to initialize Fexr RPC sky", "err", err)

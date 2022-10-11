@@ -3,6 +3,7 @@ syntax = "proto3";
 package protos;
 
 option go_package = "github.com/getfexr/sky/protos";
+
 import "google/protobuf/empty.proto";
 
 // DART COMMAND: 
@@ -17,11 +18,7 @@ service Sky {
     rpc Sign (web3WalletPermission) returns (stream p2pConnectionStatus) {} // Sign or validate a third party app using Fexr.
     rpc Interaction (web3WalletPermission) returns (stream p2pConnectionStatus) {} //saved locally, invoked later as bottom popup.
     //?  TO Club
-    rpc Telemetry (google.protobuf.Empty) returns (p2pChallengeResponse) {}
-    option (google.api.http) = {
-      post: "/sync-v1/echo"
-      body: "*"
-    };
+    
 
     //---
 
@@ -36,18 +33,13 @@ service Sky {
     rpc RbtPay (txnPayload) returns (stream txnStatus) {} // initiate a regular RBT transaction
     rpc RbtPOS (txnPayload) returns (stream txnStatus) {} // initiate a POS RBT transaction.
     //? FROM Club
-    rpc Fee (txnPayload) returns (stream txnStatus) {} // initiate a POS RBT transaction.
-    option (google.api.http) = {
-      post: "/v1/echo"
-      body: "*"
-    };
-    //? FROM Rubix Node
+    
 }
 
 message p2pChallenge {
     bool trusted = 1; // If trusted, access sign challenge has expiry of 24 days, otherwise, 1 day
     string challenge = 2;
-    int expiry = 3;
+    int32 expiry = 3;
     optional string message = 4;
 }
 
@@ -65,88 +57,88 @@ message p2pNotification {
 
 
 
-// message rubixWalletData {
-//     optional string signature = 1;
-//     optional string dIDShare = 2;
-//     optional string publicShare = 3;
-//     optional string privateShare = 4;
+message rubixWalletData {
+    optional string signature = 1;
+    optional string dIDShare = 2;
+    optional string publicShare = 3;
+    optional string privateShare = 4;
 
-//     optional string dIDHash = 5;
-//     optional string peerID = 6;
+    optional string dIDHash = 5;
+    optional string peerID = 6;
 
-//     optional int32 totalTxn = 7;
-//     optional int32 stakedTokens = 8;
-//     optional int32 credits = 9;
-//     optional double balance = 10;
-//     repeated TransactionHistory txnHistory = 11;
-//     repeated QuorumSignedTransaction qSignedTxns = 12;
-//     repeated TokenChain tChains = 13;
-// }
+    optional int32 totalTxn = 7;
+    optional int32 stakedTokens = 8;
+    optional int32 credits = 9;
+    optional double balance = 10;
+    repeated TransactionHistory txnHistory = 11;
+    repeated QuorumSignedTransaction qSignedTxns = 12;
+    repeated TokenChain tChains = 13;
+}
 
-// message TokenChain {
-//     string tokenHash = 1;
-//     string tokenContent = 2;
-//     string chainData = 3;
-//     bool holding = 4;
-// }
+message TokenChain {
+    string tokenHash = 1;
+    string tokenContent = 2;
+    string chainData = 3;
+    bool holding = 4;
+}
 
-// message QuorumSignedTransaction {
-//     string senderDID = 1;
-//     string credits = 2;
-//     string sign = 3;
-//     string tid = 4;
-//     optional bool minestatus = 5;
-//     optional string consensusID = 6;
-// }
+message QuorumSignedTransaction {
+    string senderDID = 1;
+    string credits = 2;
+    string sign = 3;
+    string tid = 4;
+    optional bool minestatus = 5;
+    optional string consensusID = 6;
+}
 
-// message TransactionHistory {
-//     string txn = 1;
-//     string senderDID = 2;
-//     string receiverDID = 3;
-//     string amount = 4;
-//     string date = 5;
-//     string role = 6;
-//     double totalTime = 7;
-//     string comment = 8;
-//     string statusCode = 9;
-//     optional string quorumList = 10;
-// }
+message TransactionHistory {
+    string txn = 1;
+    string senderDID = 2;
+    string receiverDID = 3;
+    string amount = 4;
+    string date = 5;
+    string role = 6;
+    double totalTime = 7;
+    string comment = 8;
+    string statusCode = 9;
+    optional string quorumList = 10;
+}
 
-// message web3WalletPermission {
-//     optional string dID = 1;
-//     int32 code = 2;
-//     optional string payload = 3;
-// }
+message web3WalletPermission {
+    optional string dID = 1;
+    int32 code = 2;
+    optional string payload = 3;
+}
 
-// message p2pConnectionStatus {
-//     bool connected = 1;
-//     int32 code = 2;
-//     optional string message = 3;
-// }
+message p2pConnectionStatus {
+    bool connected = 1;
+    int32 code = 2;
+    optional string message = 3;
+}
 
-// message p2pChallengeResponse {
-//     bool connected = 1;
-//     string challenge = 2;
-//     optional string message = 3;
-// }
+message p2pChallengeResponse {
+    bool connected = 1;
+    string challenge = 2;
+    optional string message = 3;
+}
 
-// message txnPayload {
-//     string senderDID = 1;
-//     string receiverDID = 2;
-//     double amount = 3;
-//     string comment = 4;
-//     repeated string quorumList = 5;
-//     optional string fexrId = 6;
-// }
+message txnPayload {
+    string senderDID = 1;
+    string receiverDID = 2;
+    double amount = 3;
+    string comment = 4;
+    repeated string quorumList = 5;
+    optional string fexrId = 6;
+}
 
-// message txnStatus {
-//     string tid = 1;
-//     enum TRANSACTION_STATUS {
-//         SUCCESS = 0;
-//         FAILED = 1;
-//         VALIDATING = 2;
-//         CANCELED = 3;
-//     }
-//     TRANSACTION_STATUS status = 2;
-//     optional string message = 3;
-// }
+message txnStatus {
+    string tid = 1;
+    enum TRANSACTION_STATUS {
+        SUCCESS = 0;
+        FAILED = 1;
+        VALIDATING = 2;
+        CANCELED = 3;
+    }
+    TRANSACTION_STATUS status = 2;
+    optional string message = 3;
+}

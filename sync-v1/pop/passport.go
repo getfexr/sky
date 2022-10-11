@@ -23,6 +23,7 @@ const (
 	sync    string = "http://127.0.0.1:1898/sync"
 	account string = "http://127.0.0.1:1898/getAccountInfo"
 	// sign    string = "http://127.0.0.1:1898/sign"
+
 )
 
 const (
@@ -33,7 +34,7 @@ const (
 )
 
 type Fexrsky struct {
-	pb.POPServiceServer
+	pb.SkyServer
 	log l.Logger
 	// rbt *syncv1.Rubix
 }
@@ -331,4 +332,30 @@ func getRubixConfig(body []byte) (*mdl.RubixConfig, error) {
 		fmt.Println("whoops:", err)
 	}
 	return s, err
+}
+
+func apiConnect() {
+	
+	resp, err := http.Get("http://localhost:1898/exportShares")
+
+    if err != nil {
+        fmt.Print(err.Error())
+        os.Exit(1)
+    }
+	defer resp.Body.Close()
+
+    body, err := ioutil.ReadAll(resp.Body)
+
+    if err != nil {
+		fmt.Print(err.Error())
+        os.Exit(1)
+    }
+
+    fmt.Println(string(body))
+
+    // var res map[string]interface{}
+
+    // json.NewDecoder(resp.Body).Decode(&res)
+
+    // fmt.Println(res["json"])
 }
