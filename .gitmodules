@@ -1,3 +1,0 @@
-[submodule "sync-v1/protos"]
-	path = sync-v1/protos
-	url = git@github.com:getfexr/protos.git
