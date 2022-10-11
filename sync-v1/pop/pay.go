@@ -5,6 +5,7 @@ import (
 	// "encoding/json"
 	// "fmt"
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -26,6 +27,11 @@ import (
 const (
 	txn string = "http://127.0.0.1:1898/initiateTransaction"
 )
+
+func (g *Fexrsky) HelloHello(ctx context.Context, perm *emptypb.Empty) (*pb.HelloResponse, error) {
+	g.log.Info("Getting hellow world")
+	return &pb.HelloResponse{Message: "Hello from Sky"}, nil
+}
 
 func (g *Fexrsky) InitRubixTxn(in *pb.TxnPayload, stream pb.Sky_RbtPayServer) error {
 	g.log.Info("Initializing Rubix Transaction from lite wallet ", "metadata", in)
