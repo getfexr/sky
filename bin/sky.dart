@@ -1,21 +1,17 @@
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
+import 'package:sky/models/nativeInteraction.dart';
+import 'package:sky/models/otp.dart';
 import 'package:sky/sky.dart';
-import 'package:grpc/grpc.dart';
-
-import '../protogen/sky.pbgrpc.dart';
 
 Future<void> main(List<String> arguments) async {
+
+  Hive.init('hive');
+  Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
+  Hive.registerAdapter<OTP>(OTPAdapter());
+  await Hive.openBox('nativeInteraction');
   await Hive.openBox('otps');
-  // switch case if argument contains "otp", then call getOTP() in utils.dart and return the results
-  // else return "Invalid argument"
-  final server = Server(
-    [SkyServiceBase()],
-    const <Interceptor>[],
-    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
-  );
-  await server.serve(port: 6942);
-  print('Server listening on port ${server.port}...');
+
   switch (arguments[0]) {
     case "club":
       print('Opening Club web page in browser ...');
