@@ -17,7 +17,7 @@ class Bg {
     // Generate random 4 digit number
     var rng = Random();
     var otp = rng.nextInt(9999);
-    codes.put(otp, DateTime.now);
+    codes.put(otp, DateTime.now().toString());
     discardOTP();
     return otp;
   }
