@@ -1,11 +1,21 @@
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
 import 'package:sky/sky.dart';
+import 'package:grpc/grpc.dart';
 
-void main(List<String> arguments) async {
+import '../protogen/sky.pbgrpc.dart';
+
+Future<void> main(List<String> arguments) async {
   await Hive.openBox('otps');
   // switch case if argument contains "otp", then call getOTP() in utils.dart and return the results
   // else return "Invalid argument"
+  final server = Server(
+    [SkyServiceBase()],
+    const <Interceptor>[],
+    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+  );
+  await server.serve(port: 6942);
+  print('Server listening on port ${server.port}...');
   switch (arguments[0]) {
     case "club":
       print('Opening Club web page in browser ...');
