@@ -1,24 +1,38 @@
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
-import 'package:sky/models/nativeInteraction.dart';
-import 'package:sky/models/otp.dart';
+import 'package:sky/models/native_interaction.dart';
+import 'package:sky/models/device.dart';
 import 'package:sky/sky.dart';
 
 Future<void> main(List<String> arguments) async {
-
   Hive.init('sky-data');
   Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
-  Hive.registerAdapter<OTP>(OTPAdapter());
-  // await Hive.openBox('nativeInteraction');
+  Hive.registerAdapter<Device>(DeviceAdapter());
 
   switch (arguments[0]) {
     case "club":
       print('Opening Club web page in browser ...');
       break;
     case "otp":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+      switch (arguments[1]) {
+        case "gen":
+          print('\nGenerating OTP ...');
+          print(await genOTP());
+          print('OTP is valid for 5 minutes.\n');
+          break;
+        case "check":
+          print('\nChecking OTP ...');
+          print(await checkOTP(int.parse(arguments[2]))
+              ? 'OTP is valid'
+              : 'OTP is invalid');
+          break;
+        case "list":
+          print('Listing OTPs ...');
+          await listOTP();
+          break;
+        default:
+          print('Invalid OTP command');
+      }
       break;
     case "start":
       startRPCDaemon();

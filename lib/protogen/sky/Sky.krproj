@@ -1,0 +1,19 @@
+{
+  "id": "6e120ee6-f8b1-492c-be75-a1ef1bd45ca1",
+  "importStreams": [
+    {
+      "id": "8231ed09-40ef-4c46-9054-f37f8dba0aec",
+      "name": "proto-file",
+      "importerName": "ProtoFile",
+      "createMissingOperations": true,
+      "options": {
+        "files": [
+          "../../../protos/sky.proto"
+        ],
+        "importPaths": []
+      }
+    }
+  ],
+  "authConfigs": [],
+  "certificates": []
+}
