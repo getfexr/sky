@@ -6,18 +6,17 @@ import 'package:sky/sky.dart';
 
 Future<void> main(List<String> arguments) async {
 
-  Hive.init('hive');
+  Hive.init('sky-data');
   Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
   Hive.registerAdapter<OTP>(OTPAdapter());
-  await Hive.openBox('nativeInteraction');
-  await Hive.openBox('otps');
+  // await Hive.openBox('nativeInteraction');
 
   switch (arguments[0]) {
     case "club":
       print('Opening Club web page in browser ...');
       break;
     case "otp":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
@@ -25,32 +24,32 @@ Future<void> main(List<String> arguments) async {
       startRPCDaemon();
       break;
     case "update":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
     case "shutdown":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
     case "list":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
     case "logs":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
     case "version":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
     case "find":
-      Bg().genOTP().then((int otp) {
+      genOTP().then((int otp) {
         print('OTP valid for 5 mins: $otp');
       });
       break;
