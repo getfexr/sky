@@ -8,18 +8,13 @@ class SkyService extends SkyServiceBase {
   @override
   Future<ChallengeRes> challenge(ServiceCall call, ChallengeReq request) async {
     String challenge = '';
-    // TODO: implement challenge
-    validateExpiry(request.expiryAt, request.expiryIn);
-    checkAddressOwnership(request.address);
-    while (challenge == '') {
-      challenge = await genCharecterGroupChallenge(
-          request.purposeMessage, request.purpose, request.permission);
+    if(validateExpiry(request.expiryAt, request.expiryIn) && checkAddressIfHosted(request.address)) {
+      while (challenge == '') {
+        challenge = await genCharecterGroupChallenge(
+            request.purposeMessage, request.purpose, request.permission);
+      }
     }
-    logChallenge(request);
-    return Future.value(ChallengeRes(
-        challengePayload: challenge,
-        ok: true,
-        message: 'Success. Address owner will be notified soon..'));
+    return notifyUser(request, challenge);
   }
 
   @override
