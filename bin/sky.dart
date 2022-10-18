@@ -40,7 +40,7 @@ Future<void> main(List<String> arguments) async {
       break;
     case "settings":
       switch (arguments[1]) {
-        case "all":
+        case "list":
           print('Listing all settings ...');
           allSettings();
           break;
