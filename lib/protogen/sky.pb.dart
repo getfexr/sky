@@ -328,30 +328,34 @@ class NotificationRes extends $pb.GeneratedMessage {
 
 class ChallengeReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ChallengeReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
-    ..e<ChallengeReq_purposeType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'purpose', $pb.PbFieldType.OE, defaultOrMaker: ChallengeReq_purposeType.login, valueOf: ChallengeReq_purposeType.valueOf, enumValues: ChallengeReq_purposeType.values)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..e<ChallengeReq_purposeType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'purpose', $pb.PbFieldType.OE, defaultOrMaker: ChallengeReq_purposeType.pass, valueOf: ChallengeReq_purposeType.valueOf, enumValues: ChallengeReq_purposeType.values)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiver')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'purposeMessage', protoName: 'purposeMessage')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'permission')
     ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiryIn', $pb.PbFieldType.O3, protoName: 'expiryIn')
     ..aOM<$2.Timestamp>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiryAt', protoName: 'expiryAt', subBuilder: $2.Timestamp.create)
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'authLink', protoName: 'authLink')
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bannerImage', protoName: 'bannerImage')
     ..hasRequiredFields = false
   ;
 
   ChallengeReq._() : super();
   factory ChallengeReq({
     ChallengeReq_purposeType? purpose,
-    $core.String? address,
+    $core.String? receiver,
     $core.String? purposeMessage,
     $core.String? permission,
     $core.int? expiryIn,
     $2.Timestamp? expiryAt,
+    $core.String? authLink,
+    $core.String? bannerImage,
   }) {
     final _result = create();
     if (purpose != null) {
       _result.purpose = purpose;
     }
-    if (address != null) {
-      _result.address = address;
+    if (receiver != null) {
+      _result.receiver = receiver;
     }
     if (purposeMessage != null) {
       _result.purposeMessage = purposeMessage;
@@ -364,6 +368,12 @@ class ChallengeReq extends $pb.GeneratedMessage {
     }
     if (expiryAt != null) {
       _result.expiryAt = expiryAt;
+    }
+    if (authLink != null) {
+      _result.authLink = authLink;
+    }
+    if (bannerImage != null) {
+      _result.bannerImage = bannerImage;
     }
     return _result;
   }
@@ -398,13 +408,13 @@ class ChallengeReq extends $pb.GeneratedMessage {
   void clearPurpose() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get address => $_getSZ(1);
+  $core.String get receiver => $_getSZ(1);
   @$pb.TagNumber(2)
-  set address($core.String v) { $_setString(1, v); }
+  set receiver($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasAddress() => $_has(1);
+  $core.bool hasReceiver() => $_has(1);
   @$pb.TagNumber(2)
-  void clearAddress() => clearField(2);
+  void clearReceiver() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get purposeMessage => $_getSZ(2);
@@ -443,6 +453,24 @@ class ChallengeReq extends $pb.GeneratedMessage {
   void clearExpiryAt() => clearField(6);
   @$pb.TagNumber(6)
   $2.Timestamp ensureExpiryAt() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  $core.String get authLink => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set authLink($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasAuthLink() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAuthLink() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get bannerImage => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set bannerImage($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasBannerImage() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearBannerImage() => clearField(8);
 }
 
 class ChallengeRes extends $pb.GeneratedMessage {
@@ -522,19 +550,19 @@ class ChallengeRes extends $pb.GeneratedMessage {
 
 class VerifyReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'VerifyReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signedChallengePayload', protoName: 'signedChallengePayload')
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'challengePayload', protoName: 'challengePayload')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..hasRequiredFields = false
   ;
 
   VerifyReq._() : super();
   factory VerifyReq({
-    $core.String? signedChallengePayload,
+    $core.String? challengePayload,
     $core.String? address,
   }) {
     final _result = create();
-    if (signedChallengePayload != null) {
-      _result.signedChallengePayload = signedChallengePayload;
+    if (challengePayload != null) {
+      _result.challengePayload = challengePayload;
     }
     if (address != null) {
       _result.address = address;
@@ -563,13 +591,13 @@ class VerifyReq extends $pb.GeneratedMessage {
   static VerifyReq? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get signedChallengePayload => $_getSZ(0);
+  $core.String get challengePayload => $_getSZ(0);
   @$pb.TagNumber(1)
-  set signedChallengePayload($core.String v) { $_setString(0, v); }
+  set challengePayload($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasSignedChallengePayload() => $_has(0);
+  $core.bool hasChallengePayload() => $_has(0);
   @$pb.TagNumber(1)
-  void clearSignedChallengePayload() => clearField(1);
+  void clearChallengePayload() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get address => $_getSZ(1);
@@ -1063,6 +1091,114 @@ class FindRes extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static FindRes getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindRes>(create);
   static FindRes? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get message => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set message($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+}
+
+class RelayReq extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RelayReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'noreply')
+    ..hasRequiredFields = false
+  ;
+
+  RelayReq._() : super();
+  factory RelayReq({
+    $core.String? address,
+    $core.bool? noreply,
+  }) {
+    final _result = create();
+    if (address != null) {
+      _result.address = address;
+    }
+    if (noreply != null) {
+      _result.noreply = noreply;
+    }
+    return _result;
+  }
+  factory RelayReq.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RelayReq.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RelayReq clone() => RelayReq()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RelayReq copyWith(void Function(RelayReq) updates) => super.copyWith((message) => updates(message as RelayReq)) as RelayReq; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RelayReq create() => RelayReq._();
+  RelayReq createEmptyInstance() => create();
+  static $pb.PbList<RelayReq> createRepeated() => $pb.PbList<RelayReq>();
+  @$core.pragma('dart2js:noInline')
+  static RelayReq getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RelayReq>(create);
+  static RelayReq? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get address => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set address($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasAddress() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAddress() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get noreply => $_getBF(1);
+  @$pb.TagNumber(2)
+  set noreply($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNoreply() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNoreply() => clearField(2);
+}
+
+class RelayRes extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RelayRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'message')
+    ..hasRequiredFields = false
+  ;
+
+  RelayRes._() : super();
+  factory RelayRes({
+    $core.String? message,
+  }) {
+    final _result = create();
+    if (message != null) {
+      _result.message = message;
+    }
+    return _result;
+  }
+  factory RelayRes.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RelayRes.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RelayRes clone() => RelayRes()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RelayRes copyWith(void Function(RelayRes) updates) => super.copyWith((message) => updates(message as RelayRes)) as RelayRes; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static RelayRes create() => RelayRes._();
+  RelayRes createEmptyInstance() => create();
+  static $pb.PbList<RelayRes> createRepeated() => $pb.PbList<RelayRes>();
+  @$core.pragma('dart2js:noInline')
+  static RelayRes getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RelayRes>(create);
+  static RelayRes? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get message => $_getSZ(0);

@@ -52,6 +52,10 @@ class SkyServiceClient extends $grpc.Client {
       '/protos.SkyService/Find',
       ($0.FindReq value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.FindRes.fromBuffer(value));
+  static final _$relay = $grpc.ClientMethod<$0.RelayReq, $0.RelayRes>(
+      '/protos.SkyService/Relay',
+      ($0.RelayReq value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.RelayRes.fromBuffer(value));
 
   SkyServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -98,6 +102,11 @@ class SkyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.FindRes> find($0.FindReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$find, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RelayRes> relay($0.RelayReq request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$relay, request, options: options);
   }
 }
 
@@ -163,6 +172,13 @@ abstract class SkyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.FindReq.fromBuffer(value),
         ($0.FindRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RelayReq, $0.RelayRes>(
+        'Relay',
+        relay_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.RelayReq.fromBuffer(value),
+        ($0.RelayRes value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.NotificationRes> notification_Pre(
@@ -196,6 +212,11 @@ abstract class SkyServiceBase extends $grpc.Service {
     return find(call, await request);
   }
 
+  $async.Future<$0.RelayRes> relay_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.RelayReq> request) async {
+    return relay(call, await request);
+  }
+
   $async.Future<$0.HostRes> host(
       $grpc.ServiceCall call, $async.Stream<$0.HostReq> request);
   $async.Future<$0.NotificationRes> notification(
@@ -210,4 +231,5 @@ abstract class SkyServiceBase extends $grpc.Service {
   $async.Stream<$0.PayRes> pay(
       $grpc.ServiceCall call, $async.Stream<$0.PayReq> request);
   $async.Future<$0.FindRes> find($grpc.ServiceCall call, $0.FindReq request);
+  $async.Future<$0.RelayRes> relay($grpc.ServiceCall call, $0.RelayReq request);
 }
