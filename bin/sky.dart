@@ -1,13 +1,14 @@
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
 import 'package:sky/models/native_interaction.dart';
-import 'package:sky/models/device.dart';
+import 'package:sky/models/oracle.dart';
+import 'package:sky/settings.dart';
 import 'package:sky/sky.dart';
 
 Future<void> main(List<String> arguments) async {
   Hive.init('sky-data');
   Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
-  Hive.registerAdapter<Device>(DeviceAdapter());
+  Hive.registerAdapter<Oracle>(OracleAdapter());
 
   switch (arguments[0]) {
     case "club":
@@ -37,10 +38,19 @@ Future<void> main(List<String> arguments) async {
     case "start":
       startRPCDaemon();
       break;
-    case "update":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    case "settings":
+      switch (arguments[1]) {
+        case "list":
+          print('Listing all settings ...');
+          allSettings();
+          break;
+        case "add":
+          print('Adding settings ...');
+          addSettings(arguments[2], arguments[3]);
+          break;
+        default:
+          print('Invalid settings command');
+      }
       break;
     case "shutdown":
       genOTP().then((int otp) {
