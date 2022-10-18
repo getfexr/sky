@@ -74,15 +74,19 @@ const ChallengeReq$json = const {
   '1': 'ChallengeReq',
   '2': const [
     const {'1': 'purpose', '3': 1, '4': 1, '5': 14, '6': '.protos.ChallengeReq.purposeType', '10': 'purpose'},
-    const {'1': 'address', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
+    const {'1': 'receiver', '3': 2, '4': 1, '5': 9, '10': 'receiver'},
     const {'1': 'purposeMessage', '3': 3, '4': 1, '5': 9, '10': 'purposeMessage'},
-    const {'1': 'permission', '3': 4, '4': 1, '5': 9, '10': 'permission'},
+    const {'1': 'permission', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'permission', '17': true},
     const {'1': 'expiryIn', '3': 5, '4': 1, '5': 5, '10': 'expiryIn'},
-    const {'1': 'expiryAt', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'expiryAt'},
+    const {'1': 'expiryAt', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 1, '10': 'expiryAt', '17': true},
+    const {'1': 'authLink', '3': 7, '4': 1, '5': 9, '10': 'authLink'},
+    const {'1': 'bannerImage', '3': 8, '4': 1, '5': 9, '9': 2, '10': 'bannerImage', '17': true},
   ],
   '4': const [ChallengeReq_purposeType$json],
   '8': const [
-    const {'1': '_address'},
+    const {'1': '_permission'},
+    const {'1': '_expiryAt'},
+    const {'1': '_bannerImage'},
   ],
 };
 
@@ -90,14 +94,14 @@ const ChallengeReq$json = const {
 const ChallengeReq_purposeType$json = const {
   '1': 'purposeType',
   '2': const [
-    const {'1': 'login', '2': 0},
+    const {'1': 'pass', '2': 0},
     const {'1': 'transaction', '2': 1},
-    const {'1': 'promotion', '2': 2},
+    const {'1': 'subscription', '2': 2},
   ],
 };
 
 /// Descriptor for `ChallengeReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List challengeReqDescriptor = $convert.base64Decode('CgxDaGFsbGVuZ2VSZXESOgoHcHVycG9zZRgBIAEoDjIgLnByb3Rvcy5DaGFsbGVuZ2VSZXEucHVycG9zZVR5cGVSB3B1cnBvc2USHQoHYWRkcmVzcxgCIAEoCUgAUgdhZGRyZXNziAEBEiYKDnB1cnBvc2VNZXNzYWdlGAMgASgJUg5wdXJwb3NlTWVzc2FnZRIeCgpwZXJtaXNzaW9uGAQgASgJUgpwZXJtaXNzaW9uEhoKCGV4cGlyeUluGAUgASgFUghleHBpcnlJbhI2CghleHBpcnlBdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCGV4cGlyeUF0IjgKC3B1cnBvc2VUeXBlEgkKBWxvZ2luEAASDwoLdHJhbnNhY3Rpb24QARINCglwcm9tb3Rpb24QAkIKCghfYWRkcmVzcw==');
+final $typed_data.Uint8List challengeReqDescriptor = $convert.base64Decode('CgxDaGFsbGVuZ2VSZXESOgoHcHVycG9zZRgBIAEoDjIgLnByb3Rvcy5DaGFsbGVuZ2VSZXEucHVycG9zZVR5cGVSB3B1cnBvc2USGgoIcmVjZWl2ZXIYAiABKAlSCHJlY2VpdmVyEiYKDnB1cnBvc2VNZXNzYWdlGAMgASgJUg5wdXJwb3NlTWVzc2FnZRIjCgpwZXJtaXNzaW9uGAQgASgJSABSCnBlcm1pc3Npb26IAQESGgoIZXhwaXJ5SW4YBSABKAVSCGV4cGlyeUluEjsKCGV4cGlyeUF0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBUghleHBpcnlBdIgBARIaCghhdXRoTGluaxgHIAEoCVIIYXV0aExpbmsSJQoLYmFubmVySW1hZ2UYCCABKAlIAlILYmFubmVySW1hZ2WIAQEiOgoLcHVycG9zZVR5cGUSCAoEcGFzcxAAEg8KC3RyYW5zYWN0aW9uEAESEAoMc3Vic2NyaXB0aW9uEAJCDQoLX3Blcm1pc3Npb25CCwoJX2V4cGlyeUF0Qg4KDF9iYW5uZXJJbWFnZQ==');
 @$core.Deprecated('Use challengeResDescriptor instead')
 const ChallengeRes$json = const {
   '1': 'ChallengeRes',
@@ -117,13 +121,13 @@ final $typed_data.Uint8List challengeResDescriptor = $convert.base64Decode('CgxD
 const VerifyReq$json = const {
   '1': 'VerifyReq',
   '2': const [
-    const {'1': 'signedChallengePayload', '3': 1, '4': 1, '5': 9, '10': 'signedChallengePayload'},
+    const {'1': 'challengePayload', '3': 1, '4': 1, '5': 9, '10': 'challengePayload'},
     const {'1': 'address', '3': 2, '4': 1, '5': 9, '10': 'address'},
   ],
 };
 
 /// Descriptor for `VerifyReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List verifyReqDescriptor = $convert.base64Decode('CglWZXJpZnlSZXESNgoWc2lnbmVkQ2hhbGxlbmdlUGF5bG9hZBgBIAEoCVIWc2lnbmVkQ2hhbGxlbmdlUGF5bG9hZBIYCgdhZGRyZXNzGAIgASgJUgdhZGRyZXNz');
+final $typed_data.Uint8List verifyReqDescriptor = $convert.base64Decode('CglWZXJpZnlSZXESKgoQY2hhbGxlbmdlUGF5bG9hZBgBIAEoCVIQY2hhbGxlbmdlUGF5bG9hZBIYCgdhZGRyZXNzGAIgASgJUgdhZGRyZXNz');
 @$core.Deprecated('Use verifyResDescriptor instead')
 const VerifyRes$json = const {
   '1': 'VerifyRes',
@@ -232,3 +236,24 @@ const FindRes$json = const {
 
 /// Descriptor for `FindRes`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findResDescriptor = $convert.base64Decode('CgdGaW5kUmVzEhgKB21lc3NhZ2UYASABKAlSB21lc3NhZ2U=');
+@$core.Deprecated('Use relayReqDescriptor instead')
+const RelayReq$json = const {
+  '1': 'RelayReq',
+  '2': const [
+    const {'1': 'address', '3': 1, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'noreply', '3': 2, '4': 1, '5': 8, '10': 'noreply'},
+  ],
+};
+
+/// Descriptor for `RelayReq`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List relayReqDescriptor = $convert.base64Decode('CghSZWxheVJlcRIYCgdhZGRyZXNzGAEgASgJUgdhZGRyZXNzEhgKB25vcmVwbHkYAiABKAhSB25vcmVwbHk=');
+@$core.Deprecated('Use relayResDescriptor instead')
+const RelayRes$json = const {
+  '1': 'RelayRes',
+  '2': const [
+    const {'1': 'message', '3': 1, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `RelayRes`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List relayResDescriptor = $convert.base64Decode('CghSZWxheVJlcxIYCgdtZXNzYWdlGAEgASgJUgdtZXNzYWdl');

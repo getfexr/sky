@@ -25,14 +25,14 @@ class NotificationRes_type extends $pb.ProtobufEnum {
 }
 
 class ChallengeReq_purposeType extends $pb.ProtobufEnum {
-  static const ChallengeReq_purposeType login = ChallengeReq_purposeType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'login');
+  static const ChallengeReq_purposeType pass = ChallengeReq_purposeType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'pass');
   static const ChallengeReq_purposeType transaction = ChallengeReq_purposeType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'transaction');
-  static const ChallengeReq_purposeType promotion = ChallengeReq_purposeType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'promotion');
+  static const ChallengeReq_purposeType subscription = ChallengeReq_purposeType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'subscription');
 
   static const $core.List<ChallengeReq_purposeType> values = <ChallengeReq_purposeType> [
-    login,
+    pass,
     transaction,
-    promotion,
+    subscription,
   ];
 
   static final $core.Map<$core.int, ChallengeReq_purposeType> _byValue = $pb.ProtobufEnum.initByValue(values);
