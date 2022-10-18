@@ -6,8 +6,6 @@ import 'package:sky/background.dart';
 
 checkAddressIfHosted(String address) async {
   Bg().lg.i('checkAddressOwnership: $address');
-  // check if hive db 'oracle' has address as its key
-
   var settings = await Hive.openBox('oracle');
   if (settings.containsKey(address)) {
     return true;
@@ -35,10 +33,10 @@ Future<ChallengeRes> notifyUser(ChallengeReq request, String challenge) async {
 
 validateExpiry(Timestamp expiryAt, int expiryIn) {
   Bg().lg.i('validateExpiry: $expiryAt, $expiryIn');
-  // validate the expiry time to be more than atleast 5 minutes
-  // validate the expiry time to be less than 24 hours
-
-  // throw UnimplementedError();
+  if(expiryIn > 300 && expiryAt.seconds > DateTime.now().millisecondsSinceEpoch) {
+    return true;
+  }
+  throw GrpcError.unavailable('Expiry time should be more than 5 minutes');
 }
 
 Future<String> genCharecterGroupChallenge(String purposeMessage,
@@ -46,6 +44,5 @@ Future<String> genCharecterGroupChallenge(String purposeMessage,
   Bg()
       .lg
       .e('genCharecterGroupChallenge: $purposeMessage, $purpose, $permission');
-  return Future.value('0');
-  // throw UnimplementedError();
+  return Future.value('');
 }
