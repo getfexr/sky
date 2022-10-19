@@ -15,15 +15,15 @@ void addSettings(String key, String value) async {
   print('Added $key : $value');
 }
 
-void triggerNativeInteraction(String key) async {
-  var settings = await Hive.openBox('settings');
-  var nativeInteraction = NativeInteraction(
-      key: key,
-      value: settings.get(key),
-      timestamp: DateTime.now().millisecondsSinceEpoch);
-  var nativeInteractions = await Hive.openBox('nativeInteractions');
-  nativeInteractions.add(nativeInteraction);
-  nativeInteractions.close();
-  settings.close();
-  print('Triggered $key : ${nativeInteraction.value}');
-}
+// void triggerNativeInteraction(String key) async {
+//   var settings = await Hive.openBox('settings');
+//   var nativeInteraction = NativeInteraction(
+//       key: key,
+//       value: settings.get(key),
+//       timestamp: DateTime.now().millisecondsSinceEpoch);
+//   var nativeInteractions = await Hive.openBox('nativeInteractions');
+//   nativeInteractions.add(nativeInteraction);
+//   nativeInteractions.close();
+//   settings.close();
+//   print('Triggered $key : ${nativeInteraction.value}');
+// }

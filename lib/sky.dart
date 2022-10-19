@@ -8,13 +8,22 @@ class SkyService extends SkyServiceBase {
   @override
   Future<ChallengeRes> challenge(ServiceCall call, ChallengeReq request) async {
     String challenge = '';
-    if(validateExpiry(request.expiryAt, request.expiryIn) && checkAddressIfHosted(request.address)) {
+    if(validateExpiry(request.expiryAt, request.expiryIn) && checkAuthLink(request.authLink)) {
       while (challenge == '') {
         challenge = await genCharecterGroupChallenge(
             request.purposeMessage, request.purpose, request.permission);
       }
     }
-    return notifyUser(request, challenge);
+    checkAddressIfHosted(request.receiver).then((value) {
+      if (value) {
+        //bounce request to relay
+        return notifyUser(request, challenge);
+      }
+    });
+    return Future.value(ChallengeRes(
+        challengePayload: challenge,
+        ok: false,
+        message: 'Failed. Address owner is not hosted on Sky'));
   }
 
   @override
@@ -58,6 +67,12 @@ class SkyService extends SkyServiceBase {
   @override
   Future<VerifyRes> verify(ServiceCall call, VerifyReq request) {
     // TODO: implement verify
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<RelayRes> relay(ServiceCall call, RelayReq request) {
+    // TODO: implement relay
     throw UnimplementedError();
   }
 }
