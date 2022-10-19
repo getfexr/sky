@@ -65,3 +65,7 @@ Future<bool> checkOTP(int otp) async {
     return false;
   }
 }
+
+ipfsStats() {
+
+}
