@@ -19,6 +19,9 @@ class SkyService extends SkyServiceBase {
         //bounce request to relay
         return notifyUser(request, challenge);
       }
+      else {
+        throw GrpcError.notFound('User not hosted');
+      }
     });
     return Future.value(ChallengeRes(
         challengePayload: challenge,
