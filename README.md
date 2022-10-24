@@ -26,7 +26,7 @@
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-sky is a wrapper for Rubix Blockchain Protocol that helps to:
+Gateway for your Fexr wallets to connect subnet providers who can streamline your communication to blockchain validators.
 
 - Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet.
 
