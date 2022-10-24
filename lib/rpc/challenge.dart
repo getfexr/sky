@@ -51,7 +51,7 @@ bool validateExpiry(Timestamp expiryAt, int expiryIn) {
   }
 }
 
-Future<String> genCharecterGroupChallenge(String purposeMessage,
+Future<String> genCharacterGroupChallenge(String purposeMessage,
     ChallengeReq_purposeType purpose, String permission) {
   Bg()
       .lg
