@@ -37,7 +37,8 @@ class SkyService extends SkyServiceBase {
   }
 
   @override
-  Future<HostRes> host(ServiceCall call, Stream<HostReq> request) {
+  Future<HostRes> host(ServiceCall call,HostReq request) {
+    checkSignedOTP(request.)
     // TODO: implement host
     throw UnimplementedError();
   }

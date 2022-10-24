@@ -15,8 +15,6 @@ Future<bool> checkAddressIfHosted(String address) async {
   settings.close();
 
   return false;
-
-  throw GrpcError.unavailable('$address is not hosted on Sky');
 }
 
 bool checkAuthLink(String link) {
