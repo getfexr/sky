@@ -10,14 +10,18 @@ class SkyService extends SkyServiceBase {
     String challenge = '';
     if(validateExpiry(request.expiryAt, request.expiryIn) && checkAuthLink(request.authLink)) {
       while (challenge == '') {
-        challenge = await genCharecterGroupChallenge(
+        challenge = await genCharacterGroupChallenge(
             request.purposeMessage, request.purpose, request.permission);
       }
+      print('challenge: $challenge');
     }
-    checkAddressIfHosted(request.receiver).then((value) {
+    await checkAddressIfHosted(request.receiver).then((value) {
       if (value) {
         //bounce request to relay
         return notifyUser(request, challenge);
+      }
+      else {
+        throw GrpcError.unavailable('Address is not hosted on Sky');
       }
     });
     return Future.value(ChallengeRes(

@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/sky.pb.dart';
 import 'package:sky/background.dart';
+import 'package:http/http.dart' as http;
 
 Future<bool> checkAddressIfHosted(String address) async {
   Bg().lg.i('checkAddressOwnership: $address');
@@ -53,7 +54,7 @@ bool validateExpiry(Timestamp expiryAt, int expiryIn) {
   }
 }
 
-Future<String> genCharecterGroupChallenge(String purposeMessage,
+Future<String> genCharacterGroupChallenge(String purposeMessage,
     ChallengeReq_purposeType purpose, String permission) {
   Bg()
       .lg
@@ -68,3 +69,9 @@ Future<String> genCharecterGroupChallenge(String purposeMessage,
       sb.write(hash.substring(0, 4));
   return Future.value(sb.toString());
 }
+
+Future<http.Response> sendChallengeResponse() {
+  return http.post(Uri.parse(''));
+}
+
+
