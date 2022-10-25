@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
 import 'package:sky/models/native_interaction.dart';
@@ -9,6 +11,8 @@ Future<void> main(List<String> arguments) async {
   Hive.init('sky-data');
   Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
   Hive.registerAdapter<Oracle>(OracleAdapter());
+
+  var keepRunning = false;
 
   switch (arguments[0]) {
     case "club":
@@ -37,6 +41,7 @@ Future<void> main(List<String> arguments) async {
       break;
     case "start":
       startRPCDaemon();
+      keepRunning = true;
       break;
     case "settings":
       switch (arguments[1]) {
@@ -91,5 +96,9 @@ Future<void> main(List<String> arguments) async {
       break;
     default:
       print("Invalid argument");
+  }
+
+  if (!keepRunning) {
+    exit(0);
   }
 }
