@@ -10,7 +10,7 @@ class SkyService extends SkyServiceBase {
     String challenge = '';
     if(validateExpiry(request.expiryAt, request.expiryIn) && checkAuthLink(request.authLink)) {
       while (challenge == '') {
-        challenge = await genCharecterGroupChallenge(
+        challenge = await genCharacterGroupChallenge(
             request.purposeMessage, request.purpose, request.permission);
       }
     }
