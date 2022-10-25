@@ -19,6 +19,9 @@ class SkyService extends SkyServiceBase {
         //bounce request to relay
         return notifyUser(request, challenge);
       }
+      else {
+        throw GrpcError.notFound('User not hosted');
+      }
     });
     return Future.value(ChallengeRes(
         challengePayload: challenge,
@@ -34,7 +37,8 @@ class SkyService extends SkyServiceBase {
   }
 
   @override
-  Future<HostRes> host(ServiceCall call, Stream<HostReq> request) {
+  Future<HostRes> host(ServiceCall call,HostReq request) {
+    // checkSignedOTP(request.)
     // TODO: implement host
     throw UnimplementedError();
   }

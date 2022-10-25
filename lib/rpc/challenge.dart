@@ -15,8 +15,6 @@ Future<bool> checkAddressIfHosted(String address) async {
   settings.close();
 
   return false;
-
-  throw GrpcError.unavailable('$address is not hosted on Sky');
 }
 
 bool checkAuthLink(String link) {
@@ -49,7 +47,7 @@ bool validateExpiry(Timestamp expiryAt, int expiryIn) {
   if (expiryIn > 300) {
     return true;
   } else {
-    throw GrpcError.unavailable('Expiry time should be more than 5 minutes');
+    return false;
   }
 }
 
@@ -59,12 +57,12 @@ Future<String> genCharecterGroupChallenge(String purposeMessage,
       .lg
       .e('genCharecterGroupChallenge: $purposeMessage, $purpose, $permission');
 
-      // new string buffer to store the result
-      StringBuffer sb = StringBuffer();
-      int prefix = ChallengeReq_purposeType.values.indexOf(purpose);
-      sb.write(prefix);
-      // create MD5 Hash of perposeMessage
-      String hash = md5.convert(utf8.encode(purposeMessage)).toString();
-      sb.write(hash.substring(0, 4));
+  // new string buffer to store the result
+  StringBuffer sb = StringBuffer();
+  int prefix = ChallengeReq_purposeType.values.indexOf(purpose);
+  sb.write(prefix);
+  // create MD5 Hash of perposeMessage
+  String hash = md5.convert(utf8.encode(purposeMessage)).toString();
+  sb.write(hash.substring(0, 4));
   return Future.value(sb.toString());
 }

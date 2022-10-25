@@ -16,7 +16,7 @@ Future<void> main(List<String> arguments) async {
       break;
     case "otp":
       switch (arguments[1]) {
-        case "gen":
+        case "new":
           print('\nGenerating OTP ...');
           print(await genOTP());
           print('OTP is valid for 5 minutes.\n');

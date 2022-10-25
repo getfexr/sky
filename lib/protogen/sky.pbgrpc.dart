@@ -62,9 +62,9 @@ class SkyServiceClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.HostRes> host($async.Stream<$0.HostReq> request,
+  $grpc.ResponseFuture<$0.HostRes> host($0.HostReq request,
       {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$host, request, options: options).single;
+    return $createUnaryCall(_$host, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.NotificationRes> notification($1.Empty request,
@@ -116,8 +116,8 @@ abstract class SkyServiceBase extends $grpc.Service {
   SkyServiceBase() {
     $addMethod($grpc.ServiceMethod<$0.HostReq, $0.HostRes>(
         'Host',
-        host,
-        true,
+        host_Pre,
+        false,
         false,
         ($core.List<$core.int> value) => $0.HostReq.fromBuffer(value),
         ($0.HostRes value) => value.writeToBuffer()));
@@ -181,6 +181,11 @@ abstract class SkyServiceBase extends $grpc.Service {
         ($0.RelayRes value) => value.writeToBuffer()));
   }
 
+  $async.Future<$0.HostRes> host_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.HostReq> request) async {
+    return host(call, await request);
+  }
+
   $async.Future<$0.NotificationRes> notification_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return notification(call, await request);
@@ -217,8 +222,7 @@ abstract class SkyServiceBase extends $grpc.Service {
     return relay(call, await request);
   }
 
-  $async.Future<$0.HostRes> host(
-      $grpc.ServiceCall call, $async.Stream<$0.HostReq> request);
+  $async.Future<$0.HostRes> host($grpc.ServiceCall call, $0.HostReq request);
   $async.Future<$0.NotificationRes> notification(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$0.ChallengeRes> challenge(

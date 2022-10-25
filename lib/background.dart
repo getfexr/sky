@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 class Bg {
   var lg = Logger(
     // filter:   LogFilter(),
-    output:  ConsoleOutput(),
+    output: ConsoleOutput(),
     printer: PrettyPrinter(
         methodCount: 2, // number of method calls to be displayed
         errorMethodCount: 8, // number of method calls if stacktrace is provided
@@ -36,13 +36,12 @@ listOTP() async {
   // print codes and time stamps in reverse order with index human readable dates
   for (var i = codes.length - 1; i >= 0; i--) {
     print(
-        '${i+1}th code is ${codes.keyAt(i)} created on ${DateTime.fromMillisecondsSinceEpoch(codes.keyAt(i)).toLocal()}');
+        '${i + 1}th code is ${codes.keyAt(i)} created on ${DateTime.fromMillisecondsSinceEpoch(codes.keyAt(i)).toLocal()}');
   }
   codes.close();
 }
 
-skyInfo() async {
-}
+skyInfo() async {}
 
 genOTP() async {
   var codes = await Hive.openBox('codes');
@@ -66,6 +65,17 @@ Future<bool> checkOTP(int otp) async {
   }
 }
 
-ipfsStats() {
-
+Future<bool> checkSignedOTP(String sign) async {
+  var codes = await Hive.openBox('codes');
+  int otp = 0000;
+  // Check if OTP is valid
+  if (codes.containsKey(otp)) {
+    codes.close();
+    return true;
+  } else {
+    codes.close();
+    return false;
+  }
 }
+
+ipfsStats() {}
