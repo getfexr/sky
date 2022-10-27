@@ -3,6 +3,7 @@ import 'package:sky/background.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/sky.pbgrpc.dart';
 import 'package:sky/rpc/challenge.dart';
+import 'package:sky/config.dart';
 
 class SkyService extends SkyServiceBase {
   @override
@@ -87,8 +88,9 @@ void startRPCDaemon() async {
     const <Interceptor>[],
     // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
-  await server.serve(port: 6942);
-  print('\nSky RPC daemon started on port 6942\n');
+  final port = Config().port;
+  await server.serve(port: port);
+  print('\nSky RPC daemon started on port $port');
   skyInfo();
 }
 
