@@ -21,19 +21,10 @@ Future<void> main(List<String> arguments) async {
     case "otp":
       switch (arguments[1]) {
         case "new":
-          print('\nGenerating OTP ...');
-          print(await genOTP());
-          print('OTP is valid for 5 minutes.\n');
-          break;
-        case "check":
-          print('\nChecking OTP ...');
-          print(await checkOTP(int.parse(arguments[2]))
-              ? 'OTP is valid'
-              : 'OTP is invalid');
+          await OTPManager().generateNew();
           break;
         case "list":
-          print('Listing OTPs ...');
-          await listOTP();
+          await OTPManager().listOTPS();
           break;
         default:
           print('Invalid OTP command');
@@ -58,33 +49,23 @@ Future<void> main(List<String> arguments) async {
       }
       break;
     case "shutdown":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    // TODO: implement shutdown
       break;
     case "list":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    //  TODO
       break;
     case "logs":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    // TODO
       break;
     case "version":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    // TODO
       break;
     case "find":
-      genOTP().then((int otp) {
-        print('OTP valid for 5 mins: $otp');
-      });
+    //  TODO
       break;
     case "help":
       print('\nFexr Sky CLI Help\n');
-      print('Usage: sky otp - Generate a new OTP');
+      print('Usage: sky otp [new|list] - Generate new OTP or list all OTPs');
       print('Usage: sky start - Start the Fexr Sky server');
       print('Usage: sky update - Update the Fexr Sky to the latest version');
       print('Usage: sky shutdown - Shutdown the Fexr Sky server');

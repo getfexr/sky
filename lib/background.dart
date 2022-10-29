@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
-
-import 'package:cron/cron.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
+
+import 'modules/utils.dart' as utils;
 
 class Bg {
   var lg = Logger(
@@ -21,61 +22,105 @@ class Bg {
     lg.toString();
   }
 }
+class _OTP {
+  final String value;
+  final DateTime creationTime;
 
-discardOTP() async {
-  var codes = await Hive.openBox('codes');
-  final cron = Cron();
-  cron.schedule(Schedule.parse('5-7 * * * *'), () async {
-    codes.deleteAt(-1);
-  });
-  codes.close();
+  static final int validityInMins = 5;
+
+  _OTP(this.value, this.creationTime);
+
+  factory _OTP.genOTP() {
+    var rng = Random();
+    var value = rng.nextInt(9999).toString().padLeft(4, '0');
+    var creationTime = DateTime.now();
+    return _OTP(value, creationTime);
+  }
+
+  factory _OTP.fromJSON(String jsonStr) {
+    var json = jsonDecode(jsonStr);
+    var value = json['value'];
+    var creationTime = DateTime.parse(json['creationTime']);
+
+    return _OTP(value, creationTime);
+  }
+
+  bool isValid() {
+    var now = DateTime.now();
+    var diff = now.difference(creationTime);
+    return diff.inMinutes < validityInMins;
+  }
+
+  String toJSON() {
+    return jsonEncode({
+      'value': value,
+      'creationTime': creationTime.toIso8601String(),
+    });
+  }
 }
 
-listOTP() async {
-  var codes = await Hive.openBox('codes');
-  // print codes and time stamps in reverse order with index human readable dates
-  for (var i = codes.length - 1; i >= 0; i--) {
-    print(
-        '${i + 1}th code is ${codes.keyAt(i)} created on ${DateTime.fromMillisecondsSinceEpoch(codes.keyAt(i)).toLocal()}');
+class OTPManager {
+  static final OTPManager _otpManager = OTPManager._internal();
+  factory OTPManager() {
+    return _otpManager;
   }
-  codes.close();
+  OTPManager._internal();
+
+  Future<Box<dynamic>> openCodesBox() {
+    return Hive.openBox('codes');
+  }
+
+  Future<bool> assertOTP(String otpInput) async {
+    var box = await openCodesBox();
+    var otpJsonStr = box.get(otpInput);
+    box.close();
+
+    if (otpJsonStr == null) {
+      throw AssertionError('Invalid OTP');
+    }
+
+    var otp = _OTP.fromJSON(otpJsonStr);
+    if (!otp.isValid()) {
+      throw AssertionError('OTP expired');
+    }
+
+    return true;
+  }
+
+  generateNew() async {
+    var box = await openCodesBox();
+    var otp = _OTP.genOTP();
+
+    print("OTP: ${otp.value} (Valid for ${_OTP.validityInMins} mins)");
+    return box.put(otp.value, otp.toJSON());
+  }
+
+  Future<void> listOTPS() async {
+    var box = await openCodesBox();
+    var keys = box.keys;
+    print("Listing OTPs ...");
+
+    for (var i = 0; i < keys.length; i ++) {
+      var key = keys.elementAt(i);
+      var otpStr = box.get(key);
+      var otp = _OTP.fromJSON(otpStr);
+      var creationTime = otp.creationTime;
+      var diff = utils.getRemainingTimeString(creationTime);
+
+      var status = otp.isValid() ? 'Expires in $diff' : 'Expired $diff ago';
+      var createdOn = 'Created on ${creationTime.toLocal()}';
+      print('${(i + 1)}. OTP: ${otp.value} - $createdOn  - $status');
+    }
+    return box.close();
+  }
+
+  Future<void> deleteOTP(String otp) async {
+    var box = await openCodesBox();
+    return box.delete(otp);
+  }
+  // TODO: OTP - Auto cleanup of expired token
 }
 
 skyInfo() async {}
-
-genOTP() async {
-  var codes = await Hive.openBox('codes');
-  var rng = Random();
-  var otp = rng.nextInt(9999);
-  codes.put(otp, DateTime.now().toString());
-  codes.close();
-  discardOTP();
-  return otp;
-}
-
-Future<bool> checkOTP(int otp) async {
-  var codes = await Hive.openBox('codes');
-  // Check if OTP is valid
-  if (codes.containsKey(otp)) {
-    codes.close();
-    return true;
-  } else {
-    codes.close();
-    return false;
-  }
-}
-
-Future<bool> checkSignedOTP(String sign) async {
-  var codes = await Hive.openBox('codes');
-  int otp = 0000;
-  // Check if OTP is valid
-  if (codes.containsKey(otp)) {
-    codes.close();
-    return true;
-  } else {
-    codes.close();
-    return false;
-  }
-}
 
 ipfsStats() {}
