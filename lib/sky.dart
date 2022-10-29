@@ -4,6 +4,7 @@ import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/sky.pbgrpc.dart';
 import 'package:sky/rpc/challenge.dart';
 import 'package:sky/config.dart';
+import 'package:sky/rpc/host.dart' as hostRPC;
 
 class SkyService extends SkyServiceBase {
   @override
@@ -38,10 +39,10 @@ class SkyService extends SkyServiceBase {
   }
 
   @override
-  Future<HostRes> host(ServiceCall call,HostReq request) {
-    // checkSignedOTP(request.)
-    // TODO: implement host
-    throw UnimplementedError();
+  Future<HostRes> host(ServiceCall call,HostReq request) async {
+    return hostRPC.handleHostRequest(otp: request.otp,
+      signedOut: request.signedOtp, address: request.address,
+      f0: request.f0);
   }
 
   @override

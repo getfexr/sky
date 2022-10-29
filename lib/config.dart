@@ -1,9 +1,20 @@
 import 'package:dotenv/dotenv.dart';
 var _env = DotEnv(includePlatformEnvironment: true)..load(['.env']);
 
+String _jwtSecret() {
+  var secret = _env['JWT_AUTH_SECRET'];
+  if (secret == null) {
+    throw Exception('.env: JWT_AUTH_SECRET not set');
+  }
+
+  if (secret.length < 32) {
+    throw Exception('.env: JWT_AUTH_SECRET must be at least 32 characters long');
+  }
+  return secret;
+}
+
 class Config {
   static final Config _config = Config._internal();
-
   factory Config() {
     return _config;
   }
@@ -11,11 +22,5 @@ class Config {
   Config._internal();
 
   int port = int.parse(_env['PORT'] ?? '6942');
-
-  String get jwtAuthSecret {
-    if (_env['JWT_AUTH_SECRET'] == null) {
-      throw Exception('JWT_AUTH_SECRET not set');
-    }
-    return _env['JWT_AUTH_SECRET']!;
-  }
+  String jwtAuthSecret = _jwtSecret();
 }
