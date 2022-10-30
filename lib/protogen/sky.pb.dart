@@ -18,20 +18,25 @@ export 'sky.pbenum.dart';
 class HostReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HostReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signedOtp', protoName: 'signedOtp')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'F0', protoName: 'F0')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'otp')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'F0', protoName: 'F0')
     ..hasRequiredFields = false
   ;
 
   HostReq._() : super();
   factory HostReq({
     $core.String? signedOtp,
+    $core.String? otp,
     $core.String? address,
     $core.String? f0,
   }) {
     final _result = create();
     if (signedOtp != null) {
       _result.signedOtp = signedOtp;
+    }
+    if (otp != null) {
+      _result.otp = otp;
     }
     if (address != null) {
       _result.address = address;
@@ -72,35 +77,170 @@ class HostReq extends $pb.GeneratedMessage {
   void clearSignedOtp() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get address => $_getSZ(1);
+  $core.String get otp => $_getSZ(1);
   @$pb.TagNumber(2)
-  set address($core.String v) { $_setString(1, v); }
+  set otp($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasAddress() => $_has(1);
+  $core.bool hasOtp() => $_has(1);
   @$pb.TagNumber(2)
-  void clearAddress() => clearField(2);
+  void clearOtp() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get f0 => $_getSZ(2);
+  $core.String get address => $_getSZ(2);
   @$pb.TagNumber(3)
-  set f0($core.String v) { $_setString(2, v); }
+  set address($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasF0() => $_has(2);
+  $core.bool hasAddress() => $_has(2);
   @$pb.TagNumber(3)
-  void clearF0() => clearField(3);
+  void clearAddress() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get f0 => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set f0($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasF0() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearF0() => clearField(4);
+}
+
+class HostRes_AccessToken extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HostRes.AccessToken', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'token')
+    ..aOM<$2.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiry', subBuilder: $2.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  HostRes_AccessToken._() : super();
+  factory HostRes_AccessToken({
+    $core.String? token,
+    $2.Timestamp? expiry,
+  }) {
+    final _result = create();
+    if (token != null) {
+      _result.token = token;
+    }
+    if (expiry != null) {
+      _result.expiry = expiry;
+    }
+    return _result;
+  }
+  factory HostRes_AccessToken.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HostRes_AccessToken.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  HostRes_AccessToken clone() => HostRes_AccessToken()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  HostRes_AccessToken copyWith(void Function(HostRes_AccessToken) updates) => super.copyWith((message) => updates(message as HostRes_AccessToken)) as HostRes_AccessToken; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static HostRes_AccessToken create() => HostRes_AccessToken._();
+  HostRes_AccessToken createEmptyInstance() => create();
+  static $pb.PbList<HostRes_AccessToken> createRepeated() => $pb.PbList<HostRes_AccessToken>();
+  @$core.pragma('dart2js:noInline')
+  static HostRes_AccessToken getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HostRes_AccessToken>(create);
+  static HostRes_AccessToken? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get token => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set token($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearToken() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $2.Timestamp get expiry => $_getN(1);
+  @$pb.TagNumber(2)
+  set expiry($2.Timestamp v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasExpiry() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpiry() => clearField(2);
+  @$pb.TagNumber(2)
+  $2.Timestamp ensureExpiry() => $_ensure(1);
+}
+
+class HostRes_RefreshToken extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HostRes.RefreshToken', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'token')
+    ..aOM<$2.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiry', subBuilder: $2.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  HostRes_RefreshToken._() : super();
+  factory HostRes_RefreshToken({
+    $core.String? token,
+    $2.Timestamp? expiry,
+  }) {
+    final _result = create();
+    if (token != null) {
+      _result.token = token;
+    }
+    if (expiry != null) {
+      _result.expiry = expiry;
+    }
+    return _result;
+  }
+  factory HostRes_RefreshToken.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HostRes_RefreshToken.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  HostRes_RefreshToken clone() => HostRes_RefreshToken()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  HostRes_RefreshToken copyWith(void Function(HostRes_RefreshToken) updates) => super.copyWith((message) => updates(message as HostRes_RefreshToken)) as HostRes_RefreshToken; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static HostRes_RefreshToken create() => HostRes_RefreshToken._();
+  HostRes_RefreshToken createEmptyInstance() => create();
+  static $pb.PbList<HostRes_RefreshToken> createRepeated() => $pb.PbList<HostRes_RefreshToken>();
+  @$core.pragma('dart2js:noInline')
+  static HostRes_RefreshToken getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HostRes_RefreshToken>(create);
+  static HostRes_RefreshToken? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get token => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set token($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearToken() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $2.Timestamp get expiry => $_getN(1);
+  @$pb.TagNumber(2)
+  set expiry($2.Timestamp v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasExpiry() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearExpiry() => clearField(2);
+  @$pb.TagNumber(2)
+  $2.Timestamp ensureExpiry() => $_ensure(1);
 }
 
 class HostRes extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HostRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'accessToken', protoName: 'accessToken')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refreshToken', protoName: 'refreshToken')
+    ..aOM<HostRes_AccessToken>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'accessToken', protoName: 'accessToken', subBuilder: HostRes_AccessToken.create)
+    ..aOM<HostRes_RefreshToken>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refreshToken', protoName: 'refreshToken', subBuilder: HostRes_RefreshToken.create)
     ..hasRequiredFields = false
   ;
 
   HostRes._() : super();
   factory HostRes({
-    $core.String? accessToken,
-    $core.String? refreshToken,
+    HostRes_AccessToken? accessToken,
+    HostRes_RefreshToken? refreshToken,
   }) {
     final _result = create();
     if (accessToken != null) {
@@ -133,22 +273,26 @@ class HostRes extends $pb.GeneratedMessage {
   static HostRes? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get accessToken => $_getSZ(0);
+  HostRes_AccessToken get accessToken => $_getN(0);
   @$pb.TagNumber(1)
-  set accessToken($core.String v) { $_setString(0, v); }
+  set accessToken(HostRes_AccessToken v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasAccessToken() => $_has(0);
   @$pb.TagNumber(1)
   void clearAccessToken() => clearField(1);
+  @$pb.TagNumber(1)
+  HostRes_AccessToken ensureAccessToken() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get refreshToken => $_getSZ(1);
+  HostRes_RefreshToken get refreshToken => $_getN(1);
   @$pb.TagNumber(2)
-  set refreshToken($core.String v) { $_setString(1, v); }
+  set refreshToken(HostRes_RefreshToken v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasRefreshToken() => $_has(1);
   @$pb.TagNumber(2)
   void clearRefreshToken() => clearField(2);
+  @$pb.TagNumber(2)
+  HostRes_RefreshToken ensureRefreshToken() => $_ensure(1);
 }
 
 class NotificationRes extends $pb.GeneratedMessage {

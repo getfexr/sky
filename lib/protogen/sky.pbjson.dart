@@ -13,24 +13,44 @@ const HostReq$json = const {
   '1': 'HostReq',
   '2': const [
     const {'1': 'signedOtp', '3': 1, '4': 1, '5': 9, '10': 'signedOtp'},
-    const {'1': 'address', '3': 2, '4': 1, '5': 9, '10': 'address'},
-    const {'1': 'F0', '3': 3, '4': 1, '5': 9, '10': 'F0'},
+    const {'1': 'otp', '3': 2, '4': 1, '5': 9, '10': 'otp'},
+    const {'1': 'address', '3': 3, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'F0', '3': 4, '4': 1, '5': 9, '10': 'F0'},
   ],
 };
 
 /// Descriptor for `HostReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hostReqDescriptor = $convert.base64Decode('CgdIb3N0UmVxEhwKCXNpZ25lZE90cBgBIAEoCVIJc2lnbmVkT3RwEhgKB2FkZHJlc3MYAiABKAlSB2FkZHJlc3MSDgoCRjAYAyABKAlSAkYw');
+final $typed_data.Uint8List hostReqDescriptor = $convert.base64Decode('CgdIb3N0UmVxEhwKCXNpZ25lZE90cBgBIAEoCVIJc2lnbmVkT3RwEhAKA290cBgCIAEoCVIDb3RwEhgKB2FkZHJlc3MYAyABKAlSB2FkZHJlc3MSDgoCRjAYBCABKAlSAkYw');
 @$core.Deprecated('Use hostResDescriptor instead')
 const HostRes$json = const {
   '1': 'HostRes',
   '2': const [
-    const {'1': 'accessToken', '3': 1, '4': 1, '5': 9, '10': 'accessToken'},
-    const {'1': 'refreshToken', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
+    const {'1': 'accessToken', '3': 1, '4': 1, '5': 11, '6': '.protos.HostRes.AccessToken', '10': 'accessToken'},
+    const {'1': 'refreshToken', '3': 2, '4': 1, '5': 11, '6': '.protos.HostRes.RefreshToken', '10': 'refreshToken'},
+  ],
+  '3': const [HostRes_AccessToken$json, HostRes_RefreshToken$json],
+};
+
+@$core.Deprecated('Use hostResDescriptor instead')
+const HostRes_AccessToken$json = const {
+  '1': 'AccessToken',
+  '2': const [
+    const {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    const {'1': 'expiry', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'expiry'},
+  ],
+};
+
+@$core.Deprecated('Use hostResDescriptor instead')
+const HostRes_RefreshToken$json = const {
+  '1': 'RefreshToken',
+  '2': const [
+    const {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+    const {'1': 'expiry', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'expiry'},
   ],
 };
 
 /// Descriptor for `HostRes`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List hostResDescriptor = $convert.base64Decode('CgdIb3N0UmVzEiAKC2FjY2Vzc1Rva2VuGAEgASgJUgthY2Nlc3NUb2tlbhIiCgxyZWZyZXNoVG9rZW4YAiABKAlSDHJlZnJlc2hUb2tlbg==');
+final $typed_data.Uint8List hostResDescriptor = $convert.base64Decode('CgdIb3N0UmVzEj0KC2FjY2Vzc1Rva2VuGAEgASgLMhsucHJvdG9zLkhvc3RSZXMuQWNjZXNzVG9rZW5SC2FjY2Vzc1Rva2VuEkAKDHJlZnJlc2hUb2tlbhgCIAEoCzIcLnByb3Rvcy5Ib3N0UmVzLlJlZnJlc2hUb2tlblIMcmVmcmVzaFRva2VuGlcKC0FjY2Vzc1Rva2VuEhQKBXRva2VuGAEgASgJUgV0b2tlbhIyCgZleHBpcnkYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgZleHBpcnkaWAoMUmVmcmVzaFRva2VuEhQKBXRva2VuGAEgASgJUgV0b2tlbhIyCgZleHBpcnkYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgZleHBpcnk=');
 @$core.Deprecated('Use notificationResDescriptor instead')
 const NotificationRes$json = const {
   '1': 'NotificationRes',
