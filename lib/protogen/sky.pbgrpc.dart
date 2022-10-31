@@ -56,6 +56,10 @@ class SkyServiceClient extends $grpc.Client {
       '/protos.SkyService/Relay',
       ($0.RelayReq value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.RelayRes.fromBuffer(value));
+  static final _$getUserInfo = $grpc.ClientMethod<$1.Empty, $0.GetUserInfoRes>(
+      '/protos.SkyService/GetUserInfo',
+      ($1.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GetUserInfoRes.fromBuffer(value));
 
   SkyServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -107,6 +111,11 @@ class SkyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.RelayRes> relay($0.RelayReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$relay, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetUserInfoRes> getUserInfo($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getUserInfo, request, options: options);
   }
 }
 
@@ -179,6 +188,13 @@ abstract class SkyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.RelayReq.fromBuffer(value),
         ($0.RelayRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.GetUserInfoRes>(
+        'GetUserInfo',
+        getUserInfo_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.GetUserInfoRes value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.HostRes> host_Pre(
@@ -222,6 +238,11 @@ abstract class SkyServiceBase extends $grpc.Service {
     return relay(call, await request);
   }
 
+  $async.Future<$0.GetUserInfoRes> getUserInfo_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return getUserInfo(call, await request);
+  }
+
   $async.Future<$0.HostRes> host($grpc.ServiceCall call, $0.HostReq request);
   $async.Future<$0.NotificationRes> notification(
       $grpc.ServiceCall call, $1.Empty request);
@@ -236,4 +257,6 @@ abstract class SkyServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $async.Stream<$0.PayReq> request);
   $async.Future<$0.FindRes> find($grpc.ServiceCall call, $0.FindReq request);
   $async.Future<$0.RelayRes> relay($grpc.ServiceCall call, $0.RelayReq request);
+  $async.Future<$0.GetUserInfoRes> getUserInfo(
+      $grpc.ServiceCall call, $1.Empty request);
 }

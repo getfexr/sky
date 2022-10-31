@@ -5,6 +5,9 @@ import 'package:sky/protogen/sky.pbgrpc.dart';
 import 'package:sky/rpc/challenge.dart';
 import 'package:sky/config.dart';
 import 'package:sky/rpc/host.dart' as hostRPC;
+import 'package:sky/rpc/middlewares/auth-middleware.dart';
+
+import 'modules/jwt.dart';
 
 class SkyService extends SkyServiceBase {
   @override
@@ -29,6 +32,17 @@ class SkyService extends SkyServiceBase {
         challengePayload: challenge,
         ok: false,
         message: 'Failed. Address owner is not hosted on Sky'));
+  }
+
+  @override
+  Future<GetUserInfoRes> getUserInfo(ServiceCall call,Empty request) async {
+    // Get auth token
+    User user = getAuthenticatedUser(call);
+
+    return Future.value(GetUserInfoRes(
+      address: user.address,
+      f0: user.f0 ,
+    ));
   }
 
   @override
