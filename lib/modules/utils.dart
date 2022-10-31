@@ -1,6 +1,10 @@
 String getRemainingTimeString(DateTime time) {
   var now = DateTime.now();
-  var diff = now.difference(time);
+  var diff = time.difference(now);
+
+  if (diff < Duration.zero) {
+    diff = -diff;
+  }
 
   var hours = diff.inHours;
   var mins = diff.inMinutes - hours * 60;
