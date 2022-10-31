@@ -19,6 +19,10 @@ class SkyServiceClient extends $grpc.Client {
       '/protos.SkyService/Host',
       ($0.HostReq value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.HostRes.fromBuffer(value));
+  static final _$hostRefresh = $grpc.ClientMethod<$1.Empty, $0.HostRes>(
+      '/protos.SkyService/HostRefresh',
+      ($1.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.HostRes.fromBuffer(value));
   static final _$notification =
       $grpc.ClientMethod<$1.Empty, $0.NotificationRes>(
           '/protos.SkyService/Notification',
@@ -69,6 +73,11 @@ class SkyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.HostRes> host($0.HostReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$host, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.HostRes> hostRefresh($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$hostRefresh, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.NotificationRes> notification($1.Empty request,
@@ -129,6 +138,13 @@ abstract class SkyServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $0.HostReq.fromBuffer(value),
+        ($0.HostRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.HostRes>(
+        'HostRefresh',
+        hostRefresh_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($0.HostRes value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$1.Empty, $0.NotificationRes>(
         'Notification',
@@ -202,6 +218,11 @@ abstract class SkyServiceBase extends $grpc.Service {
     return host(call, await request);
   }
 
+  $async.Future<$0.HostRes> hostRefresh_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return hostRefresh(call, await request);
+  }
+
   $async.Future<$0.NotificationRes> notification_Pre(
       $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
     return notification(call, await request);
@@ -244,6 +265,8 @@ abstract class SkyServiceBase extends $grpc.Service {
   }
 
   $async.Future<$0.HostRes> host($grpc.ServiceCall call, $0.HostReq request);
+  $async.Future<$0.HostRes> hostRefresh(
+      $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$0.NotificationRes> notification(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$0.ChallengeRes> challenge(
