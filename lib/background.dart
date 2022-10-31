@@ -105,7 +105,7 @@ class OTPManager {
       var otpStr = box.get(key);
       var otp = _OTP.fromJSON(otpStr);
       var creationTime = otp.creationTime;
-      var diff = utils.getRemainingTimeString(creationTime);
+      var diff = utils.getRemainingTimeString(creationTime.add(Duration(minutes: _OTP.validityInMins)));
 
       var status = otp.isValid() ? 'Expires in $diff' : 'Expired $diff ago';
       var createdOn = 'Created on ${creationTime.toLocal()}';
