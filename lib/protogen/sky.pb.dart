@@ -1152,6 +1152,67 @@ class PayRes extends $pb.GeneratedMessage {
   void clearTransactionID() => clearField(4);
 }
 
+class GetUserInfoRes extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetUserInfoRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'f0')
+    ..hasRequiredFields = false
+  ;
+
+  GetUserInfoRes._() : super();
+  factory GetUserInfoRes({
+    $core.String? address,
+    $core.String? f0,
+  }) {
+    final _result = create();
+    if (address != null) {
+      _result.address = address;
+    }
+    if (f0 != null) {
+      _result.f0 = f0;
+    }
+    return _result;
+  }
+  factory GetUserInfoRes.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetUserInfoRes.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetUserInfoRes clone() => GetUserInfoRes()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetUserInfoRes copyWith(void Function(GetUserInfoRes) updates) => super.copyWith((message) => updates(message as GetUserInfoRes)) as GetUserInfoRes; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetUserInfoRes create() => GetUserInfoRes._();
+  GetUserInfoRes createEmptyInstance() => create();
+  static $pb.PbList<GetUserInfoRes> createRepeated() => $pb.PbList<GetUserInfoRes>();
+  @$core.pragma('dart2js:noInline')
+  static GetUserInfoRes getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetUserInfoRes>(create);
+  static GetUserInfoRes? _defaultInstance;
+
+  @$pb.TagNumber(2)
+  $core.String get address => $_getSZ(0);
+  @$pb.TagNumber(2)
+  set address($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasAddress() => $_has(0);
+  @$pb.TagNumber(2)
+  void clearAddress() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get f0 => $_getSZ(1);
+  @$pb.TagNumber(3)
+  set f0($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasF0() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearF0() => clearField(3);
+}
+
 class FindReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'FindReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
