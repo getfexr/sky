@@ -1,13 +1,12 @@
 import 'package:grpc/grpc.dart';
 import 'package:sky/background.dart';
+import 'package:sky/native-interaction/rubix.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/sky.pbgrpc.dart';
 import 'package:sky/rpc/challenge.dart';
 import 'package:sky/config.dart';
 import 'package:sky/rpc/host.dart' as hostRPC;
 import 'package:sky/rpc/middlewares/auth-middleware.dart';
-
-import 'modules/jwt.dart';
 
 class SkyService extends SkyServiceBase {
   @override
@@ -96,7 +95,10 @@ class SkyService extends SkyServiceBase {
 
 void startRPCDaemon() async {
   final server = Server(
-    [SkyService()],
+    [
+      SkyService(),
+      RubixService()
+    ],
     [
       authMiddleware,
     ],    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
