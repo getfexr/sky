@@ -1,5 +1,6 @@
 // Dart GRPC Authorization Middleware
 
+import 'dart:async';
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:sky/modules/jwt.dart';
@@ -24,4 +25,16 @@ User getAuthenticatedUser(ServiceCall call) {
 
   JwtClaim jc = AccessToken.verify(token);
   return User(address: jc.subject!, f0: jc["f0"]);
+}
+
+FutureOr<GrpcError?> authMiddleware(
+    ServiceCall call, ServiceMethod method) async {
+  if (method.name == 'Host') {
+    return null;
+  }
+
+  User user = getAuthenticatedUser(call);
+  call.headers!['address'] = user.address;
+  call.headers!['f0'] = user.f0;
+  return null;
 }

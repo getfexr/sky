@@ -36,12 +36,9 @@ class SkyService extends SkyServiceBase {
 
   @override
   Future<GetUserInfoRes> getUserInfo(ServiceCall call,Empty request) async {
-    // Get auth token
-    User user = getAuthenticatedUser(call);
-
     return Future.value(GetUserInfoRes(
-      address: user.address,
-      f0: user.f0 ,
+      address: call.headers!['address'],
+      f0: call.headers!['f0'],
     ));
   }
 
@@ -89,7 +86,7 @@ class SkyService extends SkyServiceBase {
     // TODO: implement verify
     throw UnimplementedError();
   }
-  
+
   @override
   Future<RelayRes> relay(ServiceCall call, RelayReq request) {
     // TODO: implement relay
@@ -100,8 +97,9 @@ class SkyService extends SkyServiceBase {
 void startRPCDaemon() async {
   final server = Server(
     [SkyService()],
-    const <Interceptor>[],
-    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+    [
+      authMiddleware,
+    ],    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
   final port = Config().port;
   await server.serve(port: port);
