@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
+import 'package:sky/config.dart';
 import 'package:sky/models/native_interaction.dart';
 import 'package:sky/models/oracle.dart';
 import 'package:sky/settings.dart';
@@ -34,6 +35,11 @@ Future<void> main(List<String> arguments) async {
         }
         break;
       case "start":
+        List<String> flags = arguments.sublist(1);
+        if (flags.contains('--debug')) {
+          print("Debug mode enabled");
+          Config().debugLog = true;
+        }
         startRPCDaemon();
         keepRunning = true;
         break;

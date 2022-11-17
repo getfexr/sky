@@ -31,6 +31,28 @@ class RubixException implements Exception {
   }
 }
 
+class RubixLog {
+  static final RubixLog _instance = RubixLog._internal();
+  factory RubixLog() {
+    return _instance;
+  }
+  RubixLog._internal();
+
+  String className = 'RubixLog';
+
+  String fileName = 'rubix-local.log';
+
+  void appendLog(String line) {
+    if (!Config().debugLog) {
+      return;
+    }
+    File logFile = File(fileName);
+    RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
+    String dateTime = DateTime.now().toIso8601String();
+    raf.writeStringSync("${dateTime} :: ${className} \n ${line} \n");
+  }
+}
+
 class RubixLocal {
   static final RubixLocal _rubixLocal = RubixLocal._internal();
   factory RubixLocal() {
@@ -93,13 +115,14 @@ class RubixLocal {
           'publicShareString': publicShare, // base64 encoded
         }));
 
+    RubixLog().appendLog("newHotWallet response: ${response.body}");
     var responseData = getRubixResponseJson(response);
 
-    print("newHotWallet response: $responseData");
+    RubixLog().appendLog("newHotWallet response: $responseData");
 
     var createdECDSA = await generateEcDSAKeys(password: pvtKeyPass);
 
-    print("Created ECDSA keys: $createdECDSA");
+    RubixLog().appendLog("Created ECDSA keys: $createdECDSA");
 
     await setupQuorum(pvtKeyPass);
 
@@ -111,29 +134,36 @@ class RubixLocal {
 
   setupQuorum(String pvtKeyPass) async{
     var generatedQuorumKeys = await generateQuorumKeys(pvtKeyPass);
-    var startQuorum = await startQuorumService(pvtKeyPass);
+    RubixLog().appendLog("Generated Quorum keys: $generatedQuorumKeys");
 
-    print("Generated Quorum keys: $generatedQuorumKeys");
-    print("Started Quorum service: $startQuorum");
+    var startQuorum = await startQuorumService(pvtKeyPass);
+    RubixLog().appendLog("Started Quorum service: $startQuorum");
   }
 
   Future<Response> generateQuorumKeys(String password) {
+    var bodyJson =  jsonEncode(<String, dynamic>
+          { "pvtKeyPass" : password , "returnKey" : 0 });
+
+    RubixLog().appendLog("generateQuorumKeys request: $bodyJson");
+
     return http.post(Uri.http(_url,'/generateQuorumKeys'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>
-          { "pvtKeyPass" : password , "returnKey" : 0 })
+        body: bodyJson
     );
   }
 
   Future<Response> startQuorumService(String password) {
+    var bodyJson = jsonEncode(<String, String>
+          { "pvtKeyPass" : password });
+
+    RubixLog().appendLog("startQuorumService request: $bodyJson");
     return http.post(Uri.http(_url,'/startQuorumService'),
        headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>
-          { "pvtKeyPass" : password })
+        body: bodyJson
     );
   }
 
@@ -142,14 +172,19 @@ class RubixLocal {
   }
 
   Future<bool> generateEcDSAKeys({ required String password }) async {
+    var jsonBody = jsonEncode(<String, dynamic>{
+          'pvtKeyPass': password,
+          'returnKey': 0,
+    });
+
+    RubixLog().appendLog("generateEcDSAKeys request: $jsonBody");
     var response = await http.post(Uri.http(_url,'/generateEcDSAKeys'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'pvtKeyPass': password,
-          'returnKey': 0,
-        }));
+        body: jsonBody);
+
+    RubixLog().appendLog("generateEcDSAKeys response: ${response.body}");
 
     return jsonDecode(response.body)['status'] == "true";
   }
@@ -163,18 +198,24 @@ class RubixLocal {
   }) async {
     await sync();
 
+    var bodyJsonStr = jsonEncode(<String, dynamic>{
+      'receiver': receiver,
+      'tokenCount': tokenCount,
+      'comment': comment ?? '',
+      'type': 2,
+      'pvtKeyPass': pvtKeyPass,
+    });
+
+    RubixLog().appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
+
     var response = await http.post(Uri.http(_url,'/initiateTransaction'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'receiver': receiver,
-          'tokenCount': tokenCount,
-          'comment': comment ?? '',
-          'type': 2,
-          'pvtKeyPass': pvtKeyPass,
-        })
+        body: bodyJsonStr,
       );
+
+    RubixLog().appendLog("initiateTransactionPayload response from rubix: ${response.body}");
 
     var responseData = getRubixResponseJson(response);
     List<dynamic> lastObjectDynamic = responseData['lastObject'];
@@ -225,6 +266,8 @@ class RubixLocal {
     var responseData = getRubixResponseJson(response);
     var balance =  responseData['balance'];
     balance = balance is int ? balance.toDouble() : balance;
+
+    RubixLog().appendLog("getAccountBalance response: $balance");
     return balance;
   }
 
@@ -258,11 +301,19 @@ class RubixLocal {
 
     var bodyJson = jsonEncode(body);
 
+    RubixLog().appendLog("finaliseTransaction request to RUBIX: $bodyJson");
+
+    // Write to file
+    var file = File('finaliseTransaction.json');
+    file.writeAsString(bodyJson);
+
     var response = await http.post(Uri.http(_url,'/transactionFinality'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: bodyJson);
+
+    RubixLog().appendLog("finaliseTransaction response from RUBIX: ${response.body}");
 
     var dataResponse = getRubixResponseJson(response);
 
@@ -288,13 +339,18 @@ class RubixLocal {
   Future<GetTransactionLogRes> getTransactionByCount({
     required int count,
   }) async {
+    var bodyJson = jsonEncode(<String, dynamic>{
+          'txnCount': count,
+        });
+
+    RubixLog().appendLog("getTransactionByCount request to RUBIX: $bodyJson");
     var response = await http.post(Uri.http(_url,'/getTxnByCount'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'txnCount': count,
-        }));
+        body: bodyJson);
+
+    RubixLog().appendLog("getTransactionByCount response: ${response.body}");
     List<dynamic> dataResponse = getRubixResponseJson(response);
 
     Iterable<TxnSummary> txnSummaries = dataResponse.map((e) => TxnSummary(
