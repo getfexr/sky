@@ -19,3 +19,4 @@ dependencies:
   crypto: ^3.0.2
   dotenv: ^4.0.1
   jaguar_jwt: ^3.0.0
+  http: ^0.13.5

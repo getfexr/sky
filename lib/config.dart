@@ -23,4 +23,7 @@ class Config {
 
   int port = int.parse(_env['PORT'] ?? '6942');
   String jwtAuthSecret = _jwtSecret();
+
+  String rubixEndpoint = _env['RUBIX_ENDPOINT'] ?? 'localhost:1898';
+  bool debugLog = false; // set via --debug flag
 }
