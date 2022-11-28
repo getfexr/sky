@@ -21,6 +21,16 @@ const HostReq$json = const {
 
 /// Descriptor for `HostReq`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List hostReqDescriptor = $convert.base64Decode('CgdIb3N0UmVxEhwKCXNpZ25lZE90cBgBIAEoCVIJc2lnbmVkT3RwEhAKA290cBgCIAEoCVIDb3RwEhgKB2FkZHJlc3MYAyABKAlSB2FkZHJlc3MSDgoCRjAYBCABKAlSAkYw');
+@$core.Deprecated('Use refreshReqDescriptor instead')
+const RefreshReq$json = const {
+  '1': 'RefreshReq',
+  '2': const [
+    const {'1': 'refreshToken', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
+  ],
+};
+
+/// Descriptor for `RefreshReq`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List refreshReqDescriptor = $convert.base64Decode('CgpSZWZyZXNoUmVxEiIKDHJlZnJlc2hUb2tlbhgBIAEoCVIMcmVmcmVzaFRva2Vu');
 @$core.Deprecated('Use hostResDescriptor instead')
 const HostRes$json = const {
   '1': 'HostRes',

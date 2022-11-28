@@ -74,7 +74,7 @@ class RefreshToken {
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
-  static bool verify(String token) {
+  static JwtClaim verify(String token) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
 
@@ -83,12 +83,12 @@ class RefreshToken {
       );
 
       if (_getClaimType(claim) == _TokenType.refresh.toString()) {
-        return true;
+        return claim;
       } else {
-        return false;
+        throw Exception('Invalid token type');
       }
     } on JwtException {
-      return false;
+      return throw Exception('Invalid token');
     }
   }
 }
