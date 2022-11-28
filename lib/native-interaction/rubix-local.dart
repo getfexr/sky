@@ -19,6 +19,25 @@ class SignedHashForJson {
     };
   }
 }
+
+class TransactionLastObjectForJson {
+  final String hash;
+  final String token;
+  final String chainSign;
+  TransactionLastObjectForJson(TransactionLastObjectSigned t):
+    hash = t.hash,
+    token = t.token,
+    chainSign = t.chainSign;
+
+  toJson() {
+    return {
+      'hash': hash,
+      'token': token,
+      'chainSign': chainSign,
+    };
+  }
+}
+
 class RubixException implements Exception {
   late String message;
   RubixException([String msg = 'Invalid value']) {
@@ -286,15 +305,13 @@ class RubixLocal {
       });
     });
 
+    List<TransactionLastObjectForJson> lastObjectsSigned = request.lastObject.map((t) =>
+      TransactionLastObjectForJson(t)
+    ).toList();
+
     var body = {
       'authSenderByRecHash': request.authSenderByRecHash.sign,
-      'lastObject': [
-        {
-          'hash': request.lastObject.first.hash,
-          'token': request.lastObject.first.token,
-          'chainSign': request.lastObject.first.chainSign,
-        }
-      ],
+      'lastObject': lastObjectsSigned,
       'senderPayloadSign': request.senderPayloadSign.sign,
       'pledgeDetails': pledgeDetails,
     };
@@ -302,10 +319,6 @@ class RubixLocal {
     var bodyJson = jsonEncode(body);
 
     RubixLog().appendLog("finaliseTransaction request to RUBIX: $bodyJson");
-
-    // Write to file
-    var file = File('finaliseTransaction.json');
-    file.writeAsString(bodyJson);
 
     var response = await http.post(Uri.http(_url,'/transactionFinality'),
         headers: <String, String>{
