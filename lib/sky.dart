@@ -56,6 +56,11 @@ class SkyService extends SkyServiceBase {
   }
 
   @override
+  Future<HostRes> refresh(ServiceCall call, RefreshReq request) {
+    return Future.value(hostRPC.refresh(call, request));
+  }
+
+  @override
   Future<NativeInteractionRes> nativeInteraction(
       ServiceCall call, NativeInteractionReq request) {
     // TODO: implement nativeInteraction
