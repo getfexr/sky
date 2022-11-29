@@ -348,23 +348,14 @@ class RubixLocal {
 
     var dataResponse = getRubixResponseJson(response);
 
-    // TODO: fix this
     TxnSummary txnSummary = TxnSummary(
-      amount: 1,
-      comment: 'comment',
-      receiver: 'receiver',
-      sender: 'sender',
-      txnId: '12'
+      amount: 0,     // TODO: fix this
+      comment: dataResponse['message'],
+      receiver: dataResponse['receiver'],
+      sender: dataResponse['did'],
+      txnId: dataResponse['tid']
     );
-
     return txnSummary;
-    // return TxnSummary(
-    //   txnId: dataResponse['tid'],
-    //   sender: dataResponse['did'],
-    //   receiver: dataResponse['receiver'],
-    //   amount: dataResponse['amount-requested'],
-    //   comment: dataResponse['comment'],
-    // );
   }
 
   Future<GetTransactionLogRes> getTransactionByCount({
