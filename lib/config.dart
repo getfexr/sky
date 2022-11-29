@@ -13,6 +13,14 @@ String _jwtSecret() {
   return secret;
 }
 
+String _rubixQuorumKeyPass() {
+  var pass = _env['RUBIX_QUORUM_KEY_PASS'];
+  if (pass == null) {
+    throw Exception('.env: RUBIX_QUORUM_KEY_PASS not set');
+  }
+  return pass;
+}
+
 class Config {
   static final Config _config = Config._internal();
   factory Config() {
@@ -24,6 +32,13 @@ class Config {
   int port = int.parse(_env['PORT'] ?? '6942');
   String jwtAuthSecret = _jwtSecret();
 
-  String rubixEndpoint = _env['RUBIX_ENDPOINT'] ?? 'localhost:1898';
   bool debugLog = false; // set via --debug flag
+
+  // Rubix
+  String rubixEndpoint = _env['RUBIX_ENDPOINT'] ?? 'localhost:1898';
+
+  String rubixPrivateKeyPass = _env['RUBIX_PRIVATE_KEY_PASS'] ?? '';
+  // Optional as this shall be passed from client as well
+
+  String rubixQuorumKeyPass = _rubixQuorumKeyPass();
 }
