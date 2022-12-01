@@ -123,19 +123,6 @@ class RubixLocal {
 
   final String _url = Config().rubixEndpoint;
 
-  String getEcDSAKey(String input) {
-    if (input.isEmpty) {
-      var fallback = Config().rubixPrivateKeyPass;
-      if (fallback.isEmpty) {
-        throw RubixException('Rubix private key password not set');
-      }
-      RubixLog().appendLog("Using env private key password");
-      return fallback;
-    } else {
-      RubixLog().appendLog("Using private key sent by client");
-      return input;
-    }
-  }
 
   Future<CreateDIDRes> newHotWallet({ required String did, required String publicShare,
     required String pvtKeyPass }) async {
@@ -148,18 +135,16 @@ class RubixLocal {
           'publicShareString': publicShare, // base64 encoded
         }));
 
-    var finalPrivateKeyPass = getEcDSAKey(pvtKeyPass);
-
     RubixLog().appendLog("newHotWallet response: ${response.body}");
     var responseData = getRubixResponseJson(response);
 
     RubixLog().appendLog("newHotWallet response: $responseData");
 
-    var createdECDSA = await generateEcDSAKeys(password: finalPrivateKeyPass);
+    var createdECDSA = await generateEcDSAKeys(password: pvtKeyPass);
 
     RubixLog().appendLog("Created ECDSA keys: $createdECDSA");
 
-    await setupQuorum();
+    await setupQuorum(password: pvtKeyPass);
 
     return CreateDIDRes(
       did: responseData['DID'],
@@ -167,17 +152,17 @@ class RubixLocal {
     );
   }
 
-  setupQuorum() async{
-    var generatedQuorumKeys = await generateQuorumKeys();
+  setupQuorum({ required String password}) async{
+    var generatedQuorumKeys = await generateQuorumKeys(password: password);
     RubixLog().appendLog("Generated Quorum keys: $generatedQuorumKeys");
 
-    var startQuorum = await startQuorumService();
+    var startQuorum = await startQuorumService(password: password);
     RubixLog().appendLog("Started Quorum service: $startQuorum");
   }
 
-  Future<Response> generateQuorumKeys() {
+  Future<Response> generateQuorumKeys({ required String password }) {
     var bodyJson =  jsonEncode(<String, dynamic>
-      { "pvtKeyPass" : Config().rubixQuorumKeyPass, "returnKey" : 0 });
+      { "pvtKeyPass" : password, "returnKey" : 0 });
 
     RubixLog().appendLog("generateQuorumKeys request: $bodyJson");
 
@@ -189,9 +174,9 @@ class RubixLocal {
     );
   }
 
-  Future<Response> startQuorumService() {
+  Future<Response> startQuorumService({ required String password }) {
     var bodyJson = jsonEncode(<String, String>
-          { "pvtKeyPass" : Config().rubixQuorumKeyPass });
+          { "pvtKeyPass" : password });
 
     RubixLog().appendLog("startQuorumService request: $bodyJson");
     return http.post(Uri.http(_url,'/startQuorumService'),
@@ -232,15 +217,14 @@ class RubixLocal {
     required String pvtKeyPass,
   }) async {
     await sync();
-    await startQuorumService(); // To restart quorum service in case rubix executable was restarted
+    await startQuorumService(password: pvtKeyPass); // To restart quorum service in case rubix executable was restarted
 
-    var finalPrivateKeyPass = getEcDSAKey(pvtKeyPass);
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
       'tokenCount': tokenCount,
       'comment': comment ?? '',
       'type': 2,
-      'pvtKeyPass': finalPrivateKeyPass,
+      'pvtKeyPass': pvtKeyPass,
     });
 
     RubixLog().appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
