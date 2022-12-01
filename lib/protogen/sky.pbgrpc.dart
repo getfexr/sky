@@ -44,6 +44,11 @@ class SkyServiceClient extends $grpc.Client {
           ($0.NativeInteractionReq value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.NativeInteractionRes.fromBuffer(value));
+  static final _$checkConnection =
+      $grpc.ClientMethod<$1.Empty, $0.ConnectionRes>(
+          '/protos.SkyService/CheckConnection',
+          ($1.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.ConnectionRes.fromBuffer(value));
   static final _$sync = $grpc.ClientMethod<$0.SyncReq, $0.SyncRes>(
       '/protos.SkyService/Sync',
       ($0.SyncReq value) => value.writeToBuffer(),
@@ -99,6 +104,11 @@ class SkyServiceClient extends $grpc.Client {
       $0.NativeInteractionReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$nativeInteraction, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ConnectionRes> checkConnection($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$checkConnection, request, options: options);
   }
 
   $grpc.ResponseStream<$0.SyncRes> sync($0.SyncReq request,
@@ -176,6 +186,13 @@ abstract class SkyServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $0.NativeInteractionReq.fromBuffer(value),
             ($0.NativeInteractionRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.ConnectionRes>(
+        'CheckConnection',
+        checkConnection_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.ConnectionRes value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.SyncReq, $0.SyncRes>(
         'Sync',
         sync_Pre,
@@ -244,6 +261,11 @@ abstract class SkyServiceBase extends $grpc.Service {
     return nativeInteraction(call, await request);
   }
 
+  $async.Future<$0.ConnectionRes> checkConnection_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return checkConnection(call, await request);
+  }
+
   $async.Stream<$0.SyncRes> sync_Pre(
       $grpc.ServiceCall call, $async.Future<$0.SyncReq> request) async* {
     yield* sync(call, await request);
@@ -275,6 +297,8 @@ abstract class SkyServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.VerifyReq request);
   $async.Future<$0.NativeInteractionRes> nativeInteraction(
       $grpc.ServiceCall call, $0.NativeInteractionReq request);
+  $async.Future<$0.ConnectionRes> checkConnection(
+      $grpc.ServiceCall call, $1.Empty request);
   $async.Stream<$0.SyncRes> sync($grpc.ServiceCall call, $0.SyncReq request);
   $async.Stream<$0.PayRes> pay(
       $grpc.ServiceCall call, $async.Stream<$0.PayReq> request);

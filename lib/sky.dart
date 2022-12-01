@@ -42,6 +42,11 @@ class SkyService extends SkyServiceBase {
   }
 
   @override
+  Future<ConnectionRes> checkConnection(ServiceCall call, Empty request) {
+    return Future.value(ConnectionRes(status: "Running!"));
+  }
+
+  @override
   Future<FindRes> find(ServiceCall call, FindReq request) {
     // TODO: implement find
 
@@ -96,6 +101,7 @@ class SkyService extends SkyServiceBase {
     // TODO: implement relay
     throw UnimplementedError();
   }
+
 }
 
 void startRPCDaemon() async {
