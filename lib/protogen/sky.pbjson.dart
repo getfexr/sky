@@ -257,6 +257,16 @@ const GetUserInfoRes$json = const {
 
 /// Descriptor for `GetUserInfoRes`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getUserInfoResDescriptor = $convert.base64Decode('Cg5HZXRVc2VySW5mb1JlcxIYCgdhZGRyZXNzGAIgASgJUgdhZGRyZXNzEg4KAmYwGAMgASgJUgJmMA==');
+@$core.Deprecated('Use connectionResDescriptor instead')
+const ConnectionRes$json = const {
+  '1': 'ConnectionRes',
+  '2': const [
+    const {'1': 'status', '3': 1, '4': 1, '5': 9, '10': 'status'},
+  ],
+};
+
+/// Descriptor for `ConnectionRes`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectionResDescriptor = $convert.base64Decode('Cg1Db25uZWN0aW9uUmVzEhYKBnN0YXR1cxgBIAEoCVIGc3RhdHVz');
 @$core.Deprecated('Use findReqDescriptor instead')
 const FindReq$json = const {
   '1': 'FindReq',
