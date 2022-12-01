@@ -73,7 +73,7 @@ class OTPManager {
   Future<bool> assertOTP(String otpInput) async {
     var box = await openCodesBox();
     var otpJsonStr = box.get(otpInput);
-    box.close();
+    var close = box.close();
 
     if (otpJsonStr == null) {
       throw AssertionError('Invalid OTP');
@@ -84,6 +84,7 @@ class OTPManager {
       throw AssertionError('OTP expired');
     }
 
+    await close;
     return true;
   }
 
@@ -92,7 +93,8 @@ class OTPManager {
     var otp = _OTP.genOTP();
 
     print("OTP: ${otp.value} (Valid for ${_OTP.validityInMins} mins)");
-    return box.put(otp.value, otp.toJSON());
+    await box.put(otp.value, otp.toJSON());
+    return box.close();
   }
 
   Future<void> listOTPS() async {
@@ -116,7 +118,8 @@ class OTPManager {
 
   Future<void> deleteOTP(String otp) async {
     var box = await openCodesBox();
-    return box.delete(otp);
+    box.delete(otp);
+    return box.close();
   }
   // TODO: OTP - Auto cleanup of expired token
 }

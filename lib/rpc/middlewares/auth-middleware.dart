@@ -29,7 +29,7 @@ User getAuthenticatedUser(ServiceCall call) {
 
 FutureOr<GrpcError?> authMiddleware(
     ServiceCall call, ServiceMethod method) async {
-  if (['Host', 'Refresh'].contains(method.name)) {
+  if (['Host', 'Refresh', 'CheckConnection'].contains(method.name)) {
     return null;
   }
 
