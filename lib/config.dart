@@ -207,13 +207,4 @@ class Config {
       envVar: 'RUBIX_ENDPOINT',
       defaultValue: 'localhost:1898',
       validators: [RequiredValidator(), LengthValidator(3, 64)]).getString();
-
-  final String rubixPrivateKeyPass = ConfigItem(
-      envVar: 'RUBIX_PRIVATE_KEY_PASS',
-      validators: [RequiredValidator(), LengthValidator(3, 64)]).getString();
-  // Optional as this shall be passed from client as well
-
-  final String rubixQuorumKeyPass = ConfigItem(
-      envVar: 'RUBIX_QUORUM_KEY_PASS',
-      validators: [RequiredValidator(), LengthValidator(3, 64)]).getString();
 }
