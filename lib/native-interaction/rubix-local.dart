@@ -85,6 +85,14 @@ class RubixLocal {
         var response =  parsed['data']['response'];
         if (response is String) {
           throw RubixException(response);
+        } else if (response is Map) {
+          var status = parsed?['data']?['response']?['status'];
+          if (status == 'Failed') {
+            var message = parsed?['data']?['response']?['message'];
+            throw RubixException(message);
+          } else {
+            return response;
+          }
         } else {
           return response;
         }
