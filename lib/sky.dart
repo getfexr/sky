@@ -5,6 +5,8 @@ import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/sky.pbgrpc.dart';
 import 'package:sky/rpc/challenge.dart';
 import 'package:sky/config.dart';
+import 'package:sky/rpc/external/external.dart';
+import 'package:sky/rpc/external/external_listener.dart';
 import 'package:sky/rpc/host.dart' as hostRPC;
 import 'package:sky/rpc/middlewares/auth-middleware.dart';
 
@@ -108,7 +110,9 @@ void startRPCDaemon() async {
   final server = Server(
     [
       SkyService(),
-      RubixService()
+      RubixService(),
+      ExternalListenerService(),
+      ExternalService(),
     ],
     [
       authMiddleware,

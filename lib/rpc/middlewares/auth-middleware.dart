@@ -29,7 +29,8 @@ User getAuthenticatedUser(ServiceCall call) {
 
 FutureOr<GrpcError?> authMiddleware(
     ServiceCall call, ServiceMethod method) async {
-  if (['Host', 'Refresh', 'CheckConnection'].contains(method.name)) {
+      print('Method name is ${method.name} ');
+  if (['Host', 'Refresh', 'CheckConnection', 'Authenticate', 'StreamAuthenticateRequest'].contains(method.name)) {
     return null;
   }
 
