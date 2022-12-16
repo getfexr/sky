@@ -178,3 +178,50 @@ class Authenticate extends $pb.GeneratedMessage {
   void clearBrowserId() => clearField(1);
 }
 
+class ApproveBrowserRes extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ApproveBrowserRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status')
+    ..hasRequiredFields = false
+  ;
+
+  ApproveBrowserRes._() : super();
+  factory ApproveBrowserRes({
+    $core.bool? status,
+  }) {
+    final _result = create();
+    if (status != null) {
+      _result.status = status;
+    }
+    return _result;
+  }
+  factory ApproveBrowserRes.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ApproveBrowserRes.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ApproveBrowserRes clone() => ApproveBrowserRes()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ApproveBrowserRes copyWith(void Function(ApproveBrowserRes) updates) => super.copyWith((message) => updates(message as ApproveBrowserRes)) as ApproveBrowserRes; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ApproveBrowserRes create() => ApproveBrowserRes._();
+  ApproveBrowserRes createEmptyInstance() => create();
+  static $pb.PbList<ApproveBrowserRes> createRepeated() => $pb.PbList<ApproveBrowserRes>();
+  @$core.pragma('dart2js:noInline')
+  static ApproveBrowserRes getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApproveBrowserRes>(create);
+  static ApproveBrowserRes? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get status => $_getBF(0);
+  @$pb.TagNumber(1)
+  set status($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatus() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatus() => clearField(1);
+}
+

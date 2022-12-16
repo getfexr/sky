@@ -6,11 +6,20 @@ import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 
 class ExternalService extends ExternalServiceBase {
   @override
-  Future<AuthenticateRes> authenticate(ServiceCall call, Empty) async {
+  Future<AuthenticateRes> authenticate(ServiceCall call, Empty request) async {
     //TODO: Get consent from mobile App
     //Generate accesToken and send to extension
-    AuthenticationStream().addAuthenticate(Authenticate(browserId: "Boom"));
+    var bid = "Boom";
+    AuthenticationStream().addAuthenticate(Authenticate(browserId: bid));
 
-    return AuthenticateRes(accessToken: "", status: "");
+    bool res = await AuthenticationStream().getResult(bid);
+    return AuthenticateRes(accessToken: "", status: res ? "success" : "failed");
   }
+  
+  @override
+  Future<RequestTransactionRes> transactionRequest(ServiceCall call, RequestTransactionDetails request) {
+    // TODO: implement transactionRequest
+    throw UnimplementedError();
+  }
+
 }

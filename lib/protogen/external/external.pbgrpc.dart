@@ -21,6 +21,12 @@ class ExternalServiceClient extends $grpc.Client {
           ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.AuthenticateRes.fromBuffer(value));
+  static final _$transactionRequest = $grpc.ClientMethod<
+          $1.RequestTransactionDetails, $1.RequestTransactionRes>(
+      '/protos.ExternalService/TransactionRequest',
+      ($1.RequestTransactionDetails value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) =>
+          $1.RequestTransactionRes.fromBuffer(value));
 
   ExternalServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -30,6 +36,12 @@ class ExternalServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$1.AuthenticateRes> authenticate($0.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$authenticate, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.RequestTransactionRes> transactionRequest(
+      $1.RequestTransactionDetails request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$transactionRequest, request, options: options);
   }
 }
 
@@ -44,6 +56,15 @@ abstract class ExternalServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($1.AuthenticateRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.RequestTransactionDetails,
+            $1.RequestTransactionRes>(
+        'TransactionRequest',
+        transactionRequest_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $1.RequestTransactionDetails.fromBuffer(value),
+        ($1.RequestTransactionRes value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.AuthenticateRes> authenticate_Pre(
@@ -51,6 +72,14 @@ abstract class ExternalServiceBase extends $grpc.Service {
     return authenticate(call, await request);
   }
 
+  $async.Future<$1.RequestTransactionRes> transactionRequest_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$1.RequestTransactionDetails> request) async {
+    return transactionRequest(call, await request);
+  }
+
   $async.Future<$1.AuthenticateRes> authenticate(
       $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.RequestTransactionRes> transactionRequest(
+      $grpc.ServiceCall call, $1.RequestTransactionDetails request);
 }

@@ -8,7 +8,29 @@ class ExternalListenerService extends ExternalListenerServiceBase {
   @override
   Stream<Authenticate> streamAuthenticateRequest(
       ServiceCall call, Empty request) {
-    
-    return AuthenticationStream().authenticateStream; 
+    return AuthenticationStream().authenticateStream;
+  }
+
+  @override
+  Future<ApproveBrowserRes> approveBrowser(
+      ServiceCall call, Authenticate request) {
+    AuthenticationStream().approveBrowser(request.browserId);
+    return Future.value(ApproveBrowserRes(status: true));
+  }
+
+  Stream<Authenticate> streamAuthenticate(ServiceCall call, Empty request) {
+    ExternalListenerService service = ExternalListenerService();
+
+    return service.streamAuthenticateRequest(call, request).asBroadcastStream();
+  }
+  Stream<TransactionDetails> streamTransaction(ServiceCall call, Empty request){
+    ExternalListenerService service = ExternalListenerService();
+    return service.streamTransactionRequest(call, request).asBroadcastStream();
+  }
+  
+  @override
+  Stream<TransactionDetails> streamTransactionRequest(
+      ServiceCall call, Empty request) {
+    return TransactionStream().transactionStream;
   }
 }

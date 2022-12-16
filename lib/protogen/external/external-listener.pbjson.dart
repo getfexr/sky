@@ -40,3 +40,13 @@ const Authenticate$json = const {
 
 /// Descriptor for `Authenticate`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List authenticateDescriptor = $convert.base64Decode('CgxBdXRoZW50aWNhdGUSHAoJYnJvd3NlcklkGAEgASgJUglicm93c2VySWQ=');
+@$core.Deprecated('Use approveBrowserResDescriptor instead')
+const ApproveBrowserRes$json = const {
+  '1': 'ApproveBrowserRes',
+  '2': const [
+    const {'1': 'status', '3': 1, '4': 1, '5': 8, '10': 'status'},
+  ],
+};
+
+/// Descriptor for `ApproveBrowserRes`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approveBrowserResDescriptor = $convert.base64Decode('ChFBcHByb3ZlQnJvd3NlclJlcxIWCgZzdGF0dXMYASABKAhSBnN0YXR1cw==');
