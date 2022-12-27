@@ -38,8 +38,7 @@ void authenticateExternalUser(ServiceCall call) {
 
 FutureOr<GrpcError?> authMiddleware(
     ServiceCall call, ServiceMethod method) async {
-  print('Method name is ${method.name} ');
-  if (['Authenticate', 'TransactionRequest'].contains(method.name)) {
+  if (['StreamAuthenticateRequest', 'StreamTransactionRequest','TransactionRequest','Authenticate'].contains(method.name)) {
     authenticateExternalUser(call);
     return null;
   } else if (['Host', 'Refresh', 'CheckConnection'].contains(method.name)) {

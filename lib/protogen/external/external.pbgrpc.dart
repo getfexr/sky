@@ -21,12 +21,11 @@ class ExternalServiceClient extends $grpc.Client {
           ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.AuthenticateRes.fromBuffer(value));
-  static final _$transactionRequest = $grpc.ClientMethod<
-          $1.RequestTransactionDetails, $1.RequestTransactionRes>(
-      '/protos.ExternalService/TransactionRequest',
-      ($1.RequestTransactionDetails value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) =>
-          $1.RequestTransactionRes.fromBuffer(value));
+  static final _$transactionRequest =
+      $grpc.ClientMethod<$1.TransactionDetails, $1.TransactionRes>(
+          '/protos.ExternalService/TransactionRequest',
+          ($1.TransactionDetails value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.TransactionRes.fromBuffer(value));
 
   ExternalServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -38,8 +37,8 @@ class ExternalServiceClient extends $grpc.Client {
     return $createUnaryCall(_$authenticate, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.RequestTransactionRes> transactionRequest(
-      $1.RequestTransactionDetails request,
+  $grpc.ResponseFuture<$1.TransactionRes> transactionRequest(
+      $1.TransactionDetails request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$transactionRequest, request, options: options);
   }
@@ -56,15 +55,14 @@ abstract class ExternalServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($1.AuthenticateRes value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.RequestTransactionDetails,
-            $1.RequestTransactionRes>(
+    $addMethod($grpc.ServiceMethod<$1.TransactionDetails, $1.TransactionRes>(
         'TransactionRequest',
         transactionRequest_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $1.RequestTransactionDetails.fromBuffer(value),
-        ($1.RequestTransactionRes value) => value.writeToBuffer()));
+            $1.TransactionDetails.fromBuffer(value),
+        ($1.TransactionRes value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.AuthenticateRes> authenticate_Pre(
@@ -72,14 +70,14 @@ abstract class ExternalServiceBase extends $grpc.Service {
     return authenticate(call, await request);
   }
 
-  $async.Future<$1.RequestTransactionRes> transactionRequest_Pre(
+  $async.Future<$1.TransactionRes> transactionRequest_Pre(
       $grpc.ServiceCall call,
-      $async.Future<$1.RequestTransactionDetails> request) async {
+      $async.Future<$1.TransactionDetails> request) async {
     return transactionRequest(call, await request);
   }
 
   $async.Future<$1.AuthenticateRes> authenticate(
       $grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$1.RequestTransactionRes> transactionRequest(
-      $grpc.ServiceCall call, $1.RequestTransactionDetails request);
+  $async.Future<$1.TransactionRes> transactionRequest(
+      $grpc.ServiceCall call, $1.TransactionDetails request);
 }

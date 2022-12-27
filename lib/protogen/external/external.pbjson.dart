@@ -19,9 +19,9 @@ const AuthenticateRes$json = const {
 
 /// Descriptor for `AuthenticateRes`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List authenticateResDescriptor = $convert.base64Decode('Cg9BdXRoZW50aWNhdGVSZXMSFgoGc3RhdHVzGAEgASgJUgZzdGF0dXMSIAoLYWNjZXNzVG9rZW4YAiABKAlSC2FjY2Vzc1Rva2Vu');
-@$core.Deprecated('Use requestTransactionDetailsDescriptor instead')
-const RequestTransactionDetails$json = const {
-  '1': 'RequestTransactionDetails',
+@$core.Deprecated('Use transactionDetailsDescriptor instead')
+const TransactionDetails$json = const {
+  '1': 'TransactionDetails',
   '2': const [
     const {'1': 'receiver', '3': 1, '4': 1, '5': 9, '10': 'receiver'},
     const {'1': 'tokenCount', '3': 2, '4': 1, '5': 1, '10': 'tokenCount'},
@@ -29,15 +29,15 @@ const RequestTransactionDetails$json = const {
   ],
 };
 
-/// Descriptor for `RequestTransactionDetails`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestTransactionDetailsDescriptor = $convert.base64Decode('ChlSZXF1ZXN0VHJhbnNhY3Rpb25EZXRhaWxzEhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIeCgp0b2tlbkNvdW50GAIgASgBUgp0b2tlbkNvdW50EhgKB2NvbW1lbnQYAyABKAlSB2NvbW1lbnQ=');
-@$core.Deprecated('Use requestTransactionResDescriptor instead')
-const RequestTransactionRes$json = const {
-  '1': 'RequestTransactionRes',
+/// Descriptor for `TransactionDetails`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List transactionDetailsDescriptor = $convert.base64Decode('ChJUcmFuc2FjdGlvbkRldGFpbHMSGgoIcmVjZWl2ZXIYASABKAlSCHJlY2VpdmVyEh4KCnRva2VuQ291bnQYAiABKAFSCnRva2VuQ291bnQSGAoHY29tbWVudBgDIAEoCVIHY29tbWVudA==');
+@$core.Deprecated('Use transactionResDescriptor instead')
+const TransactionRes$json = const {
+  '1': 'TransactionRes',
   '2': const [
     const {'1': 'status', '3': 1, '4': 1, '5': 9, '10': 'status'},
   ],
 };
 
-/// Descriptor for `RequestTransactionRes`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestTransactionResDescriptor = $convert.base64Decode('ChVSZXF1ZXN0VHJhbnNhY3Rpb25SZXMSFgoGc3RhdHVzGAEgASgJUgZzdGF0dXM=');
+/// Descriptor for `TransactionRes`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List transactionResDescriptor = $convert.base64Decode('Cg5UcmFuc2FjdGlvblJlcxIWCgZzdGF0dXMYASABKAlSBnN0YXR1cw==');

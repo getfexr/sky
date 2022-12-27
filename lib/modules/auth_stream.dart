@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:sky/protogen/external/external-listener.pbgrpc.dart'
     as external_listener;
 
@@ -9,7 +8,7 @@ class AuthApprovalStream {
   final StreamController<bool>
       _authApprovalStreamController =
       StreamController<bool>.broadcast();
-
+      
   Stream<bool> get authApprovalStream =>
       _authApprovalStreamController.stream;
 
@@ -55,7 +54,3 @@ class AuthenticationStream {
     pending[browserId]!.approveBrowser();
   }
 }
-
-
-// browser id
-// consent
