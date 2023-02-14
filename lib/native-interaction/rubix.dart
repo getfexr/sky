@@ -7,11 +7,14 @@ class RubixService extends RubixServiceBase {
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
-      CreateDIDRes result = await  RubixLocal().newHotWallet(
-        did: request.didImage, publicShare: request.publicShare,
-        pvtKeyPass: request.privateKeyPass);
+      // CreateDIDRes result = await  RubixLocal().newHotWallet(
+      //   did: request.didImage, publicShare: request.publicShare,
+      //   pvtKeyPass: request.privateKeyPass);
 
-      await RubixLocal().sync();
+      // await RubixLocal().sync();
+      CreateDIDRes result = await RubixLocal().createDID(didImgFile: request.didImage, pubImgFile: request.publicShare, pubKeyFile: request.publicKey);
+      print('Public Key is ${request.publicKey}');
+      print(' result is $result');
       return result;
     } catch (e, stackTrace) {
       print(e);

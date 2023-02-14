@@ -134,16 +134,21 @@ class TransactionRes extends $pb.GeneratedMessage {
 class Authenticate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Authenticate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'browserId', protoName: 'browserId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signedBrowserId', protoName: 'signedBrowserId')
     ..hasRequiredFields = false
   ;
 
   Authenticate._() : super();
   factory Authenticate({
     $core.String? browserId,
+    $core.String? signedBrowserId,
   }) {
     final _result = create();
     if (browserId != null) {
       _result.browserId = browserId;
+    }
+    if (signedBrowserId != null) {
+      _result.signedBrowserId = signedBrowserId;
     }
     return _result;
   }
@@ -176,6 +181,15 @@ class Authenticate extends $pb.GeneratedMessage {
   $core.bool hasBrowserId() => $_has(0);
   @$pb.TagNumber(1)
   void clearBrowserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get signedBrowserId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set signedBrowserId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSignedBrowserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSignedBrowserId() => clearField(2);
 }
 
 class ApproveBrowserRes extends $pb.GeneratedMessage {

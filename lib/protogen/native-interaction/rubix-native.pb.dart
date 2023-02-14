@@ -13,7 +13,7 @@ class CreateDIDReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateDIDReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'didImage', protoName: 'didImage')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'publicShare', protoName: 'publicShare')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'privateKeyPass', protoName: 'privateKeyPass')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'publicKey', protoName: 'publicKey')
     ..hasRequiredFields = false
   ;
 
@@ -21,7 +21,7 @@ class CreateDIDReq extends $pb.GeneratedMessage {
   factory CreateDIDReq({
     $core.String? didImage,
     $core.String? publicShare,
-    $core.String? privateKeyPass,
+    $core.String? publicKey,
   }) {
     final _result = create();
     if (didImage != null) {
@@ -30,8 +30,8 @@ class CreateDIDReq extends $pb.GeneratedMessage {
     if (publicShare != null) {
       _result.publicShare = publicShare;
     }
-    if (privateKeyPass != null) {
-      _result.privateKeyPass = privateKeyPass;
+    if (publicKey != null) {
+      _result.publicKey = publicKey;
     }
     return _result;
   }
@@ -75,33 +75,33 @@ class CreateDIDReq extends $pb.GeneratedMessage {
   void clearPublicShare() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get privateKeyPass => $_getSZ(2);
+  $core.String get publicKey => $_getSZ(2);
   @$pb.TagNumber(3)
-  set privateKeyPass($core.String v) { $_setString(2, v); }
+  set publicKey($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasPrivateKeyPass() => $_has(2);
+  $core.bool hasPublicKey() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPrivateKeyPass() => clearField(3);
+  void clearPublicKey() => clearField(3);
 }
 
 class CreateDIDRes extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateDIDRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'did')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'walletId', protoName: 'walletId')
+    ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status')
     ..hasRequiredFields = false
   ;
 
   CreateDIDRes._() : super();
   factory CreateDIDRes({
     $core.String? did,
-    $core.String? walletId,
+    $core.bool? status,
   }) {
     final _result = create();
     if (did != null) {
       _result.did = did;
     }
-    if (walletId != null) {
-      _result.walletId = walletId;
+    if (status != null) {
+      _result.status = status;
     }
     return _result;
   }
@@ -136,13 +136,13 @@ class CreateDIDRes extends $pb.GeneratedMessage {
   void clearDid() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get walletId => $_getSZ(1);
+  $core.bool get status => $_getBF(1);
   @$pb.TagNumber(2)
-  set walletId($core.String v) { $_setString(1, v); }
+  set status($core.bool v) { $_setBool(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasWalletId() => $_has(1);
+  $core.bool hasStatus() => $_has(1);
   @$pb.TagNumber(2)
-  void clearWalletId() => clearField(2);
+  void clearStatus() => clearField(2);
 }
 
 class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
