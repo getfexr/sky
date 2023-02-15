@@ -14,23 +14,23 @@ const CreateDIDReq$json = const {
   '2': const [
     const {'1': 'didImage', '3': 1, '4': 1, '5': 9, '10': 'didImage'},
     const {'1': 'publicShare', '3': 2, '4': 1, '5': 9, '10': 'publicShare'},
-    const {'1': 'privateKeyPass', '3': 3, '4': 1, '5': 9, '10': 'privateKeyPass'},
+    const {'1': 'publicKey', '3': 3, '4': 1, '5': 9, '10': 'publicKey'},
   ],
 };
 
 /// Descriptor for `CreateDIDReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createDIDReqDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXESGgoIZGlkSW1hZ2UYASABKAlSCGRpZEltYWdlEiAKC3B1YmxpY1NoYXJlGAIgASgJUgtwdWJsaWNTaGFyZRImCg5wcml2YXRlS2V5UGFzcxgDIAEoCVIOcHJpdmF0ZUtleVBhc3M=');
+final $typed_data.Uint8List createDIDReqDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXESGgoIZGlkSW1hZ2UYASABKAlSCGRpZEltYWdlEiAKC3B1YmxpY1NoYXJlGAIgASgJUgtwdWJsaWNTaGFyZRIcCglwdWJsaWNLZXkYAyABKAlSCXB1YmxpY0tleQ==');
 @$core.Deprecated('Use createDIDResDescriptor instead')
 const CreateDIDRes$json = const {
   '1': 'CreateDIDRes',
   '2': const [
     const {'1': 'did', '3': 1, '4': 1, '5': 9, '10': 'did'},
-    const {'1': 'walletId', '3': 2, '4': 1, '5': 9, '10': 'walletId'},
+    const {'1': 'status', '3': 2, '4': 1, '5': 8, '10': 'status'},
   ],
 };
 
 /// Descriptor for `CreateDIDRes`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createDIDResDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXMSEAoDZGlkGAEgASgJUgNkaWQSGgoId2FsbGV0SWQYAiABKAlSCHdhbGxldElk');
+final $typed_data.Uint8List createDIDResDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXMSEAoDZGlkGAEgASgJUgNkaWQSFgoGc3RhdHVzGAIgASgIUgZzdGF0dXM=');
 @$core.Deprecated('Use requestTransactionPayloadReqDescriptor instead')
 const RequestTransactionPayloadReq$json = const {
   '1': 'RequestTransactionPayloadReq',

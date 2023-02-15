@@ -24,10 +24,10 @@ class TransactionLastObjectForJson {
   final String hash;
   final String token;
   final String chainSign;
-  TransactionLastObjectForJson(TransactionLastObjectSigned t):
-    hash = t.hash,
-    token = t.token,
-    chainSign = t.chainSign;
+  TransactionLastObjectForJson(TransactionLastObjectSigned t)
+      : hash = t.hash,
+        token = t.token,
+        chainSign = t.chainSign;
 
   toJson() {
     return {
@@ -68,7 +68,7 @@ class RubixLog {
     File logFile = File(fileName);
     RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
     String dateTime = DateTime.now().toIso8601String();
-    raf.writeStringSync("${dateTime} :: ${className} \n ${line} \n");
+    raf.writeStringSync("$dateTime :: $className \n $line \n");
   }
 }
 
@@ -82,7 +82,7 @@ class RubixLocal {
     var parsed = jsonDecode(response.body);
     if (parsed['status'] == "true") {
       if (parsed['data'] != null) {
-        var response =  parsed['data']['response'];
+        var response = parsed['data']['response'];
         if (response is String) {
           throw RubixException(response);
         } else if (response is Map) {
@@ -130,37 +130,50 @@ class RubixLocal {
   RubixLocal._internal();
 
   final String _url = Config().rubixEndpoint;
+  //TODO:Support multiple ports
 
+  Future<CreateDIDRes> createDID(
+      {required String didImgFile,
+      required String pubImgFile,
+      required pubKeyFile}) async {
+    const didFileName = 'did.png';
+    const pubShareFileName = 'pubShare.png';
+    const pubKeyFileName = 'pubKey.pem';
+    var request =
+        http.MultipartRequest('POST', Uri.http(_url, 'api/createdid'));
+    request.fields['did_config'] = jsonEncode({
+      'Type': 2,
+      'DIDImgFileName': didFileName,
+      'PubImgFile': pubShareFileName,
+      'PubKeyFile': pubKeyFileName,
+    });
 
-  Future<CreateDIDRes> newHotWallet({ required String did, required String publicShare,
-    required String pvtKeyPass }) async {
-    var response = await http.post(Uri.http(_url,'/newHotWallet'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'didString': did, // base64 encoded
-          'publicShareString': publicShare, // base64 encoded
-        }));
+    request.files.add(http.MultipartFile.fromBytes(
+        'did_image', base64.decode(didImgFile),
+        filename: didFileName));
+    request.files.add(http.MultipartFile.fromBytes(
+        'pub_image', base64.decode(pubImgFile),
+        filename: pubShareFileName));
+    request.files.add(http.MultipartFile.fromBytes(
+        'pub_key', base64.decode(pubKeyFile),
+        filename: pubKeyFileName));
 
-    RubixLog().appendLog("newHotWallet response: ${response.body}");
-    var responseData = getRubixResponseJson(response);
-
-    RubixLog().appendLog("newHotWallet response: $responseData");
-
-    var createdECDSA = await generateEcDSAKeys(password: pvtKeyPass);
-
-    RubixLog().appendLog("Created ECDSA keys: $createdECDSA");
-
-    await setupQuorum(password: pvtKeyPass);
-
-    return CreateDIDRes(
-      did: responseData['DID'],
-      walletId: responseData['walletHash'],
-    );
+    var response = await request.send();
+    var responseString = await response.stream.bytesToString();
+    RubixLog().appendLog("createDID response: $responseString");
+    Map<String, dynamic> jsonResponse = jsonDecode(responseString);
+    bool status = jsonResponse['status'];
+    String did = "";
+    if (status == true) {
+      RubixLog().appendLog("Did Created Successfully");
+      did = jsonResponse['result']['did'];
+    } else {
+      RubixLog().appendLog("Did Creation Failed");
+    }
+    return CreateDIDRes(did: did, status: status);
   }
 
-  setupQuorum({ required String password}) async{
+  setupQuorum({required String password}) async {
     var generatedQuorumKeys = await generateQuorumKeys(password: password);
     RubixLog().appendLog("Generated Quorum keys: $generatedQuorumKeys");
 
@@ -168,45 +181,42 @@ class RubixLocal {
     RubixLog().appendLog("Started Quorum service: $startQuorum");
   }
 
-  Future<Response> generateQuorumKeys({ required String password }) {
-    var bodyJson =  jsonEncode(<String, dynamic>
-      { "pvtKeyPass" : password, "returnKey" : 0 });
+  Future<Response> generateQuorumKeys({required String password}) {
+    var bodyJson =
+        jsonEncode(<String, dynamic>{"pvtKeyPass": password, "returnKey": 0});
 
     RubixLog().appendLog("generateQuorumKeys request: $bodyJson");
 
-    return http.post(Uri.http(_url,'/generateQuorumKeys'),
+    return http.post(Uri.http(_url, '/generateQuorumKeys'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: bodyJson
-    );
+        body: bodyJson);
   }
 
-  Future<Response> startQuorumService({ required String password }) {
-    var bodyJson = jsonEncode(<String, String>
-          { "pvtKeyPass" : password });
+  Future<Response> startQuorumService({required String password}) {
+    var bodyJson = jsonEncode(<String, String>{"pvtKeyPass": password});
 
     RubixLog().appendLog("startQuorumService request: $bodyJson");
-    return http.post(Uri.http(_url,'/startQuorumService'),
-       headers: <String, String>{
+    return http.post(Uri.http(_url, '/startQuorumService'),
+        headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: bodyJson
-    );
+        body: bodyJson);
   }
 
   Future<Response> sync() {
-    return http.post(Uri.http(_url,'/sync'));
+    return http.post(Uri.http(_url, '/sync'));
   }
 
-  Future<bool> generateEcDSAKeys({ required String password }) async {
+  Future<bool> generateEcDSAKeys({required String password}) async {
     var jsonBody = jsonEncode(<String, dynamic>{
-          'pvtKeyPass': password,
-          'returnKey': 0,
+      'pvtKeyPass': password,
+      'returnKey': 0,
     });
 
     RubixLog().appendLog("generateEcDSAKeys request: $jsonBody");
-    var response = await http.post(Uri.http(_url,'/generateEcDSAKeys'),
+    var response = await http.post(Uri.http(_url, '/generateEcDSAKeys'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -225,7 +235,9 @@ class RubixLocal {
     required String pvtKeyPass,
   }) async {
     await sync();
-    await startQuorumService(password: pvtKeyPass); // To restart quorum service in case rubix executable was restarted
+    await startQuorumService(
+        password:
+            pvtKeyPass); // To restart quorum service in case rubix executable was restarted
 
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
@@ -235,24 +247,26 @@ class RubixLocal {
       'pvtKeyPass': pvtKeyPass,
     });
 
-    RubixLog().appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
+    RubixLog()
+        .appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
 
-    var response = await http.post(Uri.http(_url,'/initiateTransaction'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: bodyJsonStr,
-      );
+    var response = await http.post(
+      Uri.http(_url, '/initiateTransaction'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: bodyJsonStr,
+    );
 
-    RubixLog().appendLog("initiateTransactionPayload response from rubix: ${response.body}");
+    RubixLog().appendLog(
+        "initiateTransactionPayload response from rubix: ${response.body}");
 
     var responseData = getRubixResponseJson(response);
     List<dynamic> lastObjectDynamic = responseData['lastObject'];
 
-    Iterable<TransactionLastObject> lastObjectIterable =
-      lastObjectDynamic.map((e) =>
-        TransactionLastObject(hash: e['hash'], token: e['token'])
-      ).toList();
+    Iterable<TransactionLastObject> lastObjectIterable = lastObjectDynamic
+        .map((e) => TransactionLastObject(hash: e['hash'], token: e['token']))
+        .toList();
 
     // Map<String, dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
     Map<String, PledgeDetail> pledgeDetails = {};
@@ -288,26 +302,26 @@ class RubixLocal {
   }
 
   Future<double> getAccountBalance() async {
-    var response = await http.get(Uri.http(_url,'/getAccountInfo'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        });
+    var response = await http
+        .get(Uri.http(_url, '/getAccountInfo'), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
     var responseData = getRubixResponseJson(response);
-    var balance =  responseData['balance'];
+    var balance = responseData['balance'];
     balance = balance is int ? balance.toDouble() : balance;
 
     RubixLog().appendLog("getAccountBalance response: $balance");
     return balance;
   }
 
-  Future<TxnSummary>finaliseTransaction({
+  Future<TxnSummary> finaliseTransaction({
     required FinaliseTransactionPayload request,
   }) async {
     // Map<String, List<SignedHash>> pledgeDetails = {};
     // request.pledgeDetails.forEach((key, value) {
     //   pledgeDetails[key] = value.valueArr;
     // });
-    List<Map<String,List<SignedHashForJson>>> pledgeDetails = [];
+    List<Map<String, List<SignedHashForJson>>> pledgeDetails = [];
 
     request.pledgeDetails.forEach((key, value) {
       pledgeDetails.add({
@@ -315,9 +329,8 @@ class RubixLocal {
       });
     });
 
-    List<TransactionLastObjectForJson> lastObjectsSigned = request.lastObject.map((t) =>
-      TransactionLastObjectForJson(t)
-    ).toList();
+    List<TransactionLastObjectForJson> lastObjectsSigned =
+        request.lastObject.map((t) => TransactionLastObjectForJson(t)).toList();
 
     var body = {
       'authSenderByRecHash': request.authSenderByRecHash.sign,
@@ -330,23 +343,23 @@ class RubixLocal {
 
     RubixLog().appendLog("finaliseTransaction request to RUBIX: $bodyJson");
 
-    var response = await http.post(Uri.http(_url,'/transactionFinality'),
+    var response = await http.post(Uri.http(_url, '/transactionFinality'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: bodyJson);
 
-    RubixLog().appendLog("finaliseTransaction response from RUBIX: ${response.body}");
+    RubixLog()
+        .appendLog("finaliseTransaction response from RUBIX: ${response.body}");
 
     var dataResponse = getRubixResponseJson(response);
 
     TxnSummary txnSummary = TxnSummary(
-      amount: 0,     // TODO: fix this
-      comment: dataResponse['message'],
-      receiver: dataResponse['receiver'],
-      sender: dataResponse['did'],
-      txnId: dataResponse['tid']
-    );
+        amount: 0, // TODO: fix this
+        comment: dataResponse['message'],
+        receiver: dataResponse['receiver'],
+        sender: dataResponse['did'],
+        txnId: dataResponse['tid']);
     return txnSummary;
   }
 
@@ -354,11 +367,11 @@ class RubixLocal {
     required int count,
   }) async {
     var bodyJson = jsonEncode(<String, dynamic>{
-          'txnCount': count,
-        });
+      'txnCount': count,
+    });
 
     RubixLog().appendLog("getTransactionByCount request to RUBIX: $bodyJson");
-    var response = await http.post(Uri.http(_url,'/getTxnByCount'),
+    var response = await http.post(Uri.http(_url, '/getTxnByCount'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -367,13 +380,15 @@ class RubixLocal {
     RubixLog().appendLog("getTransactionByCount response: ${response.body}");
     List<dynamic> dataResponse = getRubixResponseJson(response);
 
-    Iterable<TxnSummary> txnSummaries = dataResponse.map((e) => TxnSummary(
-      txnId: e['txn'],
-      sender: e['senderDID'],
-      receiver: e['receiverDID'],
-      amount: e['amount'] is int ? e['amount'].toDouble() : e['amount'],
-      comment: e['comment'],
-    )).toList();
+    Iterable<TxnSummary> txnSummaries = dataResponse
+        .map((e) => TxnSummary(
+              txnId: e['txn'],
+              sender: e['senderDID'],
+              receiver: e['receiverDID'],
+              amount: e['amount'] is int ? e['amount'].toDouble() : e['amount'],
+              comment: e['comment'],
+            ))
+        .toList();
 
     return GetTransactionLogRes(
       txnLog: txnSummaries,
