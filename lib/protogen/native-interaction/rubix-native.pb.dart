@@ -148,24 +148,27 @@ class CreateDIDRes extends $pb.GeneratedMessage {
 class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RequestTransactionPayloadReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiver')
-    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tokenCount', $pb.PbFieldType.OD, protoName: 'tokenCount')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'comment')
-    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.O3)
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'privateKeyPass', protoName: 'privateKeyPass')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sender')
+    ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tokenCount', $pb.PbFieldType.OD, protoName: 'tokenCount')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'comment')
+    ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
   RequestTransactionPayloadReq._() : super();
   factory RequestTransactionPayloadReq({
     $core.String? receiver,
+    $core.String? sender,
     $core.double? tokenCount,
     $core.String? comment,
     $core.int? type,
-    $core.String? privateKeyPass,
   }) {
     final _result = create();
     if (receiver != null) {
       _result.receiver = receiver;
+    }
+    if (sender != null) {
+      _result.sender = sender;
     }
     if (tokenCount != null) {
       _result.tokenCount = tokenCount;
@@ -175,9 +178,6 @@ class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
     }
     if (type != null) {
       _result.type = type;
-    }
-    if (privateKeyPass != null) {
-      _result.privateKeyPass = privateKeyPass;
     }
     return _result;
   }
@@ -212,40 +212,40 @@ class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
   void clearReceiver() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.double get tokenCount => $_getN(1);
+  $core.String get sender => $_getSZ(1);
   @$pb.TagNumber(2)
-  set tokenCount($core.double v) { $_setDouble(1, v); }
+  set sender($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTokenCount() => $_has(1);
+  $core.bool hasSender() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTokenCount() => clearField(2);
+  void clearSender() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get comment => $_getSZ(2);
+  $core.double get tokenCount => $_getN(2);
   @$pb.TagNumber(3)
-  set comment($core.String v) { $_setString(2, v); }
+  set tokenCount($core.double v) { $_setDouble(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasComment() => $_has(2);
+  $core.bool hasTokenCount() => $_has(2);
   @$pb.TagNumber(3)
-  void clearComment() => clearField(3);
+  void clearTokenCount() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.int get type => $_getIZ(3);
+  $core.String get comment => $_getSZ(3);
   @$pb.TagNumber(4)
-  set type($core.int v) { $_setSignedInt32(3, v); }
+  set comment($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasType() => $_has(3);
+  $core.bool hasComment() => $_has(3);
   @$pb.TagNumber(4)
-  void clearType() => clearField(4);
+  void clearComment() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get privateKeyPass => $_getSZ(4);
+  $core.int get type => $_getIZ(4);
   @$pb.TagNumber(5)
-  set privateKeyPass($core.String v) { $_setString(4, v); }
+  set type($core.int v) { $_setSignedInt32(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasPrivateKeyPass() => $_has(4);
+  $core.bool hasType() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPrivateKeyPass() => clearField(5);
+  void clearType() => clearField(5);
 }
 
 class TxnSummary extends $pb.GeneratedMessage {
@@ -632,32 +632,22 @@ class PledgeDetailSigned extends $pb.GeneratedMessage {
 
 class RequestTransactionPayloadRes extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RequestTransactionPayloadRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'authSenderByRecHash', protoName: 'authSenderByRecHash')
-    ..pc<TransactionLastObject>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastObject', $pb.PbFieldType.PM, protoName: 'lastObject', subBuilder: TransactionLastObject.create)
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderPayloadSign', protoName: 'senderPayloadSign')
-    ..m<$core.String, PledgeDetail>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pledgeDetails', protoName: 'pledgeDetails', entryClassName: 'RequestTransactionPayloadRes.PledgeDetailsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: PledgeDetail.create, packageName: const $pb.PackageName('protos'))
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'requestId', protoName: 'requestId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'hash')
     ..hasRequiredFields = false
   ;
 
   RequestTransactionPayloadRes._() : super();
   factory RequestTransactionPayloadRes({
-    $core.String? authSenderByRecHash,
-    $core.Iterable<TransactionLastObject>? lastObject,
-    $core.String? senderPayloadSign,
-    $core.Map<$core.String, PledgeDetail>? pledgeDetails,
+    $core.String? requestId,
+    $core.String? hash,
   }) {
     final _result = create();
-    if (authSenderByRecHash != null) {
-      _result.authSenderByRecHash = authSenderByRecHash;
+    if (requestId != null) {
+      _result.requestId = requestId;
     }
-    if (lastObject != null) {
-      _result.lastObject.addAll(lastObject);
-    }
-    if (senderPayloadSign != null) {
-      _result.senderPayloadSign = senderPayloadSign;
-    }
-    if (pledgeDetails != null) {
-      _result.pledgeDetails.addAll(pledgeDetails);
+    if (hash != null) {
+      _result.hash = hash;
     }
     return _result;
   }
@@ -683,28 +673,144 @@ class RequestTransactionPayloadRes extends $pb.GeneratedMessage {
   static RequestTransactionPayloadRes? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get authSenderByRecHash => $_getSZ(0);
+  $core.String get requestId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set authSenderByRecHash($core.String v) { $_setString(0, v); }
+  set requestId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasAuthSenderByRecHash() => $_has(0);
+  $core.bool hasRequestId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearAuthSenderByRecHash() => clearField(1);
+  void clearRequestId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<TransactionLastObject> get lastObject => $_getList(1);
+  $core.String get hash => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set hash($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasHash() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearHash() => clearField(2);
+}
+
+class HashSigned extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'HashSigned', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..a<$core.List<$core.int>>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'pvtSign', $pb.PbFieldType.OY, protoName: 'pvtSign')
+    ..a<$core.List<$core.int>>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'imgSign', $pb.PbFieldType.OY, protoName: 'imgSign')
+    ..hasRequiredFields = false
+  ;
+
+  HashSigned._() : super();
+  factory HashSigned({
+    $core.String? id,
+    $core.List<$core.int>? pvtSign,
+    $core.List<$core.int>? imgSign,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (pvtSign != null) {
+      _result.pvtSign = pvtSign;
+    }
+    if (imgSign != null) {
+      _result.imgSign = imgSign;
+    }
+    return _result;
+  }
+  factory HashSigned.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HashSigned.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  HashSigned clone() => HashSigned()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  HashSigned copyWith(void Function(HashSigned) updates) => super.copyWith((message) => updates(message as HashSigned)) as HashSigned; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static HashSigned create() => HashSigned._();
+  HashSigned createEmptyInstance() => create();
+  static $pb.PbList<HashSigned> createRepeated() => $pb.PbList<HashSigned>();
+  @$core.pragma('dart2js:noInline')
+  static HashSigned getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HashSigned>(create);
+  static HashSigned? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get pvtSign => $_getN(1);
+  @$pb.TagNumber(2)
+  set pvtSign($core.List<$core.int> v) { $_setBytes(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPvtSign() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPvtSign() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get senderPayloadSign => $_getSZ(2);
+  $core.List<$core.int> get imgSign => $_getN(2);
   @$pb.TagNumber(3)
-  set senderPayloadSign($core.String v) { $_setString(2, v); }
+  set imgSign($core.List<$core.int> v) { $_setBytes(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasSenderPayloadSign() => $_has(2);
+  $core.bool hasImgSign() => $_has(2);
   @$pb.TagNumber(3)
-  void clearSenderPayloadSign() => clearField(3);
+  void clearImgSign() => clearField(3);
+}
 
-  @$pb.TagNumber(4)
-  $core.Map<$core.String, PledgeDetail> get pledgeDetails => $_getMap(3);
+class Status extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Status', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status')
+    ..hasRequiredFields = false
+  ;
+
+  Status._() : super();
+  factory Status({
+    $core.bool? status,
+  }) {
+    final _result = create();
+    if (status != null) {
+      _result.status = status;
+    }
+    return _result;
+  }
+  factory Status.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Status.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Status clone() => Status()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Status copyWith(void Function(Status) updates) => super.copyWith((message) => updates(message as Status)) as Status; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Status create() => Status._();
+  Status createEmptyInstance() => create();
+  static $pb.PbList<Status> createRepeated() => $pb.PbList<Status>();
+  @$core.pragma('dart2js:noInline')
+  static Status getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Status>(create);
+  static Status? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get status => $_getBF(0);
+  @$pb.TagNumber(1)
+  set status($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatus() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatus() => clearField(1);
 }
 
 class FinaliseTransactionPayload extends $pb.GeneratedMessage {

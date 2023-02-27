@@ -114,9 +114,9 @@ void startRPCDaemon() async {
       ExternalListenerService(),
       ExternalService(),
     ],
-    [
-      authMiddleware,
-    ],    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
+    // [
+    //   authMiddleware,
+    // ],    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
   final port = Config().port;
   await server.serve(port: port);

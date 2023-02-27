@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:sky/config.dart';
@@ -129,7 +130,8 @@ class RubixLocal {
 
   RubixLocal._internal();
 
-  final String _url = Config().rubixEndpoint;
+ // final String _url = Config().rubixEndpoint;
+  final String _url = 'localhost:20007';
   //TODO:Support multiple ports
 
   Future<CreateDIDRes> createDID(
@@ -147,7 +149,28 @@ class RubixLocal {
       'PubImgFile': pubShareFileName,
       'PubKeyFile': pubKeyFileName,
     });
-
+    // String publickey1 = pubKeyFile;
+    // print(publickey1);
+    // var base64decode = base64.decode(publickey1);
+    // print(base64decode);
+    // var string = String.fromCharCodes(base64decode);
+    // print(string);
+    //convert publicKeyFile to Uint8List
+    //  var pub = pubKeyFile.codeUnits as List<int>;
+    //  print(pub);
+  //    var pubKeyFile1 = Uint8List.fromList(pubKeyFile);
+  //    print(pubKeyFile1);
+  //    //convert publicKeyFile to String
+     
+  //   //  print(utf82);
+    
+  //  //   print(string);
+  //   var publickeystring = String.fromCharCodes(pubKeyFile1);
+  //   var utf82 = utf8.encode(publickeystring);
+  //     var string = utf8.decode(utf82);
+  //   print(utf82);
+  //   print(publickeystring);
+  // var string = encodekey(pubKeyFile);
     request.files.add(http.MultipartFile.fromBytes(
         'did_image', base64.decode(didImgFile),
         filename: didFileName));
@@ -194,6 +217,7 @@ class RubixLocal {
         body: bodyJson);
   }
 
+
   Future<Response> startQuorumService({required String password}) {
     var bodyJson = jsonEncode(<String, String>{"pvtKeyPass": password});
 
@@ -229,29 +253,26 @@ class RubixLocal {
 
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({
     required String receiver,
+    required String sender,
     required double tokenCount,
     String? comment,
     required int type,
-    required String pvtKeyPass,
   }) async {
     await sync();
-    await startQuorumService(
-        password:
-            pvtKeyPass); // To restart quorum service in case rubix executable was restarted
 
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
-      'tokenCount': tokenCount,
+      'sender': sender,
+      'tokenCOunt': tokenCount,
       'comment': comment ?? '',
       'type': 2,
-      'pvtKeyPass': pvtKeyPass,
     });
 
     RubixLog()
         .appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(_url, '/initiateTransaction'),
+      Uri.http(_url, '/api/initiate-rbt-transfer'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -261,44 +282,84 @@ class RubixLocal {
     RubixLog().appendLog(
         "initiateTransactionPayload response from rubix: ${response.body}");
 
-    var responseData = getRubixResponseJson(response);
-    List<dynamic> lastObjectDynamic = responseData['lastObject'];
-
-    Iterable<TransactionLastObject> lastObjectIterable = lastObjectDynamic
-        .map((e) => TransactionLastObject(hash: e['hash'], token: e['token']))
-        .toList();
-
-    // Map<String, dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
-    Map<String, PledgeDetail> pledgeDetails = {};
-
-    // pledgeDetailsDynamic.forEach((key, value) {
-    //   List<dynamic> hashes = value;
-
-    //   Iterable<String> hashesIterable = hashes.map((e) => e.toString());
-    //   pledgeDetails[key] = PledgeDetail(
-    //     valueArr: hashesIterable,
-    //   );
-    // });
-
-    // dynamic is Map<String, List<String>> : TODO: fix this
-    List<dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
-    // [ { "q1": ["h1", "h2"] }, { "q2": ["q2h1"] } ]
-    // [ pl.. ]
-    for (var pl in pledgeDetailsDynamic) {
-      var key = pl.keys.first; // q1
-      List<dynamic> hashes = pl[key];
-
-      pledgeDetails[key] = PledgeDetail(
-        valueArr: hashes.map((e) => e.toString()).toList(),
-      );
-    }
-
+    var responseJson = jsonDecode(response.body);
+    var hashForSign = responseJson['result']['hash'];
     return RequestTransactionPayloadRes(
-      authSenderByRecHash: responseData['authSenderByRecHash'],
-      lastObject: lastObjectIterable,
-      senderPayloadSign: responseData['senderPayloadSign'],
-      pledgeDetails: pledgeDetails,
+      hash: hashForSign
     );
+
+    
+
+
+    // var responseData = getRubixResponseJson(response);
+    // List<dynamic> lastObjectDynamic = responseData['lastObject'];
+
+    // Iterable<TransactionLastObject> lastObjectIterable = lastObjectDynamic
+    //     .map((e) => TransactionLastObject(hash: e['hash'], token: e['token']))
+    //     .toList();
+
+    // // Map<String, dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
+    // Map<String, PledgeDetail> pledgeDetails = {};
+
+    // // pledgeDetailsDynamic.forEach((key, value) {
+    // //   List<dynamic> hashes = value;
+
+    // //   Iterable<String> hashesIterable = hashes.map((e) => e.toString());
+    // //   pledgeDetails[key] = PledgeDetail(
+    // //     valueArr: hashesIterable,
+    // //   );
+    // // });
+
+    // // dynamic is Map<String, List<String>> : TODO: fix this
+    // List<dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
+    // // [ { "q1": ["h1", "h2"] }, { "q2": ["q2h1"] } ]
+    // // [ pl.. ]
+    // for (var pl in pledgeDetailsDynamic) {
+    //   var key = pl.keys.first; // q1
+    //   List<dynamic> hashes = pl[key];
+
+    //   // pledgeDetails[key] = PledgeDetail(
+    //   //   valueArr: hashes.map((e) => e.toString()).toList(),
+    //   // );
+    // }
+
+    // return RequestTransactionPayloadRes(
+    //   authSenderByRecHash: responseData['authSenderByRecHash'],
+    //   lastObject: lastObjectIterable,
+    //   senderPayloadSign: responseData['senderPayloadSign'],
+    //   pledgeDetails: pledgeDetails,
+    // );
+  }
+
+  
+  Future<Status> signResponse(
+      {required HashSigned request
+      }) async {
+
+    var signature = jsonEncode(<String, dynamic>{
+      'Signature': request.imgSign,
+      'Pixels': request.pvtSign,
+    });
+
+    
+    var bodyJsonStr = jsonEncode(<String, dynamic>{
+      'id': request.id,
+      'signature': signature,
+});
+    RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
+    var response = await http.post(
+      Uri.http(_url, '/api/sign-response'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: bodyJsonStr,
+    );
+    var responseJson = jsonDecode(response.body);
+    var status = responseJson['status'];
+    return Status(status: status);
+
+
+
   }
 
   Future<double> getAccountBalance() async {

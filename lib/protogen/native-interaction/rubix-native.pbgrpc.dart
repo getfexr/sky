@@ -26,6 +26,10 @@ class RubixServiceClient extends $grpc.Client {
       ($0.RequestTransactionPayloadReq value) => value.writeToBuffer(),
       ($core.List<$core.int> value) =>
           $0.RequestTransactionPayloadRes.fromBuffer(value));
+  static final _$signResponse = $grpc.ClientMethod<$0.HashSigned, $0.Status>(
+      '/protos.RubixService/SignResponse',
+      ($0.HashSigned value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Status.fromBuffer(value));
   static final _$finaliseTransaction =
       $grpc.ClientMethod<$0.FinaliseTransactionPayload, $0.TxnSummary>(
           '/protos.RubixService/FinaliseTransaction',
@@ -56,6 +60,11 @@ class RubixServiceClient extends $grpc.Client {
       $0.RequestTransactionPayloadReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$initiateTransaction, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Status> signResponse($0.HashSigned request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$signResponse, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.TxnSummary> finaliseTransaction(
@@ -96,6 +105,13 @@ abstract class RubixServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $0.RequestTransactionPayloadReq.fromBuffer(value),
         ($0.RequestTransactionPayloadRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.HashSigned, $0.Status>(
+        'SignResponse',
+        signResponse_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.HashSigned.fromBuffer(value),
+        ($0.Status value) => value.writeToBuffer()));
     $addMethod(
         $grpc.ServiceMethod<$0.FinaliseTransactionPayload, $0.TxnSummary>(
             'FinaliseTransaction',
@@ -134,6 +150,11 @@ abstract class RubixServiceBase extends $grpc.Service {
     return initiateTransaction(call, await request);
   }
 
+  $async.Future<$0.Status> signResponse_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.HashSigned> request) async {
+    return signResponse(call, await request);
+  }
+
   $async.Future<$0.TxnSummary> finaliseTransaction_Pre($grpc.ServiceCall call,
       $async.Future<$0.FinaliseTransactionPayload> request) async {
     return finaliseTransaction(call, await request);
@@ -154,6 +175,8 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.CreateDIDReq request);
   $async.Future<$0.RequestTransactionPayloadRes> initiateTransaction(
       $grpc.ServiceCall call, $0.RequestTransactionPayloadReq request);
+  $async.Future<$0.Status> signResponse(
+      $grpc.ServiceCall call, $0.HashSigned request);
   $async.Future<$0.TxnSummary> finaliseTransaction(
       $grpc.ServiceCall call, $0.FinaliseTransactionPayload request);
   $async.Future<$0.GetTransactionLogRes> getTransactionLog(

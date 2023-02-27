@@ -12,6 +12,7 @@ class RubixService extends RubixServiceBase {
       //   pvtKeyPass: request.privateKeyPass);
 
       // await RubixLocal().sync();
+
       CreateDIDRes result = await RubixLocal().createDID(didImgFile: request.didImage, pubImgFile: request.publicShare, pubKeyFile: request.publicKey);
       print('Public Key is ${request.publicKey}');
       print(' result is $result');
@@ -23,7 +24,7 @@ class RubixService extends RubixServiceBase {
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
       } else {
-        throw GrpcError.unknown('Failed to create new hot wallet');
+        throw GrpcError.unknown('Failed to create wallet');
       }
     }
   }
@@ -33,10 +34,10 @@ class RubixService extends RubixServiceBase {
     try {
       RequestTransactionPayloadRes result = await RubixLocal().initiateTransactionPayload(
         receiver: request.receiver,
+        sender: request.sender,
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
-        pvtKeyPass: request.privateKeyPass,
       );
 
       return result;
@@ -48,6 +49,23 @@ class RubixService extends RubixServiceBase {
         throw GrpcError.invalidArgument(e.message);
       } else {
         throw GrpcError.unknown('Failed to request transaction payload');
+      }
+    }
+  }
+
+  @override
+  Future<Status> signResponse(ServiceCall call, HashSigned request){
+    try {
+      return RubixLocal().signResponse(request: request);
+      
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else {
+        throw GrpcError.unknown('Failed to sign response');
       }
     }
   }
