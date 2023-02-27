@@ -187,69 +187,25 @@ class RubixLocal {
     Map<String, dynamic> jsonResponse = jsonDecode(responseString);
     bool status = jsonResponse['status'];
     String did = "";
+    String peerId = "";
+    String result = "";
     if (status == true) {
-      RubixLog().appendLog("Did Created Successfully");
+      
       did = jsonResponse['result']['did'];
+      peerId = jsonResponse['result']['peer_id'];
+      result = '$peerId.$did' ;
+      RubixLog().appendLog("Did Created Successfully $result");
     } else {
       RubixLog().appendLog("Did Creation Failed");
     }
-    return CreateDIDRes(did: did, status: status);
+    return CreateDIDRes(did: result, status: status);
   }
 
-  setupQuorum({required String password}) async {
-    var generatedQuorumKeys = await generateQuorumKeys(password: password);
-    RubixLog().appendLog("Generated Quorum keys: $generatedQuorumKeys");
-
-    var startQuorum = await startQuorumService(password: password);
-    RubixLog().appendLog("Started Quorum service: $startQuorum");
-  }
-
-  Future<Response> generateQuorumKeys({required String password}) {
-    var bodyJson =
-        jsonEncode(<String, dynamic>{"pvtKeyPass": password, "returnKey": 0});
-
-    RubixLog().appendLog("generateQuorumKeys request: $bodyJson");
-
-    return http.post(Uri.http(_url, '/generateQuorumKeys'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: bodyJson);
-  }
-
-
-  Future<Response> startQuorumService({required String password}) {
-    var bodyJson = jsonEncode(<String, String>{"pvtKeyPass": password});
-
-    RubixLog().appendLog("startQuorumService request: $bodyJson");
-    return http.post(Uri.http(_url, '/startQuorumService'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: bodyJson);
-  }
 
   Future<Response> sync() {
     return http.post(Uri.http(_url, '/sync'));
   }
 
-  Future<bool> generateEcDSAKeys({required String password}) async {
-    var jsonBody = jsonEncode(<String, dynamic>{
-      'pvtKeyPass': password,
-      'returnKey': 0,
-    });
-
-    RubixLog().appendLog("generateEcDSAKeys request: $jsonBody");
-    var response = await http.post(Uri.http(_url, '/generateEcDSAKeys'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonBody);
-
-    RubixLog().appendLog("generateEcDSAKeys response: ${response.body}");
-
-    return jsonDecode(response.body)['status'] == "true";
-  }
 
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({
     required String receiver,
