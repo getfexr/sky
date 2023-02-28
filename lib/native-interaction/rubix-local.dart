@@ -272,10 +272,10 @@ class RubixLocal {
       {required HashSigned request
       }) async {
 
-    var signature = jsonEncode(<String, dynamic>{
+    var signature = <String, dynamic>{
       'Signature': request.pvtSign,
       'Pixels': '',
-    });
+    };
 
     
     var bodyJsonStr = jsonEncode(<String, dynamic>{
@@ -284,7 +284,7 @@ class RubixLocal {
 });
     RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
     var response = await http.post(
-      Uri.http(_url, '/api/sign-response'),
+      Uri.http(_url, '/api/signature-response'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
