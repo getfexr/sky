@@ -146,6 +146,17 @@ const Status$json = const {
 
 /// Descriptor for `Status`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List statusDescriptor = $convert.base64Decode('CgZTdGF0dXMSFgoGc3RhdHVzGAEgASgIUgZzdGF0dXM=');
+@$core.Deprecated('Use generateReqDescriptor instead')
+const GenerateReq$json = const {
+  '1': 'GenerateReq',
+  '2': const [
+    const {'1': 'tokenCount', '3': 1, '4': 1, '5': 1, '10': 'tokenCount'},
+    const {'1': 'did', '3': 2, '4': 1, '5': 9, '10': 'did'},
+  ],
+};
+
+/// Descriptor for `GenerateReq`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List generateReqDescriptor = $convert.base64Decode('CgtHZW5lcmF0ZVJlcRIeCgp0b2tlbkNvdW50GAEgASgBUgp0b2tlbkNvdW50EhAKA2RpZBgCIAEoCVIDZGlk');
 @$core.Deprecated('Use finaliseTransactionPayloadDescriptor instead')
 const FinaliseTransactionPayload$json = const {
   '1': 'FinaliseTransactionPayload',

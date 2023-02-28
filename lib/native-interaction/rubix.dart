@@ -122,5 +122,24 @@ class RubixService extends RubixServiceBase {
       }
     }
   }
+  
+  @override
+  Future<RequestTransactionPayloadRes> generateRbt(ServiceCall call, GenerateReq request) {
+    try{
+      return RubixLocal().generateTestRbt(
+        did: request.did,
+        tokenCount: request.tokenCount,
+      );
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else {
+        throw GrpcError.unknown('Failed to generate RBT');
+      }
+    }
+  }
 }
 

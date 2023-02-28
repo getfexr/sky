@@ -813,6 +813,67 @@ class Status extends $pb.GeneratedMessage {
   void clearStatus() => clearField(1);
 }
 
+class GenerateReq extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GenerateReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tokenCount', $pb.PbFieldType.OD, protoName: 'tokenCount')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'did')
+    ..hasRequiredFields = false
+  ;
+
+  GenerateReq._() : super();
+  factory GenerateReq({
+    $core.double? tokenCount,
+    $core.String? did,
+  }) {
+    final _result = create();
+    if (tokenCount != null) {
+      _result.tokenCount = tokenCount;
+    }
+    if (did != null) {
+      _result.did = did;
+    }
+    return _result;
+  }
+  factory GenerateReq.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GenerateReq.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GenerateReq clone() => GenerateReq()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GenerateReq copyWith(void Function(GenerateReq) updates) => super.copyWith((message) => updates(message as GenerateReq)) as GenerateReq; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GenerateReq create() => GenerateReq._();
+  GenerateReq createEmptyInstance() => create();
+  static $pb.PbList<GenerateReq> createRepeated() => $pb.PbList<GenerateReq>();
+  @$core.pragma('dart2js:noInline')
+  static GenerateReq getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GenerateReq>(create);
+  static GenerateReq? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get tokenCount => $_getN(0);
+  @$pb.TagNumber(1)
+  set tokenCount($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTokenCount() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTokenCount() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get did => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set did($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDid() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDid() => clearField(2);
+}
+
 class FinaliseTransactionPayload extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'FinaliseTransactionPayload', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOM<SignedHash>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'authSenderByRecHash', protoName: 'authSenderByRecHash', subBuilder: SignedHash.create)

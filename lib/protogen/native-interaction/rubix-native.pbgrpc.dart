@@ -35,6 +35,12 @@ class RubixServiceClient extends $grpc.Client {
           '/protos.RubixService/FinaliseTransaction',
           ($0.FinaliseTransactionPayload value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.TxnSummary.fromBuffer(value));
+  static final _$generateRbt =
+      $grpc.ClientMethod<$0.GenerateReq, $0.RequestTransactionPayloadRes>(
+          '/protos.RubixService/GenerateRbt',
+          ($0.GenerateReq value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.RequestTransactionPayloadRes.fromBuffer(value));
   static final _$getTransactionLog =
       $grpc.ClientMethod<$0.GetTransactionLogReq, $0.GetTransactionLogRes>(
           '/protos.RubixService/GetTransactionLog',
@@ -71,6 +77,12 @@ class RubixServiceClient extends $grpc.Client {
       $0.FinaliseTransactionPayload request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$finaliseTransaction, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RequestTransactionPayloadRes> generateRbt(
+      $0.GenerateReq request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$generateRbt, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.GetTransactionLogRes> getTransactionLog(
@@ -122,6 +134,14 @@ abstract class RubixServiceBase extends $grpc.Service {
                 $0.FinaliseTransactionPayload.fromBuffer(value),
             ($0.TxnSummary value) => value.writeToBuffer()));
     $addMethod(
+        $grpc.ServiceMethod<$0.GenerateReq, $0.RequestTransactionPayloadRes>(
+            'GenerateRbt',
+            generateRbt_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) => $0.GenerateReq.fromBuffer(value),
+            ($0.RequestTransactionPayloadRes value) => value.writeToBuffer()));
+    $addMethod(
         $grpc.ServiceMethod<$0.GetTransactionLogReq, $0.GetTransactionLogRes>(
             'GetTransactionLog',
             getTransactionLog_Pre,
@@ -160,6 +180,11 @@ abstract class RubixServiceBase extends $grpc.Service {
     return finaliseTransaction(call, await request);
   }
 
+  $async.Future<$0.RequestTransactionPayloadRes> generateRbt_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.GenerateReq> request) async {
+    return generateRbt(call, await request);
+  }
+
   $async.Future<$0.GetTransactionLogRes> getTransactionLog_Pre(
       $grpc.ServiceCall call,
       $async.Future<$0.GetTransactionLogReq> request) async {
@@ -179,6 +204,8 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.HashSigned request);
   $async.Future<$0.TxnSummary> finaliseTransaction(
       $grpc.ServiceCall call, $0.FinaliseTransactionPayload request);
+  $async.Future<$0.RequestTransactionPayloadRes> generateRbt(
+      $grpc.ServiceCall call, $0.GenerateReq request);
   $async.Future<$0.GetTransactionLogRes> getTransactionLog(
       $grpc.ServiceCall call, $0.GetTransactionLogReq request);
   $async.Future<$0.GetBalanceRes> getBalance(

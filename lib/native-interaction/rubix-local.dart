@@ -202,11 +202,6 @@ class RubixLocal {
   }
 
 
-  Future<Response> sync() {
-    return http.post(Uri.http(_url, '/sync'));
-  }
-
-
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({
     required String receiver,
     required String sender,
@@ -214,7 +209,6 @@ class RubixLocal {
     String? comment,
     required int type,
   }) async {
-    await sync();
 
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
@@ -240,61 +234,47 @@ class RubixLocal {
 
     var responseJson = jsonDecode(response.body);
     var hashForSign = responseJson['result']['hash'];
+    var requestId = responseJson['result']['id'];
     return RequestTransactionPayloadRes(
+      requestId: requestId ,
       hash: hashForSign
     );
 
-    
-
-
-    // var responseData = getRubixResponseJson(response);
-    // List<dynamic> lastObjectDynamic = responseData['lastObject'];
-
-    // Iterable<TransactionLastObject> lastObjectIterable = lastObjectDynamic
-    //     .map((e) => TransactionLastObject(hash: e['hash'], token: e['token']))
-    //     .toList();
-
-    // // Map<String, dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
-    // Map<String, PledgeDetail> pledgeDetails = {};
-
-    // // pledgeDetailsDynamic.forEach((key, value) {
-    // //   List<dynamic> hashes = value;
-
-    // //   Iterable<String> hashesIterable = hashes.map((e) => e.toString());
-    // //   pledgeDetails[key] = PledgeDetail(
-    // //     valueArr: hashesIterable,
-    // //   );
-    // // });
-
-    // // dynamic is Map<String, List<String>> : TODO: fix this
-    // List<dynamic> pledgeDetailsDynamic = responseData['pledgeDetails'];
-    // // [ { "q1": ["h1", "h2"] }, { "q2": ["q2h1"] } ]
-    // // [ pl.. ]
-    // for (var pl in pledgeDetailsDynamic) {
-    //   var key = pl.keys.first; // q1
-    //   List<dynamic> hashes = pl[key];
-
-    //   // pledgeDetails[key] = PledgeDetail(
-    //   //   valueArr: hashes.map((e) => e.toString()).toList(),
-    //   // );
-    // }
-
-    // return RequestTransactionPayloadRes(
-    //   authSenderByRecHash: responseData['authSenderByRecHash'],
-    //   lastObject: lastObjectIterable,
-    //   senderPayloadSign: responseData['senderPayloadSign'],
-    //   pledgeDetails: pledgeDetails,
-    // );
   }
 
+  Future<RequestTransactionPayloadRes> generateTestRbt({required String did, required double tokenCount}) async{
+  var bodyJsonStr = jsonEncode(<String, dynamic>{
+      'number_of_tokens': tokenCount.ceil(),
+      'did': did,
+    });
+
+    RubixLog()
+        .appendLog("generateTestRbt request to rubix: $bodyJsonStr");
+        
+        var response = await http.post(
+      Uri.http(_url, '/api/generate-test-token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+        body: bodyJsonStr,
+        );
+        RubixLog().appendLog("generateTestRbt response from rubix: ${response.body}");
+        var responseJson = jsonDecode(response.body);
+        var hashForSign = responseJson['result']['hash'];
+        var requestId = responseJson['result']['id'];
+        return RequestTransactionPayloadRes(
+        requestId: requestId,
+          hash: hashForSign
+        );
+  }
   
   Future<Status> signResponse(
       {required HashSigned request
       }) async {
 
     var signature = jsonEncode(<String, dynamic>{
-      'Signature': request.imgSign,
-      'Pixels': request.pvtSign,
+      'Signature': request.pvtSign,
+      'Pixels': '',
     });
 
     
