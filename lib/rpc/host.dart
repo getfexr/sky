@@ -27,8 +27,8 @@ Future<HostRes> handleHostRequest(
     required f0}) async {
   // Verify sign of otp, using address and f0s
   try {
-   // await OTPManager().assertOTP(otp);
-  //  await OTPManager().deleteOTP(otp);
+   await OTPManager().assertOTP(otp);
+   await OTPManager().deleteOTP(otp);
 
     return generateAccessTokenRefreshToken(address, f0);
   } on AssertionError catch (e) {
