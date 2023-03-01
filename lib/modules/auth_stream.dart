@@ -1,22 +1,19 @@
 import 'dart:async';
+import 'package:sky/modules/jwt.dart';
 import 'package:sky/protogen/external/external-listener.pbgrpc.dart'
     as external_listener;
-
-
-
 class AuthApprovalStream {
-  final StreamController<bool>
+  final StreamController<Token>
       _authApprovalStreamController =
-      StreamController<bool>.broadcast();
-      
-  Stream<bool> get authApprovalStream =>
+      StreamController<Token>.broadcast();
+
+  Stream<Token> get authApprovalStream =>
       _authApprovalStreamController.stream;
 
-  void approveBrowser() {
-    _authApprovalStreamController.add(true);
+  void approveBrowser(String uuid) {
+    _authApprovalStreamController.add(ExternalAccessToken.get(uuid: uuid, scope: ["*"]));
     //  close stream
-    // _authApprovalStreamController.close();
-    
+    _authApprovalStreamController.close();
   }
 }
 
@@ -33,24 +30,23 @@ class AuthenticationStream {
 
   AuthenticationStream._internal();
 
-  final StreamController<external_listener.Authenticate>
+  final StreamController<external_listener.AuthPayload>
       _authenticateStreamController =
-      StreamController<external_listener.Authenticate>.broadcast();
+      StreamController<external_listener.AuthPayload>.broadcast();
 
-  Stream<external_listener.Authenticate> get authenticateStream =>
+  Stream<external_listener.AuthPayload> get authenticateStream =>
       _authenticateStreamController.stream;
 
-  void addAuthenticate(external_listener.Authenticate authenticate) {
+  void addAuthenticate(external_listener.AuthPayload authenticate) {
     _authenticateStreamController.add(authenticate);
-    pending[authenticate.browserId] = AuthApprovalStream();
+    pending[authenticate.uuid] = AuthApprovalStream();
   }
 
-  Future<bool> getResult(String browserId) {
-    Stream<bool> stream = pending[browserId]!.authApprovalStream;
-    return stream.first;
+  Stream<Token> getApprovedToken(String uuid) {
+    return pending[uuid]!.authApprovalStream;
   }
 
-  void approveBrowser(String browserId) {
-    pending[browserId]!.approveBrowser();
+  void approveBrowser(String uuid) {
+    pending[uuid]!.approveBrowser(uuid);
   }
 }

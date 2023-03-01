@@ -131,65 +131,98 @@ class TransactionRes extends $pb.GeneratedMessage {
   void clearStatus() => clearField(1);
 }
 
-class Authenticate extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Authenticate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'browserId', protoName: 'browserId')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'signedBrowserId', protoName: 'signedBrowserId')
+class AuthPayload extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AuthPayload', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uuid')
     ..hasRequiredFields = false
   ;
 
-  Authenticate._() : super();
-  factory Authenticate({
-    $core.String? browserId,
-    $core.String? signedBrowserId,
+  AuthPayload._() : super();
+  factory AuthPayload({
+    $core.String? uuid,
   }) {
     final _result = create();
-    if (browserId != null) {
-      _result.browserId = browserId;
-    }
-    if (signedBrowserId != null) {
-      _result.signedBrowserId = signedBrowserId;
+    if (uuid != null) {
+      _result.uuid = uuid;
     }
     return _result;
   }
-  factory Authenticate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Authenticate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  factory AuthPayload.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AuthPayload.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Authenticate clone() => Authenticate()..mergeFromMessage(this);
+  AuthPayload clone() => AuthPayload()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Authenticate copyWith(void Function(Authenticate) updates) => super.copyWith((message) => updates(message as Authenticate)) as Authenticate; // ignore: deprecated_member_use
+  AuthPayload copyWith(void Function(AuthPayload) updates) => super.copyWith((message) => updates(message as AuthPayload)) as AuthPayload; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static Authenticate create() => Authenticate._();
-  Authenticate createEmptyInstance() => create();
-  static $pb.PbList<Authenticate> createRepeated() => $pb.PbList<Authenticate>();
+  static AuthPayload create() => AuthPayload._();
+  AuthPayload createEmptyInstance() => create();
+  static $pb.PbList<AuthPayload> createRepeated() => $pb.PbList<AuthPayload>();
   @$core.pragma('dart2js:noInline')
-  static Authenticate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Authenticate>(create);
-  static Authenticate? _defaultInstance;
+  static AuthPayload getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AuthPayload>(create);
+  static AuthPayload? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get browserId => $_getSZ(0);
+  $core.String get uuid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set browserId($core.String v) { $_setString(0, v); }
+  set uuid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasBrowserId() => $_has(0);
+  $core.bool hasUuid() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBrowserId() => clearField(1);
+  void clearUuid() => clearField(1);
+}
 
-  @$pb.TagNumber(2)
-  $core.String get signedBrowserId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set signedBrowserId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSignedBrowserId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSignedBrowserId() => clearField(2);
+class QRData extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'QRData', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'data')
+    ..hasRequiredFields = false
+  ;
+
+  QRData._() : super();
+  factory QRData({
+    $core.String? data,
+  }) {
+    final _result = create();
+    if (data != null) {
+      _result.data = data;
+    }
+    return _result;
+  }
+  factory QRData.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory QRData.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  QRData clone() => QRData()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  QRData copyWith(void Function(QRData) updates) => super.copyWith((message) => updates(message as QRData)) as QRData; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static QRData create() => QRData._();
+  QRData createEmptyInstance() => create();
+  static $pb.PbList<QRData> createRepeated() => $pb.PbList<QRData>();
+  @$core.pragma('dart2js:noInline')
+  static QRData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<QRData>(create);
+  static QRData? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get data => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set data($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasData() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearData() => clearField(1);
 }
 
 class ApproveBrowserRes extends $pb.GeneratedMessage {

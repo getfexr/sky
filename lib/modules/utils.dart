@@ -1,3 +1,6 @@
+import 'package:shelf/shelf.dart';
+import 'dart:convert';
+
 String getRemainingTimeString(DateTime time) {
   var now = DateTime.now();
   var diff = time.difference(now);
@@ -17,4 +20,8 @@ String getRemainingTimeString(DateTime time) {
   } else {
     return '${secs}s';
   }
+}
+
+dynamic readAsJSONfromShelfRequest(Request request) async {
+  return json.decode(await (request.readAsString()));
 }

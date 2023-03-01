@@ -97,14 +97,15 @@ class RefreshToken {
 class ExternalAccessToken {
   static final int _externalAccessMaxAge = 10; // days
 
-  static Token get({ required String browserId}) {
+  static Token get({ required String uuid, required List<String> scope }) {
 
     final JwtClaim claimSet = JwtClaim(
       issuer: _issuer,
-      subject: browserId,
+      subject: uuid,
       maxAge: Duration(days: _externalAccessMaxAge),
       otherClaims: {
         'type': _TokenType.externalAccess.toString(),
+        'scope': scope,
       }
     );
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);

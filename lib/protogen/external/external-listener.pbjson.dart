@@ -30,17 +30,26 @@ const TransactionRes$json = const {
 
 /// Descriptor for `TransactionRes`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List transactionResDescriptor = $convert.base64Decode('Cg5UcmFuc2FjdGlvblJlcxIWCgZzdGF0dXMYASABKAlSBnN0YXR1cw==');
-@$core.Deprecated('Use authenticateDescriptor instead')
-const Authenticate$json = const {
-  '1': 'Authenticate',
+@$core.Deprecated('Use authPayloadDescriptor instead')
+const AuthPayload$json = const {
+  '1': 'AuthPayload',
   '2': const [
-    const {'1': 'browserId', '3': 1, '4': 1, '5': 9, '10': 'browserId'},
-    const {'1': 'signedBrowserId', '3': 2, '4': 1, '5': 9, '10': 'signedBrowserId'},
+    const {'1': 'uuid', '3': 1, '4': 1, '5': 9, '10': 'uuid'},
   ],
 };
 
-/// Descriptor for `Authenticate`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List authenticateDescriptor = $convert.base64Decode('CgxBdXRoZW50aWNhdGUSHAoJYnJvd3NlcklkGAEgASgJUglicm93c2VySWQSKAoPc2lnbmVkQnJvd3NlcklkGAIgASgJUg9zaWduZWRCcm93c2VySWQ=');
+/// Descriptor for `AuthPayload`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List authPayloadDescriptor = $convert.base64Decode('CgtBdXRoUGF5bG9hZBISCgR1dWlkGAEgASgJUgR1dWlk');
+@$core.Deprecated('Use qRDataDescriptor instead')
+const QRData$json = const {
+  '1': 'QRData',
+  '2': const [
+    const {'1': 'data', '3': 1, '4': 1, '5': 9, '10': 'data'},
+  ],
+};
+
+/// Descriptor for `QRData`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List qRDataDescriptor = $convert.base64Decode('CgZRUkRhdGESEgoEZGF0YRgBIAEoCVIEZGF0YQ==');
 @$core.Deprecated('Use approveBrowserResDescriptor instead')
 const ApproveBrowserRes$json = const {
   '1': 'ApproveBrowserRes',

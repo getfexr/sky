@@ -21,15 +21,10 @@ class ExternalListenerServiceClient extends $grpc.Client {
           ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.TransactionDetails.fromBuffer(value));
-  static final _$streamAuthenticateRequest =
-      $grpc.ClientMethod<$0.Empty, $1.Authenticate>(
-          '/protos.ExternalListenerService/StreamAuthenticateRequest',
-          ($0.Empty value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $1.Authenticate.fromBuffer(value));
   static final _$approveBrowser =
-      $grpc.ClientMethod<$1.Authenticate, $1.ApproveBrowserRes>(
+      $grpc.ClientMethod<$1.QRData, $1.ApproveBrowserRes>(
           '/protos.ExternalListenerService/ApproveBrowser',
-          ($1.Authenticate value) => value.writeToBuffer(),
+          ($1.QRData value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.ApproveBrowserRes.fromBuffer(value));
 
@@ -46,16 +41,7 @@ class ExternalListenerServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseStream<$1.Authenticate> streamAuthenticateRequest(
-      $0.Empty request,
-      {$grpc.CallOptions? options}) {
-    return $createStreamingCall(
-        _$streamAuthenticateRequest, $async.Stream.fromIterable([request]),
-        options: options);
-  }
-
-  $grpc.ResponseFuture<$1.ApproveBrowserRes> approveBrowser(
-      $1.Authenticate request,
+  $grpc.ResponseFuture<$1.ApproveBrowserRes> approveBrowser($1.QRData request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$approveBrowser, request, options: options);
   }
@@ -72,19 +58,12 @@ abstract class ExternalListenerServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($1.TransactionDetails value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $1.Authenticate>(
-        'StreamAuthenticateRequest',
-        streamAuthenticateRequest_Pre,
-        false,
-        true,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($1.Authenticate value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.Authenticate, $1.ApproveBrowserRes>(
+    $addMethod($grpc.ServiceMethod<$1.QRData, $1.ApproveBrowserRes>(
         'ApproveBrowser',
         approveBrowser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.Authenticate.fromBuffer(value),
+        ($core.List<$core.int> value) => $1.QRData.fromBuffer(value),
         ($1.ApproveBrowserRes value) => value.writeToBuffer()));
   }
 
@@ -93,20 +72,13 @@ abstract class ExternalListenerServiceBase extends $grpc.Service {
     yield* streamTransactionRequest(call, await request);
   }
 
-  $async.Stream<$1.Authenticate> streamAuthenticateRequest_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async* {
-    yield* streamAuthenticateRequest(call, await request);
-  }
-
   $async.Future<$1.ApproveBrowserRes> approveBrowser_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.Authenticate> request) async {
+      $grpc.ServiceCall call, $async.Future<$1.QRData> request) async {
     return approveBrowser(call, await request);
   }
 
   $async.Stream<$1.TransactionDetails> streamTransactionRequest(
       $grpc.ServiceCall call, $0.Empty request);
-  $async.Stream<$1.Authenticate> streamAuthenticateRequest(
-      $grpc.ServiceCall call, $0.Empty request);
   $async.Future<$1.ApproveBrowserRes> approveBrowser(
-      $grpc.ServiceCall call, $1.Authenticate request);
+      $grpc.ServiceCall call, $1.QRData request);
 }

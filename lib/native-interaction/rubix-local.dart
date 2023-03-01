@@ -134,7 +134,7 @@ class RubixLocal {
     String peerId = "";
     String result = "";
     if (status == true) {
-      
+
       did = jsonResponse['result']['did'];
       peerId = jsonResponse['result']['peer_id'];
       result = '$peerId.$did' ;
@@ -194,7 +194,7 @@ class RubixLocal {
 
     RubixLog()
         .appendLog("generateTestRbt request to rubix: $bodyJsonStr");
-        
+
         var response = await http.post(
       Uri.http(_url, '/api/generate-test-token'),
       headers: <String, String>{
@@ -211,7 +211,7 @@ class RubixLocal {
           hash: hashForSign
         );
   }
-  
+
   Future<Status> signResponse(
       {required HashSigned request
       }) async {
@@ -221,7 +221,7 @@ class RubixLocal {
       'Pixels': request.imgSign,
     };
 
-    
+
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'id': request.id,
       'signature': signature,

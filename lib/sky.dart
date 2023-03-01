@@ -1,5 +1,6 @@
 import 'package:grpc/grpc.dart';
 import 'package:sky/background.dart';
+import 'package:sky/modules/shelf_router.dart' as rest_router;
 import 'package:sky/native-interaction/rubix.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/sky.pbgrpc.dart';
@@ -107,20 +108,25 @@ class SkyService extends SkyServiceBase {
 }
 
 void startRPCDaemon() async {
-  final server = Server(
+  final grpcServer = Server(
     [
       SkyService(),
       RubixService(),
       ExternalListenerService(),
-      ExternalService(),
     ],
     [
       authMiddleware,
     ],    // CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );
   final port = Config().port;
-  await server.serve(port: port);
-  print('\nSky RPC daemon started on port $port');
+  await Future.wait(
+    [
+      grpcServer.serve(port: port),
+      rest_router.init(port: port + 1),
+    ],
+  );
+  print('\nSky GRPC daemon started on port $port');
+  print('Sky REST daemon started on port ${port + 1}');
   skyInfo();
 }
 
