@@ -2,42 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:sky/config.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
-class SignedHashForJson {
-  late String hash;
-  late String sign;
-  SignedHashForJson(SignedHash signedHash) {
-    hash = signedHash.hash;
-    sign = signedHash.sign;
-  }
-  toJson() {
-    return {
-      'hash': hash,
-      'sign': sign,
-    };
-  }
-}
 
-class TransactionLastObjectForJson {
-  final String hash;
-  final String token;
-  final String chainSign;
-  TransactionLastObjectForJson(TransactionLastObjectSigned t)
-      : hash = t.hash,
-        token = t.token,
-        chainSign = t.chainSign;
-
-  toJson() {
-    return {
-      'hash': hash,
-      'token': token,
-      'chainSign': chainSign,
-    };
-  }
-}
 
 class RubixException implements Exception {
   late String message;
@@ -130,9 +98,7 @@ class RubixLocal {
 
   RubixLocal._internal();
 
- // final String _url = Config().rubixEndpoint;
-  final String _url = 'localhost:20007';
-  //TODO:Support multiple ports
+  final String _url = Config().rubixEndpoint;
 
   Future<CreateDIDRes> createDID(
       {required String didImgFile,
@@ -149,36 +115,14 @@ class RubixLocal {
       'PubImgFile': pubShareFileName,
       'PubKeyFile': pubKeyFileName,
     });
-    // String publickey1 = pubKeyFile;
-    // print(publickey1);
-    // var base64decode = base64.decode(publickey1);
-    // print(base64decode);
-    // var string = String.fromCharCodes(base64decode);
-    // print(string);
-    //convert publicKeyFile to Uint8List
-    //  var pub = pubKeyFile.codeUnits as List<int>;
-    //  print(pub);
-  //    var pubKeyFile1 = Uint8List.fromList(pubKeyFile);
-  //    print(pubKeyFile1);
-  //    //convert publicKeyFile to String
-     
-  //   //  print(utf82);
-    
-  //  //   print(string);
-  //   var publickeystring = String.fromCharCodes(pubKeyFile1);
-  //   var utf82 = utf8.encode(publickeystring);
-  //     var string = utf8.decode(utf82);
-  //   print(utf82);
-  //   print(publickeystring);
-  // var string = encodekey(pubKeyFile);
     request.files.add(http.MultipartFile.fromBytes(
         'did_image', base64.decode(didImgFile),
         filename: didFileName));
     request.files.add(http.MultipartFile.fromBytes(
         'pub_image', base64.decode(pubImgFile),
         filename: pubShareFileName));
-    request.files.add(http.MultipartFile.fromBytes(
-        'pub_key', base64.decode(pubKeyFile),
+    request.files.add(http.MultipartFile.fromString(
+        'pub_key', pubKeyFile,
         filename: pubKeyFileName));
 
     var response = await request.send();
@@ -274,7 +218,7 @@ class RubixLocal {
 
     var signature = <String, dynamic>{
       'Signature': request.pvtSign,
-      'Pixels': '',
+      'Pixels': request.imgSign,
     };
 
     
@@ -293,102 +237,5 @@ class RubixLocal {
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
     return Status(status: status);
-
-
-
-  }
-
-  Future<double> getAccountBalance() async {
-    var response = await http
-        .get(Uri.http(_url, '/getAccountInfo'), headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    var responseData = getRubixResponseJson(response);
-    var balance = responseData['balance'];
-    balance = balance is int ? balance.toDouble() : balance;
-
-    RubixLog().appendLog("getAccountBalance response: $balance");
-    return balance;
-  }
-
-  Future<TxnSummary> finaliseTransaction({
-    required FinaliseTransactionPayload request,
-  }) async {
-    // Map<String, List<SignedHash>> pledgeDetails = {};
-    // request.pledgeDetails.forEach((key, value) {
-    //   pledgeDetails[key] = value.valueArr;
-    // });
-    List<Map<String, List<SignedHashForJson>>> pledgeDetails = [];
-
-    request.pledgeDetails.forEach((key, value) {
-      pledgeDetails.add({
-        key: value.valueArr.map((e) => SignedHashForJson(e)).toList(),
-      });
-    });
-
-    List<TransactionLastObjectForJson> lastObjectsSigned =
-        request.lastObject.map((t) => TransactionLastObjectForJson(t)).toList();
-
-    var body = {
-      'authSenderByRecHash': request.authSenderByRecHash.sign,
-      'lastObject': lastObjectsSigned,
-      'senderPayloadSign': request.senderPayloadSign.sign,
-      'pledgeDetails': pledgeDetails,
-    };
-
-    var bodyJson = jsonEncode(body);
-
-    RubixLog().appendLog("finaliseTransaction request to RUBIX: $bodyJson");
-
-    var response = await http.post(Uri.http(_url, '/transactionFinality'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: bodyJson);
-
-    RubixLog()
-        .appendLog("finaliseTransaction response from RUBIX: ${response.body}");
-
-    var dataResponse = getRubixResponseJson(response);
-
-    TxnSummary txnSummary = TxnSummary(
-        amount: 0, // TODO: fix this
-        comment: dataResponse['message'],
-        receiver: dataResponse['receiver'],
-        sender: dataResponse['did'],
-        txnId: dataResponse['tid']);
-    return txnSummary;
-  }
-
-  Future<GetTransactionLogRes> getTransactionByCount({
-    required int count,
-  }) async {
-    var bodyJson = jsonEncode(<String, dynamic>{
-      'txnCount': count,
-    });
-
-    RubixLog().appendLog("getTransactionByCount request to RUBIX: $bodyJson");
-    var response = await http.post(Uri.http(_url, '/getTxnByCount'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: bodyJson);
-
-    RubixLog().appendLog("getTransactionByCount response: ${response.body}");
-    List<dynamic> dataResponse = getRubixResponseJson(response);
-
-    Iterable<TxnSummary> txnSummaries = dataResponse
-        .map((e) => TxnSummary(
-              txnId: e['txn'],
-              sender: e['senderDID'],
-              receiver: e['receiverDID'],
-              amount: e['amount'] is int ? e['amount'].toDouble() : e['amount'],
-              comment: e['comment'],
-            ))
-        .toList();
-
-    return GetTransactionLogRes(
-      txnLog: txnSummaries,
-    );
-  }
+ }
 }
