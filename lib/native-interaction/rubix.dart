@@ -7,11 +7,6 @@ class RubixService extends RubixServiceBase {
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
-      // CreateDIDRes result = await  RubixLocal().newHotWallet(
-      //   did: request.didImage, publicShare: request.publicShare,
-      //   pvtKeyPass: request.privateKeyPass);
-
-      // await RubixLocal().sync();
       CreateDIDRes result = await RubixLocal().createDID(didImgFile: request.didImage, pubImgFile: request.publicShare, pubKeyFile: request.publicKey);
       print('Public Key is ${request.publicKey}');
       print(' result is $result');
@@ -23,7 +18,7 @@ class RubixService extends RubixServiceBase {
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
       } else {
-        throw GrpcError.unknown('Failed to create new hot wallet');
+        throw GrpcError.unknown('Failed to create wallet');
       }
     }
   }
@@ -33,10 +28,10 @@ class RubixService extends RubixServiceBase {
     try {
       RequestTransactionPayloadRes result = await RubixLocal().initiateTransactionPayload(
         receiver: request.receiver,
+        sender: request.sender,
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
-        pvtKeyPass: request.privateKeyPass,
       );
 
       return result;
@@ -53,10 +48,10 @@ class RubixService extends RubixServiceBase {
   }
 
   @override
-  Future<TxnSummary> finaliseTransaction(ServiceCall call, FinaliseTransactionPayload request) async {
+  Future<Status> signResponse(ServiceCall call, HashSigned request){
     try {
-      TxnSummary result = await RubixLocal().finaliseTransaction(request: request);
-      return result;
+      return RubixLocal().signResponse(request: request);
+      
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -64,18 +59,18 @@ class RubixService extends RubixServiceBase {
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
       } else {
-        throw GrpcError.unknown('Failed to initiate transaction');
+        throw GrpcError.unknown('Failed to sign response');
       }
     }
   }
 
   @override
-  Future<GetTransactionLogRes> getTransactionLog(ServiceCall call, GetTransactionLogReq request) async {
-    try {
-      GetTransactionLogRes result = await RubixLocal().getTransactionByCount(
-        count: request.count
+  Future<RequestTransactionPayloadRes> generateRbt(ServiceCall call, GenerateReq request) {
+    try{
+      return RubixLocal().generateTestRbt(
+        did: request.did,
+        tokenCount: request.tokenCount,
       );
-      return result;
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -83,24 +78,7 @@ class RubixService extends RubixServiceBase {
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
       } else {
-        throw GrpcError.unknown('Failed to get transaction log');
-      }
-    }
-  }
-
-  @override
-  Future<GetBalanceRes> getBalance(ServiceCall call, Empty request) async {
-    try {
-      double balance = await RubixLocal().getAccountBalance();
-      return GetBalanceRes(balance: balance);
-    } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to get account info');
+        throw GrpcError.unknown('Failed to generate RBT');
       }
     }
   }
