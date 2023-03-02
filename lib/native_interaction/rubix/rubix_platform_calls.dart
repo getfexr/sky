@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
-
-
 
 class RubixException implements Exception {
   late String message;
@@ -41,10 +38,10 @@ class RubixLog {
   }
 }
 
-class RubixLocal {
-  static final RubixLocal _rubixLocal = RubixLocal._internal();
-  factory RubixLocal() {
-    return _rubixLocal;
+class RubixPlatform {
+  static final RubixPlatform _rubixPlatform = RubixPlatform._internal();
+  factory RubixPlatform() {
+    return _rubixPlatform;
   }
 
   static getRubixResponseJson(http.Response response) {
@@ -96,7 +93,7 @@ class RubixLocal {
     }
   }
 
-  RubixLocal._internal();
+  RubixPlatform._internal();
 
   final String _url = Config().rubixEndpoint;
 
@@ -121,8 +118,7 @@ class RubixLocal {
     request.files.add(http.MultipartFile.fromBytes(
         'pub_image', base64.decode(pubImgFile),
         filename: pubShareFileName));
-    request.files.add(http.MultipartFile.fromString(
-        'pub_key', pubKeyFile,
+    request.files.add(http.MultipartFile.fromString('pub_key', pubKeyFile,
         filename: pubKeyFileName));
 
     var response = await request.send();
@@ -134,17 +130,15 @@ class RubixLocal {
     String peerId = "";
     String result = "";
     if (status == true) {
-      
       did = jsonResponse['result']['did'];
       peerId = jsonResponse['result']['peer_id'];
-      result = '$peerId.$did' ;
+      result = '$peerId.$did';
       RubixLog().appendLog("Did Created Successfully $result");
     } else {
       RubixLog().appendLog("Did Creation Failed");
     }
     return CreateDIDRes(did: result, status: status);
   }
-
 
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({
     required String receiver,
@@ -153,7 +147,6 @@ class RubixLocal {
     String? comment,
     required int type,
   }) async {
-
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
       'sender': sender,
@@ -180,52 +173,44 @@ class RubixLocal {
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
     return RequestTransactionPayloadRes(
-      requestId: requestId ,
-      hash: hashForSign
-    );
-
+        requestId: requestId, hash: hashForSign);
   }
 
-  Future<RequestTransactionPayloadRes> generateTestRbt({required String did, required double tokenCount}) async{
-  var bodyJsonStr = jsonEncode(<String, dynamic>{
+  Future<RequestTransactionPayloadRes> generateTestRbt(
+      {required String did, required double tokenCount}) async {
+    var bodyJsonStr = jsonEncode(<String, dynamic>{
       'number_of_tokens': tokenCount.ceil(),
       'did': did,
     });
 
-    RubixLog()
-        .appendLog("generateTestRbt request to rubix: $bodyJsonStr");
-        
-        var response = await http.post(
+    RubixLog().appendLog("generateTestRbt request to rubix: $bodyJsonStr");
+
+    var response = await http.post(
       Uri.http(_url, '/api/generate-test-token'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-        body: bodyJsonStr,
-        );
-        RubixLog().appendLog("generateTestRbt response from rubix: ${response.body}");
-        var responseJson = jsonDecode(response.body);
-        var hashForSign = responseJson['result']['hash'];
-        var requestId = responseJson['result']['id'];
-        return RequestTransactionPayloadRes(
-        requestId: requestId,
-          hash: hashForSign
-        );
+      body: bodyJsonStr,
+    );
+    RubixLog()
+        .appendLog("generateTestRbt response from rubix: ${response.body}");
+    var responseJson = jsonDecode(response.body);
+    var hashForSign = responseJson['result']['hash'];
+    var requestId = responseJson['result']['id'];
+    return RequestTransactionPayloadRes(
+        requestId: requestId, hash: hashForSign);
   }
-  
-  Future<Status> signResponse(
-      {required HashSigned request
-      }) async {
 
+  Future<Status> signResponse({required HashSigned request}) async {
     var signature = <String, dynamic>{
       'Signature': request.pvtSign,
       'Pixels': request.imgSign,
     };
 
-    
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'id': request.id,
       'signature': signature,
-});
+    });
     RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
     var response = await http.post(
       Uri.http(_url, '/api/signature-response'),
@@ -237,5 +222,5 @@ class RubixLocal {
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
     return Status(status: status);
- }
+  }
 }

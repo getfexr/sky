@@ -1,13 +1,22 @@
-import 'package:sky/native-interaction/rubix-local.dart';
+import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
 
 class RubixService extends RubixServiceBase {
   @override
+  Future<ChallengeString> createDIDChallenge(ServiceCall call, Empty request) {
+    // TODO: implement createDIDChallenge
+    throw UnimplementedError();
+  }
+
+  @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
-      CreateDIDRes result = await RubixLocal().createDID(didImgFile: request.didImage, pubImgFile: request.publicShare, pubKeyFile: request.publicKey);
+      CreateDIDRes result = await RubixPlatform().createDID(
+          didImgFile: request.didImage,
+          pubImgFile: request.publicShare,
+          pubKeyFile: request.publicKey);
       print('Public Key is ${request.publicKey}');
       print(' result is $result');
       return result;
@@ -24,9 +33,11 @@ class RubixService extends RubixServiceBase {
   }
 
   @override
-  Future<RequestTransactionPayloadRes> initiateTransaction(ServiceCall call, RequestTransactionPayloadReq request) async{
+  Future<RequestTransactionPayloadRes> initiateTransaction(
+      ServiceCall call, RequestTransactionPayloadReq request) async {
     try {
-      RequestTransactionPayloadRes result = await RubixLocal().initiateTransactionPayload(
+      RequestTransactionPayloadRes result =
+          await RubixPlatform().initiateTransactionPayload(
         receiver: request.receiver,
         sender: request.sender,
         tokenCount: request.tokenCount,
@@ -48,10 +59,9 @@ class RubixService extends RubixServiceBase {
   }
 
   @override
-  Future<Status> signResponse(ServiceCall call, HashSigned request){
+  Future<Status> signResponse(ServiceCall call, HashSigned request) {
     try {
-      return RubixLocal().signResponse(request: request);
-      
+      return RubixPlatform().signResponse(request: request);
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -65,9 +75,10 @@ class RubixService extends RubixServiceBase {
   }
 
   @override
-  Future<RequestTransactionPayloadRes> generateRbt(ServiceCall call, GenerateReq request) {
-    try{
-      return RubixLocal().generateTestRbt(
+  Future<RequestTransactionPayloadRes> generateRbt(
+      ServiceCall call, GenerateReq request) {
+    try {
+      return RubixPlatform().generateTestRbt(
         did: request.did,
         tokenCount: request.tokenCount,
       );
@@ -83,4 +94,3 @@ class RubixService extends RubixServiceBase {
     }
   }
 }
-

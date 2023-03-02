@@ -3,15 +3,11 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
-import 'package:sky/models/native_interaction.dart';
-import 'package:sky/models/oracle.dart';
 import 'package:sky/settings.dart';
 import 'package:sky/sky.dart';
 
 Future<void> main(List<String> arguments) async {
   Hive.init('sky-data');
-  Hive.registerAdapter<NativeInteraction>(NativeInteractionAdapter());
-  Hive.registerAdapter<Oracle>(OracleAdapter());
 
   var keepRunning = false;
 
@@ -58,19 +54,19 @@ Future<void> main(List<String> arguments) async {
         }
         break;
       case "shutdown":
-      // TODO: implement shutdown
+        // TODO: implement shutdown
         break;
       case "list":
-      //  TODO
+        //  TODO
         break;
       case "logs":
-      // TODO
+        // TODO
         break;
       case "version":
-      // TODO
+        // TODO
         break;
       case "find":
-      //  TODO
+        //  TODO
         break;
       case "help":
         showHelp();
