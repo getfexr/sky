@@ -1,23 +1,45 @@
+import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:sky/modules/jwt.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
-import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
+import 'package:sky/modules/auth_util.dart';
 
 class RubixService extends RubixServiceBase {
   @override
-  Future<ChallengeString> createDIDChallenge(ServiceCall call, Empty request) {
-    // TODO: implement createDIDChallenge
-    throw UnimplementedError();
+  Future<ChallengeString> createDIDChallenge(
+      ServiceCall call, ChallengeReq request) {
+    try {
+      return RubixUtil().createDIDChallenge(publicKey: request.publicKey);
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else {
+        throw GrpcError.unknown('Failed to create challenge');
+      }
+    }
   }
 
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
+      String challengeToken = request.ecdsaChallengeResponse.payload;
+      JwtClaim jwtClaim = ChallengeToken.verify(challengeToken);
+      String publicKey = jwtClaim.subject!;
+      var verified = verifySignature(
+          request.ecdsaChallengeResponse.publicKey,
+          request.ecdsaChallengeResponse.payload.codeUnits,
+          request.ecdsaChallengeResponse.signature);
+
+      
       CreateDIDRes result = await RubixPlatform().createDID(
           didImgFile: request.didImage,
           pubImgFile: request.publicShare,
-          pubKeyFile: request.publicKey);
-      print('Public Key is ${request.publicKey}');
+          pubKeyFile: publicKey);
+      print('Public Key is $publicKey');
       print(' result is $result');
       return result;
     } catch (e, stackTrace) {

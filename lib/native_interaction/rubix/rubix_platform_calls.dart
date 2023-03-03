@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/modules/jwt.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
 class RubixException implements Exception {
@@ -35,6 +36,15 @@ class RubixLog {
     RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
     String dateTime = DateTime.now().toIso8601String();
     raf.writeStringSync("$dateTime :: $className \n $line \n");
+  }
+}
+
+class RubixUtil {
+  Future<ChallengeString> createDIDChallenge({required String publicKey}) {
+    final challengeToken = ChallengeToken.get(publicKey: publicKey);
+    return Future.value(ChallengeString(
+      challenge: challengeToken.token,
+    ));
   }
 }
 
@@ -100,7 +110,7 @@ class RubixPlatform {
   Future<CreateDIDRes> createDID(
       {required String didImgFile,
       required String pubImgFile,
-      required pubKeyFile}) async {
+      required String pubKeyFile}) async {
     const didFileName = 'did.png';
     const pubShareFileName = 'pubShare.png';
     const pubKeyFileName = 'pubKey.pem';

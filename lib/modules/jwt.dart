@@ -5,6 +5,7 @@ final String _secret = Config().jwtAuthSecret;
 final String _issuer = 'Fexr Sky';
 
 enum _TokenType {
+  challengeToken,
   externalAccess,
 }
 
@@ -19,6 +20,39 @@ class Token {
   Token(this.token, this.expiry);
 }
 
+class ChallengeToken {
+  static final int _challengeTokenMaxAge = 10; // minutes
+
+  static Token get({required String publicKey}) {
+    final JwtClaim claimSet = JwtClaim(
+        issuer: _issuer,
+        subject: publicKey,
+        maxAge: Duration(minutes: _challengeTokenMaxAge),
+        otherClaims: {
+          'type': _TokenType.challengeToken.toString(),
+        });
+    return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
+  }
+
+  static JwtClaim verify(String token) {
+    try {
+      final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
+
+      claim.validate(
+        issuer: _issuer,
+      );
+
+      if (_getClaimType(claim) == _TokenType.challengeToken.toString()) {
+        return claim;
+      } else {
+        throw Exception('Invalid token type');
+      }
+    } on JwtException {
+      return throw Exception('Invalid token');
+    }
+  }
+}
+
 class ExternalAccessToken {
   static final int _externalAccessMaxAge = 10; // days
 
@@ -30,13 +64,12 @@ class ExternalAccessToken {
         otherClaims: {
           'type': _TokenType.externalAccess.toString(),
         });
-    return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
+    return Token(issueJwtHS256(claimSet,_secret), claimSet.expiry!);
   }
 
   static JwtClaim verify(String token) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
-
       claim.validate(
         issuer: _issuer,
       );
