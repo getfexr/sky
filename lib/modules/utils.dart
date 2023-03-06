@@ -1,3 +1,5 @@
+import 'dart:mirrors';
+
 import 'package:grpc/grpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 
@@ -21,7 +23,6 @@ String getRemainingTimeString(DateTime time) {
     return '${secs}s';
   }
 }
-
 class BiMap<K, V> {
   final Map<K, V> _forward;
   final Map<V, K> _backward;
@@ -65,4 +66,10 @@ GrpcError getGrpcError(Object e, StackTrace stackTrace, String unknownMessage) {
   } else {
     return GrpcError.unknown(unknownMessage);
   }
+}
+
+List<ClassMirror> getImplementedAbstractClasses(dynamic obj) {
+  ClassMirror cm = reflect(obj).type;
+
+  return cm.superinterfaces.where((element) => element.isAbstract).toList();
 }
