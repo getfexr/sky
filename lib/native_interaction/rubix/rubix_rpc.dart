@@ -1,9 +1,21 @@
+import 'package:sky/modules/auth_util.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';
 
 class RubixService extends RubixServiceBase {
+  AccessTokenJWTClaim getAuthUser(ServiceCall call) {
+    try {
+      String token = extractBearerToken(call);
+      return AccesToken.verify(token);
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      throw GrpcError.unauthenticated('Invalid auth token');
+    }
+  }
+
   @override
   Future<ChallengeString> createDIDChallenge(
       ServiceCall call, ChallengeReq request) {
@@ -39,13 +51,16 @@ class RubixService extends RubixServiceBase {
   Future<RequestTransactionPayloadRes> initiateTransaction(
       ServiceCall call, RequestTransactionPayloadReq request) async {
     try {
+      var user = getAuthUser(call);
+
       RequestTransactionPayloadRes result =
           await RubixPlatform().initiateTransactionPayload(
         receiver: request.receiver,
-        sender: request.sender,
+        senderDID: user.getDid(),
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
+        peerId: user.getPeerId(),
       );
 
       return result;
@@ -55,6 +70,8 @@ class RubixService extends RubixServiceBase {
 
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
+      } else if (e is GrpcError) {
+        rethrow;
       } else {
         throw GrpcError.unknown('Failed to request transaction payload');
       }
@@ -64,7 +81,9 @@ class RubixService extends RubixServiceBase {
   @override
   Future<Status> signResponse(ServiceCall call, HashSigned request) {
     try {
-      return RubixPlatform().signResponse(request: request);
+      var user = getAuthUser(call);
+      return RubixPlatform()
+          .signResponse(request: request, peerId: user.getPeerId());
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -81,9 +100,11 @@ class RubixService extends RubixServiceBase {
   Future<RequestTransactionPayloadRes> generateRbt(
       ServiceCall call, GenerateReq request) {
     try {
+      var user = getAuthUser(call);
       return RubixPlatform().generateTestRbt(
         did: request.did,
         tokenCount: request.tokenCount,
+        peerId: user.getPeerId(),
       );
     } catch (e, stackTrace) {
       print(e);
