@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
+import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
 class RubixException implements Exception {
@@ -44,55 +46,6 @@ class RubixPlatform {
     return _rubixPlatform;
   }
 
-  static getRubixResponseJson(http.Response response) {
-    var parsed = jsonDecode(response.body);
-    if (parsed['status'] == "true") {
-      if (parsed['data'] != null) {
-        var response = parsed['data']['response'];
-        if (response is String) {
-          throw RubixException(response);
-        } else if (response is Map) {
-          var status = parsed?['data']?['response']?['status'];
-          if (status == 'Failed') {
-            var message = parsed?['data']?['response']?['message'];
-            throw RubixException(message);
-          } else {
-            return response;
-          }
-        } else {
-          return response;
-        }
-      } else {
-        throw RubixException("No data in Rubix response");
-      }
-    } else {
-      var message = parsed?['data']?['response']?['message'];
-      if (message != null) {
-        throw RubixException(message);
-      } else {
-        throw RubixException('Failed to get response from Rubix');
-      }
-    }
-  }
-
-  static getRubixAPIData(http.Response response) {
-    var parsed = jsonDecode(response.body);
-    if (parsed['status'] == "true") {
-      if (parsed['data'] != null) {
-        return parsed['data'];
-      } else {
-        throw RubixException("No data in Rubix response");
-      }
-    } else {
-      var message = parsed?['data']?['response']?['message'];
-      if (message != null) {
-        throw RubixException(message);
-      } else {
-        throw RubixException('Failed to get response from Rubix');
-      }
-    }
-  }
-
   RubixPlatform._internal();
 
   final String _url = Config().rubixEndpoint;
@@ -100,7 +53,7 @@ class RubixPlatform {
   Future<CreateDIDRes> createDID(
       {required String didImgFile,
       required String pubImgFile,
-      required pubKeyFile}) async {
+      required String pubKey}) async {
     const didFileName = 'did.png';
     const pubShareFileName = 'pubShare.png';
     const pubKeyFileName = 'pubKey.pem';
@@ -118,7 +71,7 @@ class RubixPlatform {
     request.files.add(http.MultipartFile.fromBytes(
         'pub_image', base64.decode(pubImgFile),
         filename: pubShareFileName));
-    request.files.add(http.MultipartFile.fromString('pub_key', pubKeyFile,
+    request.files.add(http.MultipartFile.fromString('pub_key', pubKey,
         filename: pubKeyFileName));
 
     var response = await request.send();
@@ -126,18 +79,24 @@ class RubixPlatform {
     RubixLog().appendLog("createDID response: $responseString");
     Map<String, dynamic> jsonResponse = jsonDecode(responseString);
     bool status = jsonResponse['status'];
-    String did = "";
-    String peerId = "";
-    String result = "";
     if (status == true) {
-      did = jsonResponse['result']['did'];
-      peerId = jsonResponse['result']['peer_id'];
-      result = '$peerId.$did';
+      String did = jsonResponse['result']['did'];
+      String peerId = jsonResponse['result']['peer_id'];
+      util.Token accessToken =
+          util.AccesToken.get(did: did, peerId: peerId, publicKey: pubKey);
+
+      String result = '$peerId.$did';
       RubixLog().appendLog("Did Created Successfully $result");
+      return CreateDIDRes(
+          did: result,
+          status: status,
+          accessToken: Token(
+              accessToken: accessToken.token,
+              expiry: Timestamp.fromDateTime(accessToken.expiry)));
     } else {
       RubixLog().appendLog("Did Creation Failed");
+      throw RubixException("Did Creation Failed");
     }
-    return CreateDIDRes(did: result, status: status);
   }
 
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({

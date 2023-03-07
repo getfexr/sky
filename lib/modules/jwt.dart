@@ -30,13 +30,12 @@ class ExternalAccessToken {
         otherClaims: {
           'type': _TokenType.externalAccess.toString(),
         });
-    return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
+    return Token(issueJwtHS256(claimSet,_secret), claimSet.expiry!);
   }
 
   static JwtClaim verify(String token) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
-
       claim.validate(
         issuer: _issuer,
       );

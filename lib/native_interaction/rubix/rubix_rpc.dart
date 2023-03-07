@@ -1,25 +1,14 @@
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
-import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
+import 'package:sky/native_interaction/rubix/rubix_util.dart';
 
 class RubixService extends RubixServiceBase {
   @override
-  Future<ChallengeString> createDIDChallenge(ServiceCall call, Empty request) {
-    // TODO: implement createDIDChallenge
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
+  Future<ChallengeString> createDIDChallenge(
+      ServiceCall call, ChallengeReq request) {
     try {
-      CreateDIDRes result = await RubixPlatform().createDID(
-          didImgFile: request.didImage,
-          pubImgFile: request.publicShare,
-          pubKeyFile: request.publicKey);
-      print('Public Key is ${request.publicKey}');
-      print(' result is $result');
-      return result;
+      return RubixUtil().createDIDChallenge(publicKey: request.publicKey);
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -27,9 +16,23 @@ class RubixService extends RubixServiceBase {
       if (e is RubixException) {
         throw GrpcError.invalidArgument(e.message);
       } else {
-        throw GrpcError.unknown('Failed to create wallet');
+        throw GrpcError.unknown('Failed to create challenge');
       }
     }
+  }
+
+  @override
+  Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
+    var challengeJWT = request.ecdsaChallengeResponse.payload;
+    RubixUtil().ecdsaVerify(
+        payload: challengeJWT,
+        signature: request.ecdsaChallengeResponse.signature);
+    var publicKeyString = ChallengeToken.getPublicKey(challengeJWT);
+    CreateDIDRes result = await RubixPlatform().createDID(
+        didImgFile: request.didImage,
+        pubImgFile: request.publicShare,
+        pubKey: publicKeyString);
+    return result;
   }
 
   @override
