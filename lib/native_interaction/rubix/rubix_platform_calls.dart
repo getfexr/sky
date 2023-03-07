@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
+import 'package:sky/modules/utils.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
 class RubixException implements Exception {
@@ -40,6 +41,48 @@ class RubixLog {
   }
 }
 
+class RubixInstance {
+  String peerId;
+  int port;
+  String url;
+  RubixInstance(this.peerId, this.port, this.url);
+}
+
+class RubixNodeBalancer {
+  RubixNodeBalancer._internal();
+  static final RubixNodeBalancer _instance = RubixNodeBalancer._internal();
+  factory RubixNodeBalancer() {
+    return _instance;
+  }
+
+  final BiMap<String, int> rubixPeerIdPortMap =
+      BiMap.fromMap(Config().rubixPeerIdPortMap);
+  int _currentPortIndex = 0;
+  // Circularly iterate through the ports
+  String getNextPeerId() {
+    var peerIds = rubixPeerIdPortMap.keys.toList();
+    var peerId = peerIds[_currentPortIndex];
+    _currentPortIndex = (_currentPortIndex + 1) % peerIds.length;
+    return peerId;
+  }
+
+  RubixInstance getRubixNode({String? peerId}) {
+    try {
+      String sPeerId;
+      if (peerId == null) {
+        // For new create DID requests, we will use the next peerId
+        sPeerId = getNextPeerId();
+      } else {
+        sPeerId = peerId;
+      }
+      var port = rubixPeerIdPortMap[sPeerId];
+      return RubixInstance(sPeerId, port, 'http://localhost:$port');
+    } catch (e) {
+      throw RubixException('Invalid peerId');
+    }
+  }
+}
+
 class RubixPlatform {
   static final RubixPlatform _rubixPlatform = RubixPlatform._internal();
   factory RubixPlatform() {
@@ -48,8 +91,6 @@ class RubixPlatform {
 
   RubixPlatform._internal();
 
-  final String _url = Config().rubixEndpoint;
-
   Future<CreateDIDRes> createDID(
       {required String didImgFile,
       required String pubImgFile,
@@ -57,8 +98,11 @@ class RubixPlatform {
     const didFileName = 'did.png';
     const pubShareFileName = 'pubShare.png';
     const pubKeyFileName = 'pubKey.pem';
-    var request =
-        http.MultipartRequest('POST', Uri.http(_url, 'api/createdid'));
+
+    var rubixNode = RubixNodeBalancer().getRubixNode();
+    var url = rubixNode.url;
+
+    var request = http.MultipartRequest('POST', Uri.http(url, 'api/createdid'));
     request.fields['did_config'] = jsonEncode({
       'Type': 2,
       'DIDImgFileName': didFileName,
@@ -101,14 +145,15 @@ class RubixPlatform {
 
   Future<RequestTransactionPayloadRes> initiateTransactionPayload({
     required String receiver,
-    required String sender,
+    required String senderDID,
     required double tokenCount,
     String? comment,
     required int type,
+    required String peerId,
   }) async {
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'receiver': receiver,
-      'sender': sender,
+      'sender': "$peerId.$senderDID",
       'tokenCOunt': tokenCount,
       'comment': comment ?? '',
       'type': 2,
@@ -118,7 +163,8 @@ class RubixPlatform {
         .appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(_url, '/api/initiate-rbt-transfer'),
+      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+          '/api/initiate-rbt-transfer'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -136,7 +182,9 @@ class RubixPlatform {
   }
 
   Future<RequestTransactionPayloadRes> generateTestRbt(
-      {required String did, required double tokenCount}) async {
+      {required String did,
+      required double tokenCount,
+      required String peerId}) async {
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'number_of_tokens': tokenCount.ceil(),
       'did': did,
@@ -145,7 +193,8 @@ class RubixPlatform {
     RubixLog().appendLog("generateTestRbt request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(_url, '/api/generate-test-token'),
+      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+          '/api/generate-test-token'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -160,7 +209,8 @@ class RubixPlatform {
         requestId: requestId, hash: hashForSign);
   }
 
-  Future<Status> signResponse({required HashSigned request}) async {
+  Future<Status> signResponse(
+      {required HashSigned request, required String peerId}) async {
     var signature = <String, dynamic>{
       'Signature': request.pvtSign,
       'Pixels': request.imgSign,
@@ -172,7 +222,8 @@ class RubixPlatform {
     });
     RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
     var response = await http.post(
-      Uri.http(_url, '/api/signature-response'),
+      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+          '/api/signature-response'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

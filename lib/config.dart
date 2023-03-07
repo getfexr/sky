@@ -184,6 +184,19 @@ class ConfigItem {
 
   String getString() => value;
   int getInt() => int.parse(value);
+  Map<K, V> getMap<K, V>() {
+    var map = <K, V>{};
+    var pairs = value.split(",");
+    for (var pair in pairs) {
+      var keyValue = pair.split(":");
+      dynamic value = keyValue[1];
+      if (V == int) {
+        value = int.parse(value);
+      }
+      map[keyValue[0] as K] = value as V;
+    }
+    return map;
+  }
 }
 
 class Config {
@@ -203,8 +216,7 @@ class Config {
   bool debugLog = false; // set via --debug flag
 
   // Rubix
-  final String rubixEndpoint = ConfigItem(
-      envVar: 'RUBIX_ENDPOINT',
-      defaultValue: 'localhost:1898',
-      validators: [RequiredValidator(), LengthValidator(3, 64)]).getString();
+  final rubixPeerIdPortMap = ConfigItem(
+      envVar: 'RUBIX_PEER_ID_PORT_MAP',
+      validators: [RequiredValidator()]).getMap<String, int>();
 }

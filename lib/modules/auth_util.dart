@@ -10,5 +10,3 @@ String extractBearerToken(ServiceCall call) {
   }
   return token;
 }
-
-

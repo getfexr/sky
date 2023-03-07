@@ -68,26 +68,61 @@ class RubixUtil {
   }
 }
 
+class AccessTokenJWTClaim extends JwtClaim {
+  AccessTokenJWTClaim({
+    required String did,
+    required DateTime expiry,
+    required String peerId,
+    required String publicKey,
+  }) : super(
+          issuer: _issuer,
+          subject: did,
+          maxAge: Duration(days: 30),
+          otherClaims: {
+            'type': _RubixTokenType.accessToken.toString(),
+            'peerId': peerId,
+            'publicKey': publicKey,
+          },
+        );
+
+  factory AccessTokenJWTClaim.fromJWTClaim(JwtClaim claim) {
+    return AccessTokenJWTClaim(
+      did: claim.subject!,
+      expiry: claim.expiry!,
+      peerId: claim.toJson()['peerId'],
+      publicKey: claim.toJson()['publicKey'],
+    );
+  }
+
+  String getDid() {
+    return subject!;
+  }
+
+  String getPeerId() {
+    return toJson()['peerId'];
+  }
+
+  String getPublicKey() {
+    return toJson()['publicKey'];
+  }
+}
+
 class AccesToken {
   static final int _accessTokenMaxAge = 30; // days
-
   static Token get(
       {required String did,
       required String peerId,
       required String publicKey}) {
-    final JwtClaim claimSet = JwtClaim(
-        issuer: _issuer,
-        subject: did,
-        maxAge: Duration(days: _accessTokenMaxAge),
-        otherClaims: {
-          'type': _RubixTokenType.accessToken.toString(),
-          'peerId': peerId,
-          'publicKey': publicKey,
-        });
+    final JwtClaim claimSet = AccessTokenJWTClaim(
+      did: did,
+      expiry: DateTime.now().add(Duration(days: _accessTokenMaxAge)),
+      peerId: peerId,
+      publicKey: publicKey,
+    );
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
-  static JwtClaim verify(String token) {
+  static AccessTokenJWTClaim verify(String token) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
       claim.validate(
@@ -95,7 +130,7 @@ class AccesToken {
       );
 
       if (_getClaimType(claim) == _RubixTokenType.accessToken.toString()) {
-        return claim;
+        return AccessTokenJWTClaim.fromJWTClaim(claim);
       } else {
         throw Exception('Invalid token type');
       }
