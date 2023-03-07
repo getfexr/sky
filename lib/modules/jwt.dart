@@ -53,6 +53,40 @@ class ChallengeToken {
   }
 }
 
+class AccesToken {
+  static final int _accessTokenMaxAge = 30; // days
+
+  static Token get({required String did, required String peerId, required String publicKey}) {
+    final JwtClaim claimSet = JwtClaim(
+        issuer: _issuer,
+        subject: did,
+        maxAge: Duration(days: _accessTokenMaxAge),
+        otherClaims: {
+          'type': _TokenType.externalAccess.toString(),
+          'peerId': peerId,
+          'publicKey': publicKey,
+        });
+    return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
+  }
+
+  static JwtClaim verify(String token) {
+    try {
+      final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
+      claim.validate(
+        issuer: _issuer,
+      );
+
+      if (_getClaimType(claim) == _TokenType.externalAccess.toString()) {
+        return claim;
+      } else {
+        throw Exception('Invalid token type');
+      }
+    } on JwtException {
+      return throw Exception('Invalid token');
+    }
+  }
+}
+
 class ExternalAccessToken {
   static final int _externalAccessMaxAge = 10; // days
 
