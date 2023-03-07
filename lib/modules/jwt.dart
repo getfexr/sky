@@ -51,6 +51,10 @@ class ChallengeToken {
       return throw Exception('Invalid token');
     }
   }
+
+  static String getPublicKey(String token) {
+    return verify(token).subject!;
+  }
 }
 
 class AccesToken {
