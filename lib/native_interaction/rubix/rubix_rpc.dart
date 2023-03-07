@@ -1,9 +1,7 @@
-
-import 'package:sky/modules/jwt.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
-import 'package:sky/modules/auth_util.dart';
+import 'package:sky/native_interaction/rubix/rubix_util.dart';
 
 class RubixService extends RubixServiceBase {
   @override
@@ -26,11 +24,10 @@ class RubixService extends RubixServiceBase {
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     var challengeJWT = request.ecdsaChallengeResponse.payload;
-    ecdsaVerify(
+    RubixUtil().ecdsaVerify(
         payload: challengeJWT,
         signature: request.ecdsaChallengeResponse.signature);
-    var publicKeyString =
-        ChallengeToken.getPublicKey(challengeJWT);
+    var publicKeyString = ChallengeToken.getPublicKey(challengeJWT);
     CreateDIDRes result = await RubixPlatform().createDID(
         didImgFile: request.didImage,
         pubImgFile: request.publicShare,

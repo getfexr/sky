@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
-import 'package:sky/modules/jwt.dart' as jwt;
+import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
@@ -37,15 +37,6 @@ class RubixLog {
     RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
     String dateTime = DateTime.now().toIso8601String();
     raf.writeStringSync("$dateTime :: $className \n $line \n");
-  }
-}
-
-class RubixUtil {
-  Future<ChallengeString> createDIDChallenge({required String publicKey}) {
-    final challengeToken = jwt.ChallengeToken.get(publicKey: publicKey);
-    return Future.value(ChallengeString(
-      challenge: challengeToken.token,
-    ));
   }
 }
 
@@ -88,17 +79,13 @@ class RubixPlatform {
     RubixLog().appendLog("createDID response: $responseString");
     Map<String, dynamic> jsonResponse = jsonDecode(responseString);
     bool status = jsonResponse['status'];
-    String did = "";
-    String peerId = "";
-    String result = "";
-    jwt.Token accessToken;
     if (status == true) {
-      did = jsonResponse['result']['did'];
-      peerId = jsonResponse['result']['peer_id'];
-      accessToken =
-          jwt.AccesToken.get(did: did, peerId: peerId, publicKey: pubKey);
+      String did = jsonResponse['result']['did'];
+      String peerId = jsonResponse['result']['peer_id'];
+      util.Token accessToken =
+          util.AccesToken.get(did: did, peerId: peerId, publicKey: pubKey);
 
-      result = '$peerId.$did';
+      String result = '$peerId.$did';
       RubixLog().appendLog("Did Created Successfully $result");
       return CreateDIDRes(
           did: result,
