@@ -56,12 +56,13 @@ const CreateDIDReq$json = const {
   '2': const [
     const {'1': 'didImage', '3': 1, '4': 1, '5': 9, '10': 'didImage'},
     const {'1': 'publicShare', '3': 2, '4': 1, '5': 9, '10': 'publicShare'},
+    const {'1': 'publicKey', '3': 3, '4': 1, '5': 9, '10': 'publicKey'},
     const {'1': 'ecdsaChallengeResponse', '3': 4, '4': 1, '5': 11, '6': '.protos.SignedPayload', '10': 'ecdsaChallengeResponse'},
   ],
 };
 
 /// Descriptor for `CreateDIDReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createDIDReqDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXESGgoIZGlkSW1hZ2UYASABKAlSCGRpZEltYWdlEiAKC3B1YmxpY1NoYXJlGAIgASgJUgtwdWJsaWNTaGFyZRJNChZlY2RzYUNoYWxsZW5nZVJlc3BvbnNlGAQgASgLMhUucHJvdG9zLlNpZ25lZFBheWxvYWRSFmVjZHNhQ2hhbGxlbmdlUmVzcG9uc2U=');
+final $typed_data.Uint8List createDIDReqDescriptor = $convert.base64Decode('CgxDcmVhdGVESURSZXESGgoIZGlkSW1hZ2UYASABKAlSCGRpZEltYWdlEiAKC3B1YmxpY1NoYXJlGAIgASgJUgtwdWJsaWNTaGFyZRIcCglwdWJsaWNLZXkYAyABKAlSCXB1YmxpY0tleRJNChZlY2RzYUNoYWxsZW5nZVJlc3BvbnNlGAQgASgLMhUucHJvdG9zLlNpZ25lZFBheWxvYWRSFmVjZHNhQ2hhbGxlbmdlUmVzcG9uc2U=');
 @$core.Deprecated('Use createDIDResDescriptor instead')
 const CreateDIDRes$json = const {
   '1': 'CreateDIDRes',
@@ -79,7 +80,6 @@ const RequestTransactionPayloadReq$json = const {
   '1': 'RequestTransactionPayloadReq',
   '2': const [
     const {'1': 'receiver', '3': 1, '4': 1, '5': 9, '10': 'receiver'},
-    const {'1': 'sender', '3': 2, '4': 1, '5': 9, '10': 'sender'},
     const {'1': 'tokenCount', '3': 3, '4': 1, '5': 1, '10': 'tokenCount'},
     const {'1': 'comment', '3': 4, '4': 1, '5': 9, '10': 'comment'},
     const {'1': 'type', '3': 5, '4': 1, '5': 5, '10': 'type'},
@@ -87,7 +87,7 @@ const RequestTransactionPayloadReq$json = const {
 };
 
 /// Descriptor for `RequestTransactionPayloadReq`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List requestTransactionPayloadReqDescriptor = $convert.base64Decode('ChxSZXF1ZXN0VHJhbnNhY3Rpb25QYXlsb2FkUmVxEhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIWCgZzZW5kZXIYAiABKAlSBnNlbmRlchIeCgp0b2tlbkNvdW50GAMgASgBUgp0b2tlbkNvdW50EhgKB2NvbW1lbnQYBCABKAlSB2NvbW1lbnQSEgoEdHlwZRgFIAEoBVIEdHlwZQ==');
+final $typed_data.Uint8List requestTransactionPayloadReqDescriptor = $convert.base64Decode('ChxSZXF1ZXN0VHJhbnNhY3Rpb25QYXlsb2FkUmVxEhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIeCgp0b2tlbkNvdW50GAMgASgBUgp0b2tlbkNvdW50EhgKB2NvbW1lbnQYBCABKAlSB2NvbW1lbnQSEgoEdHlwZRgFIAEoBVIEdHlwZQ==');
 @$core.Deprecated('Use requestTransactionPayloadResDescriptor instead')
 const RequestTransactionPayloadRes$json = const {
   '1': 'RequestTransactionPayloadRes',
@@ -132,3 +132,13 @@ const GenerateReq$json = const {
 
 /// Descriptor for `GenerateReq`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List generateReqDescriptor = $convert.base64Decode('CgtHZW5lcmF0ZVJlcRIeCgp0b2tlbkNvdW50GAEgASgBUgp0b2tlbkNvdW50EhAKA2RpZBgCIAEoCVIDZGlk');
+@$core.Deprecated('Use getBalanceResDescriptor instead')
+const GetBalanceRes$json = const {
+  '1': 'GetBalanceRes',
+  '2': const [
+    const {'1': 'balance', '3': 1, '4': 1, '5': 1, '10': 'balance'},
+  ],
+};
+
+/// Descriptor for `GetBalanceRes`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getBalanceResDescriptor = $convert.base64Decode('Cg1HZXRCYWxhbmNlUmVzEhgKB2JhbGFuY2UYASABKAFSB2JhbGFuY2U=');

@@ -11,6 +11,7 @@ import 'dart:core' as $core;
 
 import 'package:grpc/service_api.dart' as $grpc;
 import 'rubix-native.pb.dart' as $0;
+import '../google/protobuf/empty.pb.dart' as $1;
 export 'rubix-native.pb.dart';
 
 class RubixServiceClient extends $grpc.Client {
@@ -41,6 +42,10 @@ class RubixServiceClient extends $grpc.Client {
           ($0.GenerateReq value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.RequestTransactionPayloadRes.fromBuffer(value));
+  static final _$getBalance = $grpc.ClientMethod<$1.Empty, $0.GetBalanceRes>(
+      '/protos.RubixService/GetBalance',
+      ($1.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GetBalanceRes.fromBuffer(value));
 
   RubixServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -73,6 +78,11 @@ class RubixServiceClient extends $grpc.Client {
       $0.GenerateReq request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$generateRbt, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetBalanceRes> getBalance($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getBalance, request, options: options);
   }
 }
 
@@ -118,6 +128,13 @@ abstract class RubixServiceBase extends $grpc.Service {
             false,
             ($core.List<$core.int> value) => $0.GenerateReq.fromBuffer(value),
             ($0.RequestTransactionPayloadRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.GetBalanceRes>(
+        'GetBalance',
+        getBalance_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.GetBalanceRes value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ChallengeString> createDIDChallenge_Pre(
@@ -146,6 +163,11 @@ abstract class RubixServiceBase extends $grpc.Service {
     return generateRbt(call, await request);
   }
 
+  $async.Future<$0.GetBalanceRes> getBalance_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return getBalance(call, await request);
+  }
+
   $async.Future<$0.ChallengeString> createDIDChallenge(
       $grpc.ServiceCall call, $0.ChallengeReq request);
   $async.Future<$0.CreateDIDRes> createDID(
@@ -156,4 +178,6 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.HashSigned request);
   $async.Future<$0.RequestTransactionPayloadRes> generateRbt(
       $grpc.ServiceCall call, $0.GenerateReq request);
+  $async.Future<$0.GetBalanceRes> getBalance(
+      $grpc.ServiceCall call, $1.Empty request);
 }
