@@ -8,6 +8,7 @@ class RubixService extends RubixServiceBase {
   AccessTokenJWTClaim getAuthUser(ServiceCall call) {
     try {
       String token = extractBearerToken(call);
+      print('accessToken received in getAuthUser = $token');
       return AccesToken.verify(token);
     } catch (e, stackTrace) {
       print(e);

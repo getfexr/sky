@@ -2,6 +2,7 @@ import 'package:grpc/grpc.dart';
 
 String extractBearerToken(ServiceCall call) {
   var token = call.clientMetadata!['authorization'];
+  print('accessToken received = $token');
   if (token == null) {
     throw GrpcError.unauthenticated('No auth token provided');
   }
