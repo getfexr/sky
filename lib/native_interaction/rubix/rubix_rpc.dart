@@ -123,7 +123,7 @@ class RubixService extends RubixServiceBase {
   Future<GetBalanceRes> getBalance(ServiceCall call, Empty request) {
     try {
       var user = getAuthUser(call);
-      return RubixPlatform().getBalance(peerId: user.getPeerId(), did: user.getDid());
+      return RubixPlatform().getBalance(peerId: user.getPeerId(), dId: user.getDid());
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);

@@ -89,22 +89,30 @@ class RubixPlatform {
     return _rubixPlatform;
   }
 
-  Future<GetBalanceRes> getBalance({required String did, required String peerId}) async {
-    var rubixNode = RubixNodeBalancer().getRubixNode(peerId: peerId);
-    var url = rubixNode.url;
-    var response = await http.get(Uri.http(url, '/api/getbalance', {
-      'did': did,
-      'peer_id': peerId,
-    }));
-    var responseString = response.body;
-    RubixLog().appendLog("getBalance response: $responseString");
-    Map<String, dynamic> jsonResponse = jsonDecode(responseString);
-    bool status = jsonResponse['status'];
-    if (status == true) {
-      double balance = jsonResponse['result']['balance'];
-      return GetBalanceRes(balance: balance);
+   Future<GetBalanceRes> getBalance(
+      {required String dId, required String peerId}) async {
+
+    var bodyJsonStr = jsonEncode(<String, dynamic>{
+      'did': dId
+    });
+    RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
+    var response = await http.post(
+      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+          '/api/get-account-info'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: bodyJsonStr,
+    );
+    var responseJson = jsonDecode(response.body);
+    var whole = responseJson['wholeRbt'];
+    var fraction = responseJson['partRbt'];
+    if (whole != null && fraction != null) {
+      return GetBalanceRes(
+          balance: int.parse(whole) + double.parse(fraction));
     } else {
-      throw RubixException("Get Balance Failed");
+      RubixLog().appendLog("get balance failed");
+      throw RubixException("get balance failed");
     }
   }
 
