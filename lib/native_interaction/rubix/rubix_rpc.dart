@@ -104,7 +104,7 @@ class RubixService extends RubixServiceBase {
   @override
   Future<Status> signResponse(ServiceCall call, HashSigned request) {
     try {
-      var user = getAuthUser(call);
+     // var user = getAuthUser(call);
       return RubixPlatform()
           .signResponse(request: request, peerId: '12D3KooWGSoDJpCF8V9Yj2sBu41pbpKn1Kb1rWsRW4GL7Lf2J2F5');
     } catch (e, stackTrace) {

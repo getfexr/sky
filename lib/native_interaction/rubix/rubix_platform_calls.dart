@@ -83,6 +83,20 @@ class RubixNodeBalancer {
   }
 }
 
+void main(List<String> args) {
+  for (var i = 0; i< 4; i++) {
+    try {
+      RubixPlatform().createDID(
+          didImgFile: 'did.png',
+          pubImgFile: 'pubShare.png',
+          pubKey: 'pubKey.pem');
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+
 class RubixPlatform {
   static final RubixPlatform _rubixPlatform = RubixPlatform._internal();
   factory RubixPlatform() {
@@ -101,6 +115,8 @@ class RubixPlatform {
 
     var rubixNode = RubixNodeBalancer().getRubixNode();
     var url = rubixNode.url;
+
+    print("createDID url: $url");
 
     var request = http.MultipartRequest('POST', Uri.http(url, 'api/createdid'));
     request.fields['did_config'] = jsonEncode({
