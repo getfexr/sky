@@ -106,11 +106,10 @@ class RubixPlatform {
         util.AccountInfoResponse.fromJson(json.decode(responseJson));
 
     for (final accountInfo in allBalance.accountInfo) {
-      if (accountInfo.did == dId) {
+      if (accountInfo.did == dId || accountInfo.did == '') {
         print('found accountInfo for did: $dId');
         int whole = accountInfo.wholeRbt;
         int fraction = accountInfo.partRbt;
-        // convert int to double
         double wholeDouble = whole.toDouble();
         double fractionDouble = fraction.toDouble();
         double total = wholeDouble + fractionDouble;
