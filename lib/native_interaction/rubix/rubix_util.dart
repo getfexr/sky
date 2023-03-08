@@ -151,13 +151,15 @@ class ChallengeToken {
         otherClaims: {
           'type': _RubixTokenType.challengeToken.toString(),
         });
+        print('scret is $_secret');
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
   static JwtClaim verify(String token) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
-
+      print('Claim in verify ${claim.toJson()}');
+      print('_issuer in verify is $_issuer');
       claim.validate(
         issuer: _issuer,
       );

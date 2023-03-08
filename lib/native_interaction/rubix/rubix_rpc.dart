@@ -20,7 +20,10 @@ class RubixService extends RubixServiceBase {
   Future<ChallengeString> createDIDChallenge(
       ServiceCall call, ChallengeReq request) {
     try {
-      return RubixUtil().createDIDChallenge(publicKey: request.publicKey);
+      var challengeString = RubixUtil().createDIDChallenge(publicKey: request.publicKey);
+      print('1......public key is ${request.publicKey}');
+      print('1......Challenge String is $challengeString');
+            return challengeString;
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -35,16 +38,34 @@ class RubixService extends RubixServiceBase {
 
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
-    var challengeJWT = request.ecdsaChallengeResponse.payload;
-    RubixUtil().ecdsaVerify(
+    try {
+        var challengeJWT = request.ecdsaChallengeResponse.payload;
+  RubixUtil().ecdsaVerify(
         payload: challengeJWT,
         signature: request.ecdsaChallengeResponse.signature);
+        print('2......Challenge JWT $challengeJWT');
     var publicKeyString = ChallengeToken.getPublicKey(challengeJWT);
+    print('2......public key is $publicKeyString');
     CreateDIDRes result = await RubixPlatform().createDID(
         didImgFile: request.didImage,
         pubImgFile: request.publicShare,
         pubKey: publicKeyString);
+    print('2......createDIDres $result');
     return result;
+
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else if (e is GrpcError) {
+        rethrow;
+      } else {
+        throw GrpcError.unknown('Failed to createDID');
+      }
+    }
+    
   }
 
   @override
