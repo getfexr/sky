@@ -104,6 +104,7 @@ class RubixPlatform {
     print(responseJson.toString());
     util.AccountInfoResponse allBalance =
         util.AccountInfoResponse.fromJson(json.decode(responseJson));
+    print('allBalance: ${allBalance.accountInfo}');
 
     for (var accountInfo in allBalance.accountInfo) {
       if (accountInfo.did == dId || accountInfo.did == '') {
