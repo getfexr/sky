@@ -116,8 +116,8 @@ class RubixPlatform {
         double total = wholeDouble + fractionDouble;
         return GetBalanceRes(balance: total);
       }
-      return GetBalanceRes(balance: 0.0);
     }
+    return GetBalanceRes(balance: 0.000);
   }
 
   RubixPlatform._internal();
