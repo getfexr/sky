@@ -76,7 +76,7 @@ class RubixNodeBalancer {
         sPeerId = peerId;
       }
       var port = rubixPeerIdPortMap[sPeerId];
-      return RubixInstance(sPeerId, port, 'http://localhost:$port');
+      return RubixInstance(sPeerId, port, '127.0.0.1:$port');
     } catch (e) {
       throw RubixException('Invalid peerId');
     }
