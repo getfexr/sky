@@ -20,10 +20,10 @@ class RubixService extends RubixServiceBase {
   Future<ChallengeString> createDIDChallenge(
       ServiceCall call, ChallengeReq request) {
     try {
-      var challengeString = RubixUtil().createDIDChallenge(publicKey: request.publicKey);
+      var challengeString = RubixUtil().returnDIDChallenge(publicKey: request.publicKey);
       print('1......public key is ${request.publicKey}');
       print('1......Challenge String is $challengeString');
-            return challengeString;
+            return Future.value(ChallengeString(challenge: challengeString));
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -40,6 +40,7 @@ class RubixService extends RubixServiceBase {
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
         var challengeJWT = request.ecdsaChallengeResponse.payload;
+        print('2----Firstlin--------Challenge JWT $challengeJWT');
   RubixUtil().ecdsaVerify(
         payload: challengeJWT,
         signature: request.ecdsaChallengeResponse.signature);

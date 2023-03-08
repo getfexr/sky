@@ -27,11 +27,15 @@ class Token {
 }
 
 class RubixUtil {
-  Future<ChallengeString> createDIDChallenge({required String publicKey}) {
+// ChallengeString createDIDChallenge({required String publicKey}) {
+//     final challengeToken = ChallengeToken.get(publicKey: publicKey);
+//     return ChallengeString(
+//       challenge: challengeToken.token,
+//     );
+//   }
+  String returnDIDChallenge({required String publicKey}) {
     final challengeToken = ChallengeToken.get(publicKey: publicKey);
-    return Future.value(ChallengeString(
-      challenge: challengeToken.token,
-    ));
+    return challengeToken.token;
   }
 
   bool verifySignature(
