@@ -105,7 +105,7 @@ class RubixPlatform {
     util.AccountInfoResponse allBalance =
         util.AccountInfoResponse.fromJson(json.decode(responseJson));
 
-    for (final accountInfo in allBalance.accountInfo) {
+    for (var accountInfo in allBalance.accountInfo) {
       if (accountInfo.did == dId || accountInfo.did == '') {
         print('found accountInfo for did: $dId');
         int whole = accountInfo.wholeRbt;
@@ -115,6 +115,7 @@ class RubixPlatform {
         double total = wholeDouble + fractionDouble;
         return GetBalanceRes(balance: total);
       }
+      print('could not find account info for did: $dId');
     }
     return GetBalanceRes(balance: 0.000);
   }
