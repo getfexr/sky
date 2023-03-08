@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:basic_utils/basic_utils.dart';
+import 'package:basic_utils/basic_utils.dart' as basic_utils; 
+import 'package:pointycastle/pointycastle.dart';
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:pointycastle/export.dart';
 import 'package:pointycastle/signers/ecdsa_signer.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 import 'package:sky/config.dart';
@@ -64,7 +66,7 @@ class RubixUtil {
   }
 
   ECPublicKey publicKeyFromPem(String publicKeyPem) {
-    return CryptoUtils.ecPublicKeyFromPem(publicKeyPem);
+    return basic_utils.CryptoUtils.ecPublicKeyFromPem(publicKeyPem);
   }
 }
 

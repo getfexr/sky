@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $1;
+import '../google/protobuf/timestamp.pb.dart' as $2;
 
 class SignedPayload extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SignedPayload', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
@@ -169,14 +169,14 @@ class ChallengeString extends $pb.GeneratedMessage {
 class Token extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Token', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'accessToken', protoName: 'accessToken')
-    ..aOM<$1.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiry', subBuilder: $1.Timestamp.create)
+    ..aOM<$2.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'expiry', subBuilder: $2.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
   Token._() : super();
   factory Token({
     $core.String? accessToken,
-    $1.Timestamp? expiry,
+    $2.Timestamp? expiry,
   }) {
     final _result = create();
     if (accessToken != null) {
@@ -218,21 +218,22 @@ class Token extends $pb.GeneratedMessage {
   void clearAccessToken() => clearField(1);
 
   @$pb.TagNumber(2)
-  $1.Timestamp get expiry => $_getN(1);
+  $2.Timestamp get expiry => $_getN(1);
   @$pb.TagNumber(2)
-  set expiry($1.Timestamp v) { setField(2, v); }
+  set expiry($2.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasExpiry() => $_has(1);
   @$pb.TagNumber(2)
   void clearExpiry() => clearField(2);
   @$pb.TagNumber(2)
-  $1.Timestamp ensureExpiry() => $_ensure(1);
+  $2.Timestamp ensureExpiry() => $_ensure(1);
 }
 
 class CreateDIDReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CreateDIDReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'didImage', protoName: 'didImage')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'publicShare', protoName: 'publicShare')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'publicKey', protoName: 'publicKey')
     ..aOM<SignedPayload>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ecdsaChallengeResponse', protoName: 'ecdsaChallengeResponse', subBuilder: SignedPayload.create)
     ..hasRequiredFields = false
   ;
@@ -241,6 +242,7 @@ class CreateDIDReq extends $pb.GeneratedMessage {
   factory CreateDIDReq({
     $core.String? didImage,
     $core.String? publicShare,
+    $core.String? publicKey,
     SignedPayload? ecdsaChallengeResponse,
   }) {
     final _result = create();
@@ -249,6 +251,9 @@ class CreateDIDReq extends $pb.GeneratedMessage {
     }
     if (publicShare != null) {
       _result.publicShare = publicShare;
+    }
+    if (publicKey != null) {
+      _result.publicKey = publicKey;
     }
     if (ecdsaChallengeResponse != null) {
       _result.ecdsaChallengeResponse = ecdsaChallengeResponse;
@@ -294,16 +299,25 @@ class CreateDIDReq extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearPublicShare() => clearField(2);
 
+  @$pb.TagNumber(3)
+  $core.String get publicKey => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set publicKey($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasPublicKey() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPublicKey() => clearField(3);
+
   @$pb.TagNumber(4)
-  SignedPayload get ecdsaChallengeResponse => $_getN(2);
+  SignedPayload get ecdsaChallengeResponse => $_getN(3);
   @$pb.TagNumber(4)
   set ecdsaChallengeResponse(SignedPayload v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasEcdsaChallengeResponse() => $_has(2);
+  $core.bool hasEcdsaChallengeResponse() => $_has(3);
   @$pb.TagNumber(4)
   void clearEcdsaChallengeResponse() => clearField(4);
   @$pb.TagNumber(4)
-  SignedPayload ensureEcdsaChallengeResponse() => $_ensure(2);
+  SignedPayload ensureEcdsaChallengeResponse() => $_ensure(3);
 }
 
 class CreateDIDRes extends $pb.GeneratedMessage {
@@ -386,7 +400,6 @@ class CreateDIDRes extends $pb.GeneratedMessage {
 class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'RequestTransactionPayloadReq', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiver')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sender')
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tokenCount', $pb.PbFieldType.OD, protoName: 'tokenCount')
     ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'comment')
     ..a<$core.int>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.O3)
@@ -396,7 +409,6 @@ class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
   RequestTransactionPayloadReq._() : super();
   factory RequestTransactionPayloadReq({
     $core.String? receiver,
-    $core.String? sender,
     $core.double? tokenCount,
     $core.String? comment,
     $core.int? type,
@@ -404,9 +416,6 @@ class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
     final _result = create();
     if (receiver != null) {
       _result.receiver = receiver;
-    }
-    if (sender != null) {
-      _result.sender = sender;
     }
     if (tokenCount != null) {
       _result.tokenCount = tokenCount;
@@ -449,39 +458,30 @@ class RequestTransactionPayloadReq extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearReceiver() => clearField(1);
 
-  @$pb.TagNumber(2)
-  $core.String get sender => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set sender($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSender() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSender() => clearField(2);
-
   @$pb.TagNumber(3)
-  $core.double get tokenCount => $_getN(2);
+  $core.double get tokenCount => $_getN(1);
   @$pb.TagNumber(3)
-  set tokenCount($core.double v) { $_setDouble(2, v); }
+  set tokenCount($core.double v) { $_setDouble(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasTokenCount() => $_has(2);
+  $core.bool hasTokenCount() => $_has(1);
   @$pb.TagNumber(3)
   void clearTokenCount() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get comment => $_getSZ(3);
+  $core.String get comment => $_getSZ(2);
   @$pb.TagNumber(4)
-  set comment($core.String v) { $_setString(3, v); }
+  set comment($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(4)
-  $core.bool hasComment() => $_has(3);
+  $core.bool hasComment() => $_has(2);
   @$pb.TagNumber(4)
   void clearComment() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get type => $_getIZ(4);
+  $core.int get type => $_getIZ(3);
   @$pb.TagNumber(5)
-  set type($core.int v) { $_setSignedInt32(4, v); }
+  set type($core.int v) { $_setSignedInt32(3, v); }
   @$pb.TagNumber(5)
-  $core.bool hasType() => $_has(4);
+  $core.bool hasType() => $_has(3);
   @$pb.TagNumber(5)
   void clearType() => clearField(5);
 }
@@ -728,5 +728,52 @@ class GenerateReq extends $pb.GeneratedMessage {
   $core.bool hasDid() => $_has(1);
   @$pb.TagNumber(2)
   void clearDid() => clearField(2);
+}
+
+class GetBalanceRes extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GetBalanceRes', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'balance', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  GetBalanceRes._() : super();
+  factory GetBalanceRes({
+    $core.double? balance,
+  }) {
+    final _result = create();
+    if (balance != null) {
+      _result.balance = balance;
+    }
+    return _result;
+  }
+  factory GetBalanceRes.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetBalanceRes.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetBalanceRes clone() => GetBalanceRes()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetBalanceRes copyWith(void Function(GetBalanceRes) updates) => super.copyWith((message) => updates(message as GetBalanceRes)) as GetBalanceRes; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetBalanceRes create() => GetBalanceRes._();
+  GetBalanceRes createEmptyInstance() => create();
+  static $pb.PbList<GetBalanceRes> createRepeated() => $pb.PbList<GetBalanceRes>();
+  @$core.pragma('dart2js:noInline')
+  static GetBalanceRes getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetBalanceRes>(create);
+  static GetBalanceRes? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get balance => $_getN(0);
+  @$pb.TagNumber(1)
+  set balance($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBalance() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBalance() => clearField(1);
 }
 

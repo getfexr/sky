@@ -1,6 +1,7 @@
 import 'package:sky/modules/auth_util.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
+import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';
 
@@ -116,5 +117,11 @@ class RubixService extends RubixServiceBase {
         throw GrpcError.unknown('Failed to generate RBT');
       }
     }
+  }
+
+  @override
+  Future<GetBalanceRes> getBalance(ServiceCall call, Empty request) {
+    // TODO: implement getBalance
+    throw UnimplementedError();
   }
 }

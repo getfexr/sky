@@ -24,7 +24,6 @@ dependencies:
   http: ^0.13.5
   pointycastle: ^3.6.2
   basic_utils: ^5.5.1
-  fexr: ^0.9.9
 
 lint_staged:
   .dart: dart format --fix && dart fix --apply
