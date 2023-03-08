@@ -102,7 +102,6 @@ class RubixPlatform {
     );
     var responseJson = jsonDecode(response.body);
     util.AccountInfoResponse allBalance = util.AccountInfoResponse.fromJson(json.decode(responseJson));
-    final dId = 'some_did'; // the target did to find
     util.AccountInfo? targetAccountInfo;
 
     for (final accountInfo in allBalance.accountInfo) {
