@@ -5,7 +5,6 @@ import 'package:pointycastle/pointycastle.dart';
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:pointycastle/export.dart';
-import 'package:pointycastle/signers/ecdsa_signer.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 import 'package:sky/config.dart';
 
