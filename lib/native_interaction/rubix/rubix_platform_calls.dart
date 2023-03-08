@@ -89,6 +89,25 @@ class RubixPlatform {
     return _rubixPlatform;
   }
 
+  Future<GetBalanceRes> getBalance({required String did, required String peerId}) async {
+    var rubixNode = RubixNodeBalancer().getRubixNode(peerId: peerId);
+    var url = rubixNode.url;
+    var response = await http.get(Uri.http(url, '/api/getbalance', {
+      'did': did,
+      'peer_id': peerId,
+    }));
+    var responseString = response.body;
+    RubixLog().appendLog("getBalance response: $responseString");
+    Map<String, dynamic> jsonResponse = jsonDecode(responseString);
+    bool status = jsonResponse['status'];
+    if (status == true) {
+      double balance = jsonResponse['result']['balance'];
+      return GetBalanceRes(balance: balance);
+    } else {
+      throw RubixException("Get Balance Failed");
+    }
+  }
+
   RubixPlatform._internal();
 
   Future<CreateDIDRes> createDID(

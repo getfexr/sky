@@ -121,7 +121,18 @@ class RubixService extends RubixServiceBase {
 
   @override
   Future<GetBalanceRes> getBalance(ServiceCall call, Empty request) {
-    // TODO: implement getBalance
-    throw UnimplementedError();
+    try {
+      var user = getAuthUser(call);
+      return RubixPlatform().getBalance(peerId: user.getPeerId(), did: user.getDid());
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else {
+        throw GrpcError.unknown('Failed to get balance');
+      }
+    }
   }
 }
