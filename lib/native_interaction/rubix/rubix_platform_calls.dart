@@ -93,26 +93,31 @@ class RubixPlatform {
 
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
-    var bodyJsonStr = jsonEncode(<String, dynamic>{'did': dId});
-    RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
-    var response = await http.post(
+    var response = await http.get(
       Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
           '/api/get-account-info'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: bodyJsonStr,
     );
     var responseJson = jsonDecode(response.body);
-    print('getBalance response: ${responseJson.toString()}');
-    var whole = responseJson['account_info']['whole_rbt'];
-    var fraction = responseJson['account_info']['part_rbt'];
-    if (whole != null && fraction != null) {
-      return GetBalanceRes(balance: int.parse(whole) + double.parse(fraction));
-    } else {
-      RubixLog().appendLog("get balance failed");
-      throw RubixException("get balance failed");
+    util.AccountInfoResponse allBalance = util.AccountInfoResponse.fromJson(json.decode(responseJson));
+    final dId = 'some_did'; // the target did to find
+    util.AccountInfo? targetAccountInfo;
+
+    for (final accountInfo in allBalance.accountInfo) {
+      if (accountInfo.did == dId) {
+        targetAccountInfo = accountInfo;
+        break;
+      }
     }
+    int whole = targetAccountInfo?.wholeRbt ?? 0;
+    int fraction = targetAccountInfo?.partRbt ?? 0;
+    // convert int to double
+    double wholeDouble = whole.toDouble();
+    double fractionDouble = fraction.toDouble();
+    double total = wholeDouble + fractionDouble;
+    return GetBalanceRes(balance: total);
   }
 
   RubixPlatform._internal();
