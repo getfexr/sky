@@ -104,22 +104,20 @@ class RubixPlatform {
     print(responseJson.toString());
     util.AccountInfoResponse allBalance =
         util.AccountInfoResponse.fromJson(json.decode(responseJson));
-    util.AccountInfo? targetAccountInfo;
 
     for (final accountInfo in allBalance.accountInfo) {
       if (accountInfo.did == dId) {
         print('found accountInfo for did: $dId');
-        targetAccountInfo = accountInfo;
-        break;
+        int whole = accountInfo.wholeRbt;
+        int fraction = accountInfo.partRbt;
+        // convert int to double
+        double wholeDouble = whole.toDouble();
+        double fractionDouble = fraction.toDouble();
+        double total = wholeDouble + fractionDouble;
+        return GetBalanceRes(balance: total);
       }
+      return GetBalanceRes(balance: 0.0);
     }
-    int whole = targetAccountInfo?.wholeRbt ?? 0;
-    int fraction = targetAccountInfo?.partRbt ?? 0;
-    // convert int to double
-    double wholeDouble = whole.toDouble();
-    double fractionDouble = fraction.toDouble();
-    double total = wholeDouble + fractionDouble;
-    return GetBalanceRes(balance: total);
   }
 
   RubixPlatform._internal();
