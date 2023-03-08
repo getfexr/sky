@@ -105,8 +105,8 @@ class RubixPlatform {
       body: bodyJsonStr,
     );
     var responseJson = jsonDecode(response.body);
-    var whole = responseJson['wholeRbt'];
-    var fraction = responseJson['partRbt'];
+    var whole = responseJson['account_info']['wholeRbt'];
+    var fraction = responseJson['account_info']['partRbt'];
     if (whole != null && fraction != null) {
       return GetBalanceRes(
           balance: int.parse(whole) + double.parse(fraction));
