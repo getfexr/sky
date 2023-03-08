@@ -74,16 +74,16 @@ class RubixService extends RubixServiceBase {
   Future<RequestTransactionPayloadRes> initiateTransaction(
       ServiceCall call, RequestTransactionPayloadReq request) async {
     try {
-      var user = getAuthUser(call);
+   //   var user = getAuthUser(call);
 
       RequestTransactionPayloadRes result =
           await RubixPlatform().initiateTransactionPayload(
         receiver: request.receiver,
-        senderDID: user.getDid(),
+        senderDID: 'bafybmid3auqfcx7j323gvo3eik7jdd3n6wqr5s7sfwkjnhevssjzy5gv5q',
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
-        peerId: user.getPeerId(),
+        peerId: '12D3KooWGSoDJpCF8V9Yj2sBu41pbpKn1Kb1rWsRW4GL7Lf2J2F5',
       );
 
       return result;
@@ -106,7 +106,7 @@ class RubixService extends RubixServiceBase {
     try {
       var user = getAuthUser(call);
       return RubixPlatform()
-          .signResponse(request: request, peerId: user.getPeerId());
+          .signResponse(request: request, peerId: '12D3KooWGSoDJpCF8V9Yj2sBu41pbpKn1Kb1rWsRW4GL7Lf2J2F5');
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
