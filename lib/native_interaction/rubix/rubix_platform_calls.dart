@@ -229,8 +229,39 @@ class RubixPlatform {
       },
       body: bodyJsonStr,
     );
+    RubixLog()
+        .appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
     return Status(status: status);
+  }
+
+  Future<GetBalanceRes> getBalance(
+      {required String dId, required String peerId}) async {
+    var url = Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+        'api/get-account-info', {"did": dId});
+    var response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    var responseJson = jsonDecode(response.body);
+     RubixLog()
+        .appendLog("sigResponse response from rubix: $responseJson");
+
+    util.AccountInfoResponse allBalance =
+        util.AccountInfoResponse.fromJson(responseJson);
+    try {
+      var currentAccountbalance = allBalance.accountInfo[0];
+      int whole = currentAccountbalance.wholeRbt;
+      int fraction = currentAccountbalance.partRbt;
+      double wholeDouble = whole.toDouble();
+      double fractionDouble = fraction.toDouble();
+      double total = wholeDouble + fractionDouble;
+      return GetBalanceRes(balance: total);
+    } catch (e) {
+      throw RubixException('could not find account info for did: $dId');
+    }
   }
 }

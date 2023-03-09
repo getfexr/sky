@@ -5,7 +5,6 @@ import 'package:pointycastle/pointycastle.dart';
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:pointycastle/export.dart';
-import 'package:pointycastle/signers/ecdsa_signer.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 import 'package:sky/config.dart';
 
@@ -19,6 +18,66 @@ enum _RubixTokenType {
 
 String _getClaimType(JwtClaim claim) {
   return claim.toJson()['type'];
+}
+
+class AccountInfoResponse {
+  bool status;
+  String message;
+  dynamic result;
+  List<AccountInfo> accountInfo;
+
+  AccountInfoResponse({
+    required this.status,
+    required this.message,
+    required this.result,
+    required this.accountInfo,
+  });
+
+  factory AccountInfoResponse.fromJson(Map<String, dynamic> json) {
+    return AccountInfoResponse(
+      status: json['status'],
+      message: json['message'],
+      result: json['result'],
+      accountInfo: (json['account_info'] as List<dynamic>)
+          .map((item) => AccountInfo.fromJson(item))
+          .toList(),
+    );
+  }
+}
+
+class AccountInfo {
+  String did;
+  int didType;
+  int wholeRbt;
+  int pledgedWholeRbt;
+  int lockedWholeRbt;
+  int partRbt;
+  int pledgedPartRbt;
+  int lockedPartRbt;
+
+  AccountInfo({
+    required this.did,
+    required this.didType,
+    required this.wholeRbt,
+    required this.pledgedWholeRbt,
+    required this.lockedWholeRbt,
+    required this.partRbt,
+    required this.pledgedPartRbt,
+    required this.lockedPartRbt,
+  });
+
+  factory AccountInfo.fromJson(Map<String, dynamic> json) {
+    return AccountInfo(
+      did: json['did'],
+      didType: json['did_type'],
+      wholeRbt: json['whole_rbt'],
+      pledgedWholeRbt: json['pledged_whole_rbt'],
+      lockedWholeRbt: json['locked_whole_rbt'],
+      partRbt: json['part_rbt'],
+      pledgedPartRbt: json['pledged_part_rbt'],
+      lockedPartRbt: json['locked_part_rbt'],
+    );
+  }
 }
 
 class Token {
