@@ -67,7 +67,6 @@ class RubixNodeBalancer {
   }
 
   RubixInstance getRubixNode({String? peerId}) {
-    print('getRubixNode for peerId: $peerId');
     try {
       String sPeerId;
       if (peerId == null) {
@@ -77,7 +76,6 @@ class RubixNodeBalancer {
         sPeerId = peerId;
       }
       var port = rubixPeerIdPortMap[sPeerId];
-      print('getRubixNode for peerId: $peerId, port: $port');
       return RubixInstance(sPeerId, port, '127.0.0.1:$port');
     } catch (e) {
       throw RubixException('Invalid peerId');
@@ -89,56 +87,6 @@ class RubixPlatform {
   static final RubixPlatform _rubixPlatform = RubixPlatform._internal();
   factory RubixPlatform() {
     return _rubixPlatform;
-  }
-
-  Future<GetBalanceRes> getBalance(
-      {required String dId, required String peerId}) async {
-
-        print('did in getbalance is $dId');
-    var url = Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
-          'api/get-account-info', {
-            "did": dId
-          });
-        
-    print('url is $url');
-    var response = await http.get(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    var responseJson = jsonDecode(response.body);
-    print(responseJson.toString());
-
-    // {"status":true,"message":"Got account info successfully","result":null,"account_info":[{"did":"bafybmibplkygrj4cqxzlf64plc6w3lcfddinrkigntz5cn5z6z3wtqybwm","did_type":0,"whole_rbt":0,"pledged_whole_rbt":0,"locked_whole_rbt":0,"part_rbt":0,"pledged_part_rbt":0,"locked_part_rbt":0}]}
-
-    util.AccountInfoResponse allBalance =
-        util.AccountInfoResponse.fromJson(responseJson);
-    print('allBalance: ${allBalance.accountInfo}');
-    try{
-      var currentAccountbalance = allBalance.accountInfo[0];
-      int whole = currentAccountbalance.wholeRbt;
-        int fraction = currentAccountbalance.partRbt;
-        double wholeDouble = whole.toDouble();
-        double fractionDouble = fraction.toDouble();
-        double total = wholeDouble + fractionDouble;
-        return GetBalanceRes(balance: total);
-    } catch(e){
-      throw RubixException('could not find account info for did: $dId');
-    }
-    
-    //  for (var accountInfo in allBalance.accountInfo) {
-    //   if (accountInfo.did == dId || accountInfo.did == '') {
-    //     print('found accountInfo for did: $dId');
-        // int whole = currentAccountbalance.wholeRbt;
-        // int fraction = currentAccountbalance.partRbt;
-        // double wholeDouble = whole.toDouble();
-        // double fractionDouble = fraction.toDouble();
-        // double total = wholeDouble + fractionDouble;
-        // return GetBalanceRes(balance: total);
-    //   }
-    //   print('could not find account info for did: $dId');
-    // }
   }
 
   RubixPlatform._internal();
@@ -281,8 +229,39 @@ class RubixPlatform {
       },
       body: bodyJsonStr,
     );
+    RubixLog()
+        .appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
     return Status(status: status);
+  }
+
+  Future<GetBalanceRes> getBalance(
+      {required String dId, required String peerId}) async {
+    var url = Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+        'api/get-account-info', {"did": dId});
+    var response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    var responseJson = jsonDecode(response.body);
+     RubixLog()
+        .appendLog("sigResponse response from rubix: $responseJson");
+
+    util.AccountInfoResponse allBalance =
+        util.AccountInfoResponse.fromJson(responseJson);
+    try {
+      var currentAccountbalance = allBalance.accountInfo[0];
+      int whole = currentAccountbalance.wholeRbt;
+      int fraction = currentAccountbalance.partRbt;
+      double wholeDouble = whole.toDouble();
+      double fractionDouble = fraction.toDouble();
+      double total = wholeDouble + fractionDouble;
+      return GetBalanceRes(balance: total);
+    } catch (e) {
+      throw RubixException('could not find account info for did: $dId');
+    }
   }
 }
