@@ -175,8 +175,11 @@ class RubixPlatform {
         "initiateTransactionPayload response from rubix: ${response.body}");
 
     var responseJson = jsonDecode(response.body);
+    print(responseJson);
     var hashForSign = responseJson['result']['hash'];
+    print(hashForSign);
     var requestId = responseJson['result']['id'];
+    print(requestId);
     return RequestTransactionPayloadRes(
         requestId: requestId, hash: hashForSign);
   }
@@ -248,7 +251,7 @@ class RubixPlatform {
     );
     var responseJson = jsonDecode(response.body);
      RubixLog()
-        .appendLog("sigResponse response from rubix: $responseJson");
+        .appendLog("Get balance response from rubix: $responseJson");
 
     util.AccountInfoResponse allBalance =
         util.AccountInfoResponse.fromJson(responseJson);

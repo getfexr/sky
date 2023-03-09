@@ -57,11 +57,11 @@ class RubixService extends RubixServiceBase {
       RequestTransactionPayloadRes result =
           await RubixPlatform().initiateTransactionPayload(
         receiver: request.receiver,
-        senderDID: user.getDid(),
+        senderDID: 'bafybmibplkygrj4cqxzlf64plc6w3lcfddinrkigntz5cn5z6z3wtqybwm', //user.getDid
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
-        peerId: user.getPeerId(),
+        peerId: '12D3KooWKxmAQ1udNqgDomUE9TePmCdQCQPzxC5ngN2thM4d9NRc', //user.getPeerID
       );
 
       return result;
