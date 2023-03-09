@@ -52,16 +52,16 @@ class RubixService extends RubixServiceBase {
   Future<RequestTransactionPayloadRes> initiateTransaction(
       ServiceCall call, RequestTransactionPayloadReq request) async {
     try {
-      //var user = getAuthUser(call);
+     var user = getAuthUser(call);
 
       RequestTransactionPayloadRes result =
           await RubixPlatform().initiateTransactionPayload(
         receiver: request.receiver,
-        senderDID: 'bafybmibplkygrj4cqxzlf64plc6w3lcfddinrkigntz5cn5z6z3wtqybwm', //user.getDid
+        senderDID: user.getDid(),
         tokenCount: request.tokenCount,
         comment: request.comment,
         type: request.type,
-        peerId: '12D3KooWKxmAQ1udNqgDomUE9TePmCdQCQPzxC5ngN2thM4d9NRc', //user.getPeerID,
+        peerId: user.getPeerId(),
       );
       print('result in initiateTransaction $result');
       return result;

@@ -173,8 +173,12 @@ class RubixPlatform {
 
     RubixLog().appendLog(
         "initiateTransactionPayload response from rubix: ${response.body}");
-
+    
     var responseJson = jsonDecode(response.body);
+    var status = responseJson['status'];
+    if (status == false) {
+      throw RubixException(responseJson['message']);
+    }
     print('response from rubix : $responseJson');
     var hashForSign = responseJson['result']['hash'];
     print('hash for sign : $hashForSign');
