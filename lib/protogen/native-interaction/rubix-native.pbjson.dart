@@ -142,3 +142,21 @@ const GetBalanceRes$json = const {
 
 /// Descriptor for `GetBalanceRes`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getBalanceResDescriptor = $convert.base64Decode('Cg1HZXRCYWxhbmNlUmVzEhgKB2JhbGFuY2UYASABKAFSB2JhbGFuY2U=');
+@$core.Deprecated('Use incomingTxnDetailsDescriptor instead')
+const IncomingTxnDetails$json = const {
+  '1': 'IncomingTxnDetails',
+  '2': const [
+    const {'1': 'txnId', '3': 1, '4': 1, '5': 9, '10': 'txnId'},
+    const {'1': 'sender', '3': 2, '4': 1, '5': 9, '10': 'sender'},
+    const {'1': 'receiver', '3': 3, '4': 1, '5': 9, '10': 'receiver'},
+    const {'1': 'amount', '3': 4, '4': 1, '5': 1, '10': 'amount'},
+    const {'1': 'comment', '3': 5, '4': 1, '5': 9, '10': 'comment'},
+    const {'1': 'type', '3': 6, '4': 1, '5': 5, '10': 'type'},
+    const {'1': 'timestamp', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'timestamp'},
+    const {'1': 'tickerName', '3': 8, '4': 1, '5': 9, '10': 'tickerName'},
+    const {'1': 'gas', '3': 9, '4': 1, '5': 1, '10': 'gas'},
+  ],
+};
+
+/// Descriptor for `IncomingTxnDetails`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List incomingTxnDetailsDescriptor = $convert.base64Decode('ChJJbmNvbWluZ1R4bkRldGFpbHMSFAoFdHhuSWQYASABKAlSBXR4bklkEhYKBnNlbmRlchgCIAEoCVIGc2VuZGVyEhoKCHJlY2VpdmVyGAMgASgJUghyZWNlaXZlchIWCgZhbW91bnQYBCABKAFSBmFtb3VudBIYCgdjb21tZW50GAUgASgJUgdjb21tZW50EhIKBHR5cGUYBiABKAVSBHR5cGUSOAoJdGltZXN0YW1wGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJdGltZXN0YW1wEh4KCnRpY2tlck5hbWUYCCABKAlSCnRpY2tlck5hbWUSEAoDZ2FzGAkgASgBUgNnYXM=');
