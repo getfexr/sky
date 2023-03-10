@@ -777,3 +777,164 @@ class GetBalanceRes extends $pb.GeneratedMessage {
   void clearBalance() => clearField(1);
 }
 
+class IncomingTxnDetails extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'IncomingTxnDetails', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'txnId', protoName: 'txnId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sender')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiver')
+    ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.OD)
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'comment')
+    ..a<$core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.O3)
+    ..aOM<$2.Timestamp>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp', subBuilder: $2.Timestamp.create)
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tickerName', protoName: 'tickerName')
+    ..a<$core.double>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'gas', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  IncomingTxnDetails._() : super();
+  factory IncomingTxnDetails({
+    $core.String? txnId,
+    $core.String? sender,
+    $core.String? receiver,
+    $core.double? amount,
+    $core.String? comment,
+    $core.int? type,
+    $2.Timestamp? timestamp,
+    $core.String? tickerName,
+    $core.double? gas,
+  }) {
+    final _result = create();
+    if (txnId != null) {
+      _result.txnId = txnId;
+    }
+    if (sender != null) {
+      _result.sender = sender;
+    }
+    if (receiver != null) {
+      _result.receiver = receiver;
+    }
+    if (amount != null) {
+      _result.amount = amount;
+    }
+    if (comment != null) {
+      _result.comment = comment;
+    }
+    if (type != null) {
+      _result.type = type;
+    }
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
+    }
+    if (tickerName != null) {
+      _result.tickerName = tickerName;
+    }
+    if (gas != null) {
+      _result.gas = gas;
+    }
+    return _result;
+  }
+  factory IncomingTxnDetails.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IncomingTxnDetails.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IncomingTxnDetails clone() => IncomingTxnDetails()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IncomingTxnDetails copyWith(void Function(IncomingTxnDetails) updates) => super.copyWith((message) => updates(message as IncomingTxnDetails)) as IncomingTxnDetails; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static IncomingTxnDetails create() => IncomingTxnDetails._();
+  IncomingTxnDetails createEmptyInstance() => create();
+  static $pb.PbList<IncomingTxnDetails> createRepeated() => $pb.PbList<IncomingTxnDetails>();
+  @$core.pragma('dart2js:noInline')
+  static IncomingTxnDetails getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IncomingTxnDetails>(create);
+  static IncomingTxnDetails? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get txnId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set txnId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTxnId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTxnId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sender => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sender($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSender() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSender() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get receiver => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set receiver($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasReceiver() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearReceiver() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get amount => $_getN(3);
+  @$pb.TagNumber(4)
+  set amount($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasAmount() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAmount() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get comment => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set comment($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasComment() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearComment() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get type => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set type($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasType() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearType() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $2.Timestamp get timestamp => $_getN(6);
+  @$pb.TagNumber(7)
+  set timestamp($2.Timestamp v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasTimestamp() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearTimestamp() => clearField(7);
+  @$pb.TagNumber(7)
+  $2.Timestamp ensureTimestamp() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.String get tickerName => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set tickerName($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasTickerName() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearTickerName() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.double get gas => $_getN(8);
+  @$pb.TagNumber(9)
+  set gas($core.double v) { $_setDouble(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasGas() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearGas() => clearField(9);
+}
+

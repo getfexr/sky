@@ -136,4 +136,10 @@ class RubixService extends RubixServiceBase {
       }
     }
   }
+  
+  @override
+  Stream<IncomingTxnDetails> streamIncomingTxn(ServiceCall call, Empty request) {
+    // TODO: implement streamIncomingTxn
+    throw UnimplementedError();
+  }
 }
