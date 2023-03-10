@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
-import 'package:sky/modules/utils.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
 class RubixException implements Exception {
@@ -48,41 +47,6 @@ class RubixInstance {
   RubixInstance(this.peerId, this.port, this.url);
 }
 
-class RubixNodeBalancer {
-  RubixNodeBalancer._internal();
-  static final RubixNodeBalancer _instance = RubixNodeBalancer._internal();
-  factory RubixNodeBalancer() {
-    return _instance;
-  }
-
-  final BiMap<String, int> rubixPeerIdPortMap =
-      BiMap.fromMap(Config().rubixPeerIdPortMap);
-  int _currentPortIndex = 0;
-  // Circularly iterate through the ports
-  String getNextPeerId() {
-    var peerIds = rubixPeerIdPortMap.keys.toList();
-    var peerId = peerIds[_currentPortIndex];
-    _currentPortIndex = (_currentPortIndex + 1) % peerIds.length;
-    return peerId;
-  }
-
-  RubixInstance getRubixNode({String? peerId}) {
-    try {
-      String sPeerId;
-      if (peerId == null) {
-        // For new create DID requests, we will use the next peerId
-        sPeerId = getNextPeerId();
-      } else {
-        sPeerId = peerId;
-      }
-      var port = rubixPeerIdPortMap[sPeerId];
-      return RubixInstance(sPeerId, port, '127.0.0.1:$port');
-    } catch (e) {
-      throw RubixException('Invalid peerId');
-    }
-  }
-}
-
 class RubixPlatform {
   static final RubixPlatform _rubixPlatform = RubixPlatform._internal();
   factory RubixPlatform() {
@@ -99,7 +63,7 @@ class RubixPlatform {
     const pubShareFileName = 'pubShare.png';
     const pubKeyFileName = 'pubKey.pem';
 
-    var rubixNode = RubixNodeBalancer().getRubixNode();
+    var rubixNode = util.RubixNodeBalancer().getRubixNode();
     var url = rubixNode.url;
 
     var request = http.MultipartRequest('POST', Uri.http(url, 'api/createdid'));
@@ -163,7 +127,7 @@ class RubixPlatform {
         .appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
           '/api/initiate-rbt-transfer'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -196,7 +160,7 @@ class RubixPlatform {
     RubixLog().appendLog("generateTestRbt request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
           '/api/generate-test-token'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -225,15 +189,14 @@ class RubixPlatform {
     });
     RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
     var response = await http.post(
-      Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
           '/api/signature-response'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: bodyJsonStr,
     );
-    RubixLog()
-        .appendLog("sigResponse response from rubix: ${response.body}");
+    RubixLog().appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
     return Status(status: status);
@@ -241,8 +204,10 @@ class RubixPlatform {
 
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
-    var url = Uri.http(RubixNodeBalancer().getRubixNode(peerId: peerId).url,
-        'api/get-account-info', {"did": dId});
+    var url = Uri.http(
+        util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+        'api/get-account-info',
+        {"did": dId});
     var response = await http.get(
       url,
       headers: <String, String>{
@@ -250,8 +215,7 @@ class RubixPlatform {
       },
     );
     var responseJson = jsonDecode(response.body);
-     RubixLog()
-        .appendLog("Get Balance response from rubix: $responseJson");
+    RubixLog().appendLog("Get Balance response from rubix: $responseJson");
 
     util.AccountInfoResponse allBalance =
         util.AccountInfoResponse.fromJson(responseJson);
