@@ -149,6 +149,26 @@ class RubixPlatform {
         requestId: requestId, hash: hashForSign);
   }
 
+  Stream<IncomingTxnDetails> streamIncomingTxn({
+    required String did,
+    required String peerId,
+  }) {
+    // TODO: Impelement Incoming transaction stream with callback from Rubix.
+    // This is a temporary implementation for testing purpose.
+    return Stream.periodic(Duration(seconds: 10), (i) => i).asyncMap((event) {
+      return IncomingTxnDetails(
+          txnId: 'txn-0$event',
+          sender: 'sender-$event',
+          receiver: did,
+          amount: 100.00 + event,
+          comment: 'comment-$event',
+          type: 2,
+          timestamp: Timestamp.fromDateTime(DateTime.now()),
+          tickerName: "RBT",
+          gas: 0.1);
+    });
+  }
+
   Future<RequestTransactionPayloadRes> generateTestRbt(
       {required String did,
       required double tokenCount,
@@ -205,10 +225,8 @@ class RubixPlatform {
 
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
-    var url = Uri.http(
-        rubixNodeBalancer.getRubixNode(peerId: peerId).url,
-        'api/get-account-info',
-        {"did": dId});
+    var url = Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
+        'api/get-account-info', {"did": dId});
     var response = await http.get(
       url,
       headers: <String, String>{

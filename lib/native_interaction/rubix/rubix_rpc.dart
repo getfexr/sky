@@ -136,10 +136,23 @@ class RubixService extends RubixServiceBase {
       }
     }
   }
-  
+
   @override
-  Stream<IncomingTxnDetails> streamIncomingTxn(ServiceCall call, Empty request) {
-    // TODO: implement streamIncomingTxn
-    throw UnimplementedError();
+  Stream<IncomingTxnDetails> streamIncomingTxn(
+      ServiceCall call, Empty request) {
+    try {
+      var user = getAuthUser(call);
+      return RubixPlatform()
+          .streamIncomingTxn(peerId: user.getPeerId(), did: user.getDid());
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+
+      if (e is RubixException) {
+        throw GrpcError.invalidArgument(e.message);
+      } else {
+        throw GrpcError.unknown('Failed to stream txn');
+      }
+    }
   }
 }
