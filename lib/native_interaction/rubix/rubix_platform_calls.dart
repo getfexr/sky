@@ -52,6 +52,7 @@ class RubixPlatform {
   factory RubixPlatform() {
     return _rubixPlatform;
   }
+  var rubixNodeBalancer = util.RubixNodeBalancer();
 
   RubixPlatform._internal();
 
@@ -63,7 +64,7 @@ class RubixPlatform {
     const pubShareFileName = 'pubShare.png';
     const pubKeyFileName = 'pubKey.pem';
 
-    var rubixNode = util.RubixNodeBalancer().getRubixNode();
+    var rubixNode = rubixNodeBalancer.getRubixNode();
     var url = rubixNode.url;
 
     var request = http.MultipartRequest('POST', Uri.http(url, 'api/createdid'));
@@ -127,7 +128,7 @@ class RubixPlatform {
         .appendLog("initiateTransactionPayload request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
           '/api/initiate-rbt-transfer'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -160,7 +161,7 @@ class RubixPlatform {
     RubixLog().appendLog("generateTestRbt request to rubix: $bodyJsonStr");
 
     var response = await http.post(
-      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
           '/api/generate-test-token'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -189,7 +190,7 @@ class RubixPlatform {
     });
     RubixLog().appendLog("signResponse request to rubix: $bodyJsonStr");
     var response = await http.post(
-      Uri.http(util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+      Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
           '/api/signature-response'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -205,7 +206,7 @@ class RubixPlatform {
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
     var url = Uri.http(
-        util.RubixNodeBalancer().getRubixNode(peerId: peerId).url,
+        rubixNodeBalancer.getRubixNode(peerId: peerId).url,
         'api/get-account-info',
         {"did": dId});
     var response = await http.get(

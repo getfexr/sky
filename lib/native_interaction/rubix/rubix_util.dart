@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:basic_utils/basic_utils.dart' as basic_utils;
-import 'package:hive/hive.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:pointycastle/export.dart';
+import 'package:sky/modules/hive/hive.dart';
+import 'package:sky/modules/hive/hive_boxes.dart';
 import 'package:sky/modules/utils.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
@@ -13,8 +14,6 @@ import 'package:sky/config.dart';
 
 final String _secret = Config().jwtAuthSecret;
 final String _issuer = 'Fexr Sky';
-
-final String _rubixBox = 'rubix';
 final String _portMapIndex = 'peer_id_index';
 
 enum _RubixTokenType {
@@ -102,7 +101,7 @@ class RubixNodeBalancer {
 
   int _currentPortIndex = 0;
   Future<void> setCurrentPortIndex() async {
-    _currentPortIndex = await RubixUtil().loadPortIndex();
+    _currentPortIndex = await loadPortIndex();
     print('Port index: $_currentPortIndex');
   }
 
@@ -113,7 +112,7 @@ class RubixNodeBalancer {
     var peerIds = rubixPeerIdPortMap.keys.toList();
     var peerId = peerIds[_currentPortIndex];
     _currentPortIndex = (_currentPortIndex + 1) % peerIds.length;
-    RubixUtil().savePortIndex(_currentPortIndex);
+    savePortIndex(_currentPortIndex);
     return peerId;
   }
 
@@ -131,6 +130,19 @@ class RubixNodeBalancer {
     } catch (e) {
       throw RubixException('Invalid peerId');
     }
+  }
+
+  void savePortIndex(int index) async {
+    final box = await openBox(HiveBox.rubix);
+    await box.put(_portMapIndex, index);
+    await box.close();
+  }
+
+  Future<int> loadPortIndex() async {
+    final box = await openBox(HiveBox.rubix);
+    var portMapIndex = box.get(_portMapIndex, defaultValue: 0);
+    await box.close();
+    return portMapIndex;
   }
 }
 
@@ -173,16 +185,6 @@ class RubixUtil {
 
   ECPublicKey publicKeyFromPem(String publicKeyPem) {
     return basic_utils.CryptoUtils.ecPublicKeyFromPem(publicKeyPem);
-  }
-
-  void savePortIndex(int index) async {
-    final box = await Hive.openBox(_rubixBox);
-    await box.put(_portMapIndex, index);
-  }
-
-  Future<int> loadPortIndex() async {
-    final box = await Hive.openBox(_rubixBox);
-    return box.get(_portMapIndex, defaultValue: 0);
   }
 }
 

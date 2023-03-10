@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:hive/hive.dart';
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
+import 'package:sky/modules/hive/hive.dart';
 import 'package:sky/settings.dart';
 import 'package:sky/sky.dart';
 
 Future<void> main(List<String> arguments) async {
-  Hive.init('sky-data');
+  initHive();
 
   var keepRunning = false;
 
