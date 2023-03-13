@@ -154,7 +154,7 @@ class RubixUtil {
     ));
   }
 
-  bool verifySignature(
+  bool _verifySignature(
       ECPublicKey publicKey, Uint8List messageBytes, Uint8List signaturebytes) {
     var verifier = ECDSASigner()
       ..init(
@@ -170,14 +170,17 @@ class RubixUtil {
     return verified;
   }
 
-  void ecdsaVerify({required String payload, required List<int> signature}) {
-    JwtClaim jwtClaim = ChallengeToken.verify(payload);
-    String publicKeyString = jwtClaim.subject!;
-    var publicKey = publicKeyFromPem(publicKeyString);
+  void ecdsaVerify(
+      {required String publicKey,
+      required String payload,
+      required List<int> signature}) {
     var payloadCodeUnits = payload.codeUnits;
+
+    var ecPublicKey = publicKeyFromPem(publicKey);
     var payloadBytes = Uint8List.fromList(payloadCodeUnits);
     var signatureBytes = Uint8List.fromList(signature);
-    var verified = verifySignature(publicKey, payloadBytes, signatureBytes);
+
+    var verified = _verifySignature(ecPublicKey, payloadBytes, signatureBytes);
     if (!verified) {
       throw GrpcError.unauthenticated('Failed to verify signature');
     }
