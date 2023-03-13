@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
@@ -153,20 +154,20 @@ class RubixPlatform {
     required String did,
     required String peerId,
   }) {
-    // TODO: Impelement Incoming transaction stream with callback from Rubix.
-    // This is a temporary implementation for testing purpose.
-    return Stream.periodic(Duration(seconds: 10), (i) => i).asyncMap((event) {
-      return IncomingTxnDetails(
-          txnId: 'txn-0$event',
-          sender: 'sender-$event',
-          receiver: did,
-          amount: 100.00 + event,
-          comment: 'comment-$event',
-          type: 2,
-          timestamp: Timestamp.fromDateTime(DateTime.now()),
-          tickerName: "RBT",
-          gas: 0.1);
-    });
+    return IncomingTransactionStream()
+        .stream
+        .where((event) =>
+            event.receiverDID == did && event.receiverPeerId == peerId)
+        .map((event) => IncomingTxnDetails(
+            txnId: event.txnId,
+            sender: event.senderDID,
+            receiver: event.receiverDID,
+            amount: event.amount,
+            comment: event.comment,
+            type: event.type,
+            timestamp: Timestamp.fromDateTime(DateTime.parse(event.timestamp)),
+            tickerName: event.ticker,
+            gas: event.gas));
   }
 
   Future<RequestTransactionPayloadRes> generateTestRbt(

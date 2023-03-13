@@ -5,7 +5,7 @@ import 'package:sky/modules/shelf_plus_module/shelf_mod_types.dart';
 import 'package:sky/native_interaction/rubix/rubix_rest_api_handlers.dart';
 
 var endpoints = [
-  CustomRoute(HttpVerb.get, '/ping', (Request request) => 'pong'),
+  CustomRoute(HttpVerb.get, '/ping', (Request request) => Response.ok('pong')),
 ];
 
 // Register sub routes here

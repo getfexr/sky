@@ -1,4 +1,5 @@
 import 'package:sky/modules/auth_util.dart';
+import 'package:sky/modules/utils.dart' as util;
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
@@ -23,14 +24,7 @@ class RubixService extends RubixServiceBase {
     try {
       return RubixUtil().createDIDChallenge(publicKey: request.publicKey);
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to create challenge');
-      }
+      throw util.getGrpcError(e, stackTrace, 'Failed to create challenge');
     }
   }
 
@@ -66,16 +60,8 @@ class RubixService extends RubixServiceBase {
 
       return result;
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else if (e is GrpcError) {
-        rethrow;
-      } else {
-        throw GrpcError.unknown('Failed to request transaction payload');
-      }
+      throw util.getGrpcError(
+          e, stackTrace, 'Failed to request transaction payload');
     }
   }
 
@@ -86,14 +72,7 @@ class RubixService extends RubixServiceBase {
       return RubixPlatform()
           .signResponse(request: request, peerId: user.getPeerId());
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to sign response');
-      }
+      throw util.getGrpcError(e, stackTrace, 'Failed to sign response');
     }
   }
 
@@ -108,14 +87,7 @@ class RubixService extends RubixServiceBase {
         peerId: user.getPeerId(),
       );
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to generate RBT');
-      }
+      throw util.getGrpcError(e, stackTrace, 'Failed to generate RBT');
     }
   }
 
@@ -126,14 +98,7 @@ class RubixService extends RubixServiceBase {
       return RubixPlatform()
           .getBalance(peerId: user.getPeerId(), dId: user.getDid());
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to get balance');
-      }
+      throw util.getGrpcError(e, stackTrace, 'Failed to get balance');
     }
   }
 
@@ -145,14 +110,7 @@ class RubixService extends RubixServiceBase {
       return RubixPlatform()
           .streamIncomingTxn(peerId: user.getPeerId(), did: user.getDid());
     } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
-
-      if (e is RubixException) {
-        throw GrpcError.invalidArgument(e.message);
-      } else {
-        throw GrpcError.unknown('Failed to stream txn');
-      }
+      throw util.getGrpcError(e, stackTrace, 'Failed to stream incoming txn');
     }
   }
 }

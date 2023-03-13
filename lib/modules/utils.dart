@@ -1,3 +1,6 @@
+import 'package:grpc/grpc.dart';
+import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
+
 String getRemainingTimeString(DateTime time) {
   var now = DateTime.now();
   var diff = time.difference(now);
@@ -48,5 +51,18 @@ class BiMap<K, V> {
 
   MapEntry<K, V> getByIndex(int index) {
     return _forward.entries.elementAt(index);
+  }
+}
+
+GrpcError getGrpcError(Object e, StackTrace stackTrace, String unknownMessage) {
+  print(e);
+  print(stackTrace);
+
+  if (e is GrpcError) {
+    return e;
+  } else if (e is RubixException) {
+    return GrpcError.invalidArgument(e.message);
+  } else {
+    return GrpcError.unknown(unknownMessage);
   }
 }
