@@ -30,16 +30,22 @@ class RubixService extends RubixServiceBase {
 
   @override
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
-    var challengeJWT = request.ecdsaChallengeResponse.payload;
-    RubixUtil().ecdsaVerify(
-        payload: challengeJWT,
-        signature: request.ecdsaChallengeResponse.signature);
-    var publicKeyString = ChallengeToken.getPublicKey(challengeJWT);
-    CreateDIDRes result = await RubixPlatform().createDID(
-        didImgFile: request.didImage,
-        pubImgFile: request.publicShare,
-        pubKey: publicKeyString);
-    return result;
+    try {
+      var challengeJWT = request.ecdsaChallengeResponse.payload;
+      var publicKeyString =
+          ChallengeToken.getPublicKey(challengeJWT); // throws if invalid
+      RubixUtil().ecdsaVerify(
+          payload: challengeJWT,
+          publicKey: publicKeyString,
+          signature: request.ecdsaChallengeResponse.signature);
+      CreateDIDRes result = await RubixPlatform().createDID(
+          didImgFile: request.didImage,
+          pubImgFile: request.publicShare,
+          pubKey: publicKeyString);
+      return result;
+    } catch (e, stackTrace) {
+      throw util.getGrpcError(e, stackTrace, 'Failed to create challenge');
+    }
   }
 
   @override
