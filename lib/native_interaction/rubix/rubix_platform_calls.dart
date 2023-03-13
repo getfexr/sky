@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
@@ -149,6 +150,26 @@ class RubixPlatform {
         requestId: requestId, hash: hashForSign);
   }
 
+  Stream<IncomingTxnDetails> streamIncomingTxn({
+    required String did,
+    required String peerId,
+  }) {
+    return IncomingTransactionStream()
+        .stream
+        .where((event) =>
+            event.receiverDID == did && event.receiverPeerId == peerId)
+        .map((event) => IncomingTxnDetails(
+            txnId: event.txnId,
+            sender: event.senderDID,
+            receiver: event.receiverDID,
+            amount: event.amount,
+            comment: event.comment,
+            type: event.type,
+            timestamp: Timestamp.fromDateTime(DateTime.parse(event.timestamp)),
+            tickerName: event.ticker,
+            gas: event.gas));
+  }
+
   Future<RequestTransactionPayloadRes> generateTestRbt(
       {required String did,
       required double tokenCount,
@@ -205,10 +226,8 @@ class RubixPlatform {
 
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
-    var url = Uri.http(
-        rubixNodeBalancer.getRubixNode(peerId: peerId).url,
-        'api/get-account-info',
-        {"did": dId});
+    var url = Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
+        'api/get-account-info', {"did": dId});
     var response = await http.get(
       url,
       headers: <String, String>{

@@ -13,7 +13,7 @@ extension HttpVerbExtension on HttpVerb {
 class CustomRoute {
   HttpVerb verb;
   String route;
-  Function handler;
+  Handler handler;
   Middleware? localMiddleware;
 
   CustomRoute(this.verb, this.route, this.handler, {this.localMiddleware});
