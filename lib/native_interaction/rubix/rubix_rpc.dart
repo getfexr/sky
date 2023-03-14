@@ -3,14 +3,16 @@ import 'package:sky/modules/utils.dart' as util;
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 import 'package:grpc/grpc.dart';
 import 'package:sky/protogen/google/protobuf/empty.pb.dart';
+import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
-import 'package:sky/native_interaction/rubix/rubix_util.dart';
+import 'package:sky/native_interaction/rubix/rubix_util.dart' as rubix_util;
 
 class RubixService extends RubixServiceBase {
-  AccessTokenJWTClaim getAuthUser(ServiceCall call) {
+  rubix_util.AccessTokenJWTClaim getAuthUser(ServiceCall call,
+      {bool checkExpiry = true}) {
     try {
       String token = extractBearerToken(call);
-      return AccesToken.verify(token);
+      return rubix_util.AccesToken.verify(token, checkExpiry: checkExpiry);
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
@@ -22,7 +24,8 @@ class RubixService extends RubixServiceBase {
   Future<ChallengeString> createDIDChallenge(
       ServiceCall call, ChallengeReq request) {
     try {
-      return RubixUtil().createDIDChallenge(publicKey: request.publicKey);
+      return rubix_util.RubixUtil()
+          .createDIDChallenge(publicKey: request.publicKey);
     } catch (e, stackTrace) {
       throw util.getGrpcError(e, stackTrace, 'Failed to create challenge');
     }
@@ -32,9 +35,9 @@ class RubixService extends RubixServiceBase {
   Future<CreateDIDRes> createDID(ServiceCall call, CreateDIDReq request) async {
     try {
       var challengeJWT = request.ecdsaChallengeResponse.payload;
-      var publicKeyString =
-          ChallengeToken.getPublicKey(challengeJWT); // throws if invalid
-      RubixUtil().ecdsaVerify(
+      var publicKeyString = rubix_util.ChallengeToken.getPublicKey(
+          challengeJWT); // throws if invalid
+      rubix_util.RubixUtil().ecdsaVerify(
           payload: challengeJWT,
           publicKey: publicKeyString,
           signature: request.ecdsaChallengeResponse.signature);
@@ -119,4 +122,38 @@ class RubixService extends RubixServiceBase {
       throw util.getGrpcError(e, stackTrace, 'Failed to stream incoming txn');
     }
   }
+
+  @override
+  Future<ChallengeString> getAccessTokenChallenge(
+      ServiceCall call, Empty request) {
+    try {
+      var user = getAuthUser(call, checkExpiry: false);
+      var challengeToken =
+          rubix_util.ChallengeToken.get(publicKey: user.getPublicKey());
+      return Future.value(ChallengeString(challenge: challengeToken.token));
+    } catch (e, stackTrace) {
+      throw util.getGrpcError(
+          e, stackTrace, 'Failed to generate refresh token');
+    }
+  }
+
+  @override
+  Future<Token> generateAccessToken(ServiceCall call, SignedPayload request) {
+    var user = getAuthUser(call, checkExpiry: false);
+    var challengeJWT = request.payload;
+    var publicKeyString = rubix_util.ChallengeToken.getPublicKey(
+        challengeJWT); // throws if invalid
+    rubix_util.RubixUtil().ecdsaVerify(
+        payload: challengeJWT,
+        publicKey: publicKeyString,
+        signature: request.signature);
+    var accessToken = rubix_util.AccesToken.get(
+        did: user.getDid(),
+        peerId: user.getPeerId(),
+        publicKey: user.getPublicKey());
+    return Future.value(Token(
+        accessToken: accessToken.token,
+        expiry: Timestamp.fromDateTime(accessToken.expiry)));
+  }
+  
 }

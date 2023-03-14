@@ -245,12 +245,14 @@ class AccesToken {
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
-  static AccessTokenJWTClaim verify(String token) {
+  static AccessTokenJWTClaim verify(String token, {bool checkExpiry = true}) {
     try {
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
-      claim.validate(
-        issuer: _issuer,
-      );
+      if (checkExpiry == true) {
+        claim.validate(
+          issuer: _issuer,
+        );
+      }
 
       if (_getClaimType(claim) == _RubixTokenType.accessToken.toString()) {
         return AccessTokenJWTClaim.fromJWTClaim(claim);

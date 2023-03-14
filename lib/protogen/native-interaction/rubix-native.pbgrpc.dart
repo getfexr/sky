@@ -52,6 +52,17 @@ class RubixServiceClient extends $grpc.Client {
       '/protos.RubixService/GetBalance',
       ($1.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.GetBalanceRes.fromBuffer(value));
+  static final _$getAccessTokenChallenge =
+      $grpc.ClientMethod<$1.Empty, $0.ChallengeString>(
+          '/protos.RubixService/GetAccessTokenChallenge',
+          ($1.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.ChallengeString.fromBuffer(value));
+  static final _$generateAccessToken =
+      $grpc.ClientMethod<$0.SignedPayload, $0.Token>(
+          '/protos.RubixService/GenerateAccessToken',
+          ($0.SignedPayload value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Token.fromBuffer(value));
 
   RubixServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -97,6 +108,18 @@ class RubixServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.GetBalanceRes> getBalance($1.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getBalance, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ChallengeString> getAccessTokenChallenge(
+      $1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getAccessTokenChallenge, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Token> generateAccessToken($0.SignedPayload request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$generateAccessToken, request, options: options);
   }
 }
 
@@ -156,6 +179,20 @@ abstract class RubixServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($0.GetBalanceRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.ChallengeString>(
+        'GetAccessTokenChallenge',
+        getAccessTokenChallenge_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.ChallengeString value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.SignedPayload, $0.Token>(
+        'GenerateAccessToken',
+        generateAccessToken_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.SignedPayload.fromBuffer(value),
+        ($0.Token value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ChallengeString> createDIDChallenge_Pre(
@@ -194,6 +231,16 @@ abstract class RubixServiceBase extends $grpc.Service {
     return getBalance(call, await request);
   }
 
+  $async.Future<$0.ChallengeString> getAccessTokenChallenge_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return getAccessTokenChallenge(call, await request);
+  }
+
+  $async.Future<$0.Token> generateAccessToken_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.SignedPayload> request) async {
+    return generateAccessToken(call, await request);
+  }
+
   $async.Future<$0.ChallengeString> createDIDChallenge(
       $grpc.ServiceCall call, $0.ChallengeReq request);
   $async.Future<$0.CreateDIDRes> createDID(
@@ -208,4 +255,8 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.GenerateReq request);
   $async.Future<$0.GetBalanceRes> getBalance(
       $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$0.ChallengeString> getAccessTokenChallenge(
+      $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$0.Token> generateAccessToken(
+      $grpc.ServiceCall call, $0.SignedPayload request);
 }
