@@ -9,7 +9,6 @@ import 'package:sky/modules/hive/hive.dart';
 import 'package:sky/modules/hive/hive_boxes.dart';
 import 'package:sky/modules/utils.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
-import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 import 'package:sky/config.dart';
 
 final String _secret = Config().jwtAuthSecret;
@@ -146,14 +145,7 @@ class RubixNodeBalancer {
   }
 }
 
-class RubixUtil {
-  Future<ChallengeString> createDIDChallenge({required String publicKey}) {
-    final challengeToken = ChallengeToken.get(publicKey: publicKey);
-    return Future.value(ChallengeString(
-      challenge: challengeToken.token,
-    ));
-  }
-
+class SecondarySignature {
   bool _verifySignature(
       ECPublicKey publicKey, Uint8List messageBytes, Uint8List signaturebytes) {
     var verifier = ECDSASigner()

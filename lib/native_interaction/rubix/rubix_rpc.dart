@@ -20,12 +20,18 @@ class RubixService extends RubixServiceBase {
     }
   }
 
+  Future<ChallengeString> _createDIDChallenge({required String publicKey}) {
+    final challengeToken = rubix_util.ChallengeToken.get(publicKey: publicKey);
+    return Future.value(ChallengeString(
+      challenge: challengeToken.token,
+    ));
+  }
+
   @override
   Future<ChallengeString> createDIDChallenge(
       ServiceCall call, ChallengeReq request) {
     try {
-      return rubix_util.RubixUtil()
-          .createDIDChallenge(publicKey: request.publicKey);
+      return _createDIDChallenge(publicKey: request.publicKey);
     } catch (e, stackTrace) {
       throw util.getGrpcError(e, stackTrace, 'Failed to create challenge');
     }
@@ -37,7 +43,7 @@ class RubixService extends RubixServiceBase {
       var challengeJWT = request.ecdsaChallengeResponse.payload;
       var publicKeyString = rubix_util.ChallengeToken.getPublicKey(
           challengeJWT); // throws if invalid
-      rubix_util.RubixUtil().ecdsaVerify(
+      rubix_util.SecondarySignature().ecdsaVerify(
           payload: challengeJWT,
           publicKey: publicKeyString,
           signature: request.ecdsaChallengeResponse.signature);
@@ -143,7 +149,7 @@ class RubixService extends RubixServiceBase {
     var challengeJWT = request.payload;
     var publicKeyString = rubix_util.ChallengeToken.getPublicKey(
         challengeJWT); // throws if invalid
-    rubix_util.RubixUtil().ecdsaVerify(
+    rubix_util.SecondarySignature().ecdsaVerify(
         payload: challengeJWT,
         publicKey: publicKeyString,
         signature: request.signature);
@@ -155,5 +161,4 @@ class RubixService extends RubixServiceBase {
         accessToken: accessToken.token,
         expiry: Timestamp.fromDateTime(accessToken.expiry)));
   }
-  
 }
