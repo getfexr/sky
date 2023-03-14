@@ -43,4 +43,5 @@ void addSubroute(SubRoute subroute) {
   }
 }
 
-Future serve(port) async => shelfRun(init, defaultBindPort: port);
+Future serve(port) async =>
+    shelfRun(init, defaultBindPort: port, defaultBindAddress: '0.0.0.0');
