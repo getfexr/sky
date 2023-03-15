@@ -221,6 +221,9 @@ class RubixPlatform {
     RubixLog().appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
+    if (status == false) {
+      throw RubixException(responseJson['message']);
+    }
     return Status(status: status);
   }
 
