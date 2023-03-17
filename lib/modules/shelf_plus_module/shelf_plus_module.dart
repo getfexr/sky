@@ -1,5 +1,7 @@
 import 'package:shelf_plus/shelf_plus.dart';
 import 'package:sky/modules/shelf_plus_module/shelf_mod_types.dart';
+import 'package:sky/modules/sky_api/sky_api_handler.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 // Sub routes
 import 'package:sky/native_interaction/rubix/rubix_rest_api_handlers.dart';
@@ -10,11 +12,17 @@ var endpoints = [
 
 // Register sub routes here
 List<SubRoute> subRoutes = [
+  skyRoutes,
   rubixSubRoutes,
 ];
 
 Handler init() {
   var app = Router().plus;
+
+  var handler = const Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(corsHeaders())
+      .addHandler(app);
 
   for (var subroute in subRoutes) {
     addSubroute(subroute);
@@ -24,7 +32,7 @@ Handler init() {
     app.add(route.verb.string, route.route, route.handler);
   }
 
-  return app;
+  return handler;
 }
 
 void addSubroute(SubRoute subroute) {
@@ -43,5 +51,7 @@ void addSubroute(SubRoute subroute) {
   }
 }
 
-Future serve(port) async =>
-    shelfRun(init, defaultBindPort: port, defaultBindAddress: '0.0.0.0');
+Future serve(port) async => shelfRun(init,
+    defaultBindPort: port,
+    defaultBindAddress: '0.0.0.0',
+    defaultEnableHotReload: false);

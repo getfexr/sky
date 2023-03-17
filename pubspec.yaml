@@ -25,6 +25,8 @@ dependencies:
   pointycastle: ^3.6.2
   basic_utils: ^5.5.1
   shelf_plus: ^1.7.0
+  uuid: ^3.0.7
+  shelf_cors_headers: ^0.1.4
 
 lint_staged:
   .dart: dart format --fix && dart fix --apply

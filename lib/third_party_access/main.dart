@@ -15,20 +15,29 @@ class Scope {
 // Custom Type
 abstract class ChainProp {}
 
-abstract class TransactionsReadable extends ChainProp {
-  Future<List<JSONEncodable>> getTransactions();
+abstract class Identity extends JSONEncodable {}
+
+abstract class Transaction extends JSONEncodable {}
+
+abstract class TransactionRequest extends JSONEncodable {}
+
+abstract class TransactionsReadable<I extends Identity, T extends Transaction>
+    extends ChainProp {
+  Future<List<T>> getTransactions(I identity);
 }
 
-abstract class TransactionRequestStreamable {
-  Stream<dynamic> streamTransactionRequest();
+abstract class TransactionRequestStreamable<I extends Identity,
+    T extends TransactionRequest> {
+  Stream<T> streamTransactionRequest(I identity);
 }
 
-abstract class TransactionRequestable extends ChainProp {
-  Future<dynamic> requestTransaction(dynamic);
+abstract class TransactionRequestable<I extends Identity,
+    T extends TransactionRequest> extends ChainProp {
+  Future<dynamic> requestTransaction(I identity, T transactionRequest);
 }
 
-abstract class UserInfoReadable extends ChainProp {
-  Future<JSONEncodable> getUserInfo();
+abstract class UserInfoReadable<I extends Identity> extends ChainProp {
+  Future<JSONEncodable> getUserInfo(I identity);
 }
 
 List<Type> getImplementedChainProp(dynamic obj) {
