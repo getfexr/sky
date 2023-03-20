@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:basic_utils/basic_utils.dart' as basic_utils;
-import 'package:pointycastle/pointycastle.dart';
+
 import 'package:grpc/grpc.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
-import 'package:pointycastle/export.dart';
+import 'package:pointycastle/signers/ecdsa_signer.dart';
 import 'package:sky/modules/hive/hive.dart';
 import 'package:sky/modules/hive/hive_boxes.dart';
 import 'package:sky/modules/utils.dart';
@@ -147,16 +147,16 @@ class RubixNodeBalancer {
 
 class SecondarySignature {
   bool _verifySignature(
-      ECPublicKey publicKey, Uint8List messageBytes, Uint8List signaturebytes) {
+      basic_utils.ECPublicKey publicKey, Uint8List messageBytes, Uint8List signaturebytes) {
     var verifier = ECDSASigner()
       ..init(
         false,
-        PublicKeyParameter(publicKey),
+        basic_utils.PublicKeyParameter(publicKey),
       );
-    var sequence = ASN1Sequence.fromBytes(signaturebytes);
-    var r = (sequence.elements![0] as ASN1Integer).integer;
-    var s = (sequence.elements![1] as ASN1Integer).integer;
-    var signature = ECSignature(r!, s!);
+    var sequence = basic_utils.ASN1Sequence.fromBytes(signaturebytes);
+    var r = (sequence.elements![0] as basic_utils.ASN1Integer).integer;
+    var s = (sequence.elements![1] as basic_utils.ASN1Integer).integer;
+    var signature = basic_utils.ECSignature(r!, s!);
 
     var verified = verifier.verifySignature(messageBytes, signature);
     return verified;
@@ -178,7 +178,7 @@ class SecondarySignature {
     }
   }
 
-  ECPublicKey publicKeyFromPem(String publicKeyPem) {
+  basic_utils.ECPublicKey publicKeyFromPem(String publicKeyPem) {
     return basic_utils.CryptoUtils.ecPublicKeyFromPem(publicKeyPem);
   }
 }
