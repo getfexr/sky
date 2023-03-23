@@ -38,6 +38,7 @@ class RubixLog {
     RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
     String dateTime = DateTime.now().toIso8601String();
     raf.writeStringSync("$dateTime :: $className \n $line \n");
+    raf.closeSync();
   }
 }
 
