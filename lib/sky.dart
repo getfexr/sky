@@ -1,7 +1,7 @@
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
-import 'package:sky/modules/shelf_plus_module/shelf_plus_module.dart' as shelf;
+import 'package:sky/router/router.dart' as shelf;
 
 import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';

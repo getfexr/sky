@@ -18,10 +18,3 @@ class CustomRoute {
 
   CustomRoute(this.verb, this.route, this.handler, {this.localMiddleware});
 }
-
-class SubRoute {
-  String route;
-  List<CustomRoute> endpoints;
-
-  SubRoute(this.route, this.endpoints);
-}

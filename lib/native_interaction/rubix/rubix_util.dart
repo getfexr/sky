@@ -101,7 +101,7 @@ class RubixNodeBalancer {
   int _currentPortIndex = 0;
   Future<void> setCurrentPortIndex() async {
     _currentPortIndex = await loadPortIndex();
-    print('Port index: $_currentPortIndex');
+    print('Rubix port index: $_currentPortIndex');
   }
 
   final BiMap<String, int> rubixPeerIdPortMap =
