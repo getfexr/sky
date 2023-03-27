@@ -1,6 +1,7 @@
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
+import 'package:sky/external_interaction/rubix/rubix_external_rpc.dart';
 import 'package:sky/router/router.dart' as shelf;
 
 import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
@@ -10,6 +11,7 @@ void startRPCDaemon() async {
   final server = grpc.Server(
     [
       RubixService(),
+      RubixExternalService(),
     ],
   );
 
