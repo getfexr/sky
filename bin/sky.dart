@@ -35,6 +35,12 @@ Future<void> main(List<String> arguments) async {
           print("Debug mode enabled");
           Config().debugLog = true;
         }
+
+        if (flags.contains('--test')) {
+          print("Test mode enabled");
+          Config().test = true;
+        }
+
         startRPCDaemon();
         keepRunning = true;
         break;

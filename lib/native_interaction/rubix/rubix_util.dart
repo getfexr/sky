@@ -237,8 +237,30 @@ class AccesToken {
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
+  static _getTestAccessTokenJWTClaim() {
+    final JwtClaim testCLaim = JwtClaim(
+      issuer: _issuer,
+      subject: 'did.D1',
+      maxAge: Duration(days: 1),
+      otherClaims: {
+        'type': _RubixTokenType.accessToken.toString(),
+        'peerId': 'peerId.P1',
+        'publicKey': 'publicKey.Pk1',
+      },
+    );
+
+    return AccessTokenJWTClaim.fromJWTClaim(testCLaim);
+  }
+
   static AccessTokenJWTClaim verify(String token, {bool checkExpiry = true}) {
     try {
+      if (Config().test) {
+        print('Rubix: Test mode is enabled. Skipping token verification.');
+        if (token == 'rubix-fake-token') {
+          return _getTestAccessTokenJWTClaim();
+        }
+      }
+
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
       if (checkExpiry == true) {
         claim.validate(
