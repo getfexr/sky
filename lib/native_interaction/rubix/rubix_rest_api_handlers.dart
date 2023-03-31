@@ -42,7 +42,7 @@ class ApiResponse {
   String toJson() => jsonEncode(toMap());
 }
 
-SubRoute rubixSubRoutes = SubRoute('/rubix', [
+List<CustomRoute> rubixSubRoutes = [
   CustomRoute(
       HttpVerb.get, '/ping', (Request request) => Response.ok('pong:rubix')),
   CustomRoute(HttpVerb.post, '/events/incoming-transaction',
@@ -60,4 +60,4 @@ SubRoute rubixSubRoutes = SubRoute('/rubix', [
               .toJson());
     }
   }),
-]);
+];

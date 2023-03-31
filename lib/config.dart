@@ -214,6 +214,7 @@ class Config {
       validators: [RequiredValidator(), LengthValidator(32, 64)]).getString();
 
   bool debugLog = false; // set via --debug flag
+  bool test = false; // set via --test flag
 
   // Rubix
   final rubixPeerIdPortMap = ConfigItem(

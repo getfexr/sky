@@ -1,17 +1,17 @@
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
-import 'package:sky/modules/shelf_plus_module/shelf_plus_module.dart' as shelf;
+import 'package:sky/external_interaction/rubix/rubix_external_rpc.dart';
+import 'package:sky/router/router.dart' as shelf;
 
 import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';
-import 'package:sky/rpc/external/external_listener.dart';
 
 void startRPCDaemon() async {
   final server = grpc.Server(
     [
       RubixService(),
-      ExternalListenerService(),
+      RubixExternalService(),
     ],
   );
 

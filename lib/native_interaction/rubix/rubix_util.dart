@@ -15,10 +15,7 @@ final String _secret = Config().jwtAuthSecret;
 final String _issuer = 'Fexr Sky';
 final String _portMapIndex = 'peer_id_index';
 
-enum _RubixTokenType {
-  challengeToken,
-  accessToken,
-}
+enum _RubixTokenType { challengeToken, accessToken, externalAccessToken }
 
 String _getClaimType(JwtClaim claim) {
   return claim.toJson()['type'];
@@ -101,7 +98,7 @@ class RubixNodeBalancer {
   int _currentPortIndex = 0;
   Future<void> setCurrentPortIndex() async {
     _currentPortIndex = await loadPortIndex();
-    print('Port index: $_currentPortIndex');
+    print('Rubix port index: $_currentPortIndex');
   }
 
   final BiMap<String, int> rubixPeerIdPortMap =
@@ -222,6 +219,65 @@ class AccessTokenJWTClaim extends JwtClaim {
   }
 }
 
+class ExternalAccessTokenJWTClaim extends JwtClaim {
+  ExternalAccessTokenJWTClaim({
+    required String did,
+    required DateTime expiry,
+    required String peerId,
+    required String uuid,
+  }) : super(
+          issuer: _issuer,
+          subject: uuid,
+          maxAge: Duration(days: 30),
+          otherClaims: {
+            'type': _RubixTokenType.externalAccessToken.toString(),
+            'peerId': peerId,
+            'did': did,
+          },
+        );
+
+  factory ExternalAccessTokenJWTClaim.fromJWTClaim(JwtClaim claim) {
+    return ExternalAccessTokenJWTClaim(
+      uuid: claim.subject!,
+      expiry: claim.expiry!,
+      peerId: claim.toJson()['peerId'],
+      did: claim.toJson()['did'],
+    );
+  }
+
+  factory ExternalAccessTokenJWTClaim.fromToken(String token) {
+    return ExternalAccessTokenJWTClaim.fromJWTClaim(
+        verifyJwtHS256Signature(token, _secret));
+  }
+
+  String getUuid() {
+    return subject!;
+  }
+
+  String getPeerId() {
+    return toJson()['peerId'];
+  }
+
+  String getDID() {
+    return toJson()['did'];
+  }
+}
+
+class ExternalAccessToken {
+  static final int _accessTokenMaxAge = 30; // days
+  static Token get(
+      {required String did, required String peerId, required String uuid}) {
+    final JwtClaim claimSet = ExternalAccessTokenJWTClaim(
+      did: did,
+      expiry: DateTime.now().add(Duration(days: _accessTokenMaxAge)),
+      peerId: peerId,
+      uuid: uuid,
+    );
+
+    return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
+  }
+}
+
 class AccesToken {
   static final int _accessTokenMaxAge = 30; // days
   static Token get(
@@ -237,8 +293,30 @@ class AccesToken {
     return Token(issueJwtHS256(claimSet, _secret), claimSet.expiry!);
   }
 
+  static _getTestAccessTokenJWTClaim() {
+    final JwtClaim testCLaim = JwtClaim(
+      issuer: _issuer,
+      subject: 'did.D1',
+      maxAge: Duration(days: 1),
+      otherClaims: {
+        'type': _RubixTokenType.accessToken.toString(),
+        'peerId': 'peerId.P1',
+        'publicKey': 'publicKey.Pk1',
+      },
+    );
+
+    return AccessTokenJWTClaim.fromJWTClaim(testCLaim);
+  }
+
   static AccessTokenJWTClaim verify(String token, {bool checkExpiry = true}) {
     try {
+      if (Config().test) {
+        print('Rubix: Test mode is enabled. Skipping token verification.');
+        if (token == 'rubix-fake-token') {
+          return _getTestAccessTokenJWTClaim();
+        }
+      }
+
       final JwtClaim claim = verifyJwtHS256Signature(token, _secret);
       if (checkExpiry == true) {
         claim.validate(

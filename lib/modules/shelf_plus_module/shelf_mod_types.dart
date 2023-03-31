@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shelf_plus/shelf_plus.dart';
 
 // Enum class for HTTP verbs
@@ -10,6 +12,13 @@ extension HttpVerbExtension on HttpVerb {
   }
 }
 
+class IResponse {
+  static Response json(Map<String, dynamic> body,
+      {Map<String, String>? headers}) {
+    return Response.ok(jsonEncode(body), headers: headers);
+  }
+}
+
 class CustomRoute {
   HttpVerb verb;
   String route;
@@ -17,11 +26,4 @@ class CustomRoute {
   Middleware? localMiddleware;
 
   CustomRoute(this.verb, this.route, this.handler, {this.localMiddleware});
-}
-
-class SubRoute {
-  String route;
-  List<CustomRoute> endpoints;
-
-  SubRoute(this.route, this.endpoints);
 }
