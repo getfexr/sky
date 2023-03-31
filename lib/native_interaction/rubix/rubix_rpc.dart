@@ -8,7 +8,7 @@ import 'package:sky/protogen/native-interaction/rubix-native.pbgrpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as rubix_util;
 
 class RubixService extends RubixServiceBase {
-  rubix_util.AccessTokenJWTClaim getAuthUser(ServiceCall call,
+  static rubix_util.AccessTokenJWTClaim getAuthUser(ServiceCall call,
       {bool checkExpiry = true}) {
     try {
       String token = extractBearerToken(call);

@@ -1,4 +1,5 @@
 import 'package:shelf_plus/shelf_plus.dart';
+import 'package:sky/external_interaction/rubix/rubix_external_rest_api.dart';
 import 'package:sky/external_interaction/sky_external_receiver.dart';
 import 'package:sky/modules/shelf_plus_module/shelf_mod_types.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
@@ -28,6 +29,7 @@ Handler init() {
   addSubroute('/sky/external', skyExternalReceiver);
   addSubroute('/rubix', rubixSubRoutes);
 
+  addSubroute('/sky/external/rubix', externalRubixApiHandlers);
   for (var route in endpoints) {
     app.add(route.verb.string, route.route, route.handler);
   }
