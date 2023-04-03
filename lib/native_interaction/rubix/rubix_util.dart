@@ -269,7 +269,7 @@ class ExternalAccessToken {
       {required String did, required String peerId, required String uuid}) {
     final JwtClaim claimSet = ExternalAccessTokenJWTClaim(
       did: did,
-      expiry: DateTime.now().add(Duration(days: _accessTokenMaxAge)),
+      expiry: DateTimeV2.now().add(Duration(days: _accessTokenMaxAge)),
       peerId: peerId,
       uuid: uuid,
     );
@@ -286,7 +286,7 @@ class AccesToken {
       required String publicKey}) {
     final JwtClaim claimSet = AccessTokenJWTClaim(
       did: did,
-      expiry: DateTime.now().add(Duration(days: _accessTokenMaxAge)),
+      expiry: DateTimeV2.now().add(Duration(days: _accessTokenMaxAge)),
       peerId: peerId,
       publicKey: publicKey,
     );

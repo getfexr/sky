@@ -1,3 +1,5 @@
+import 'package:sky/modules/utils.dart';
+
 enum QRType {
   authentication,
 }
@@ -20,7 +22,7 @@ class QR {
   }
 
   bool isExpired() {
-    return DateTime.now().isAfter(expiresAt);
+    return DateTimeV2.now().isAfter(expiresAt);
   }
 
   Map<String, dynamic> toMap() {
@@ -39,7 +41,7 @@ class AuthenticationQR extends QR {
   factory AuthenticationQR.forUuid(String uuid) {
     return AuthenticationQR(
         data: 'sky:ext:auth:$uuid',
-        expiresAt: DateTime.now().add(Duration(seconds: 30)));
+        expiresAt: DateTimeV2.now().add(Duration(seconds: 30)));
   }
 
   String getUuid() {

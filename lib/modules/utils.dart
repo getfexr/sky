@@ -1,8 +1,23 @@
 import 'package:grpc/grpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
 
+class DateTimeV2 {
+  static DateTime now() {
+    return DateTime.fromMillisecondsSinceEpoch(
+        DateTime.now().millisecondsSinceEpoch,
+        isUtc: true);
+  }
+}
+
 String getRemainingTimeString(DateTime time) {
-  var now = DateTime.now();
+  DateTime now;
+
+  if (time.isUtc) {
+    now = DateTimeV2.now();
+  } else {
+    now = DateTime.now();
+  }
+
   var diff = time.difference(now);
 
   if (diff < Duration.zero) {
