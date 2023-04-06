@@ -10,7 +10,7 @@
   <h3 align="center">sky</h3>
 
   <p align="center">
-    Secure wrapper and lite wallet authenticator for your Rubix Wallet (node)
+    Decentralized Identity Firewall for Fexr services
     <br />
     <a href="https://getfexr.com"><strong>Explore the docs »</strong></a>
     <br />
@@ -26,13 +26,26 @@
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Gateway for your Fexr wallets to connect subnet providers who can streamline your communication to blockchain validators.
+In a decentralized identity management system, like the one used in the Decentralized Identity Firewall for Fexr Services, the private keys are not stored by Sky or any other central authority. Instead, the private keys are stored within a self-custody wallet, which can be a browser extension, mobile app, or other application that enables users to control their own private keys.
 
-- Create private key pairs remotely within a cold wallet or mobile device and supports manually (in case of cold wallet) or automatically (in case of lite wallet) moves to public parts to the hot wallet. This tool also supports auto sync and backup of your node data to lite wallet.
+Here's a more detailed description of how the system works:
 
-- Connect your wallet to authenticate or sign third party accounts which are integrated with Rubix Blockchain Platform and uses Fexr APIs. Strict permission requirements built in Fexr apps will protect the access to your data also while allowing seamless integration.
+1. User creates a Decentralized Identity (DID): The user creates a new DID using their self-custody wallet. This DID is a unique identifier that the user will use to interact with Fexr and other decentralized financial services providers.
 
-_For more examples, please refer to the [Documentation](https://getfexr.com/developers/roadmap)_
+2. User requests access to Fexr services: The user requests access to Fexr services by providing their DID to Fexr. Fexr generates a content request that the user must sign with their private key.
+
+3. User signs content request: The user signs the content request with their private key, which is stored within their self-custody wallet. The signed content request includes the user's DID and a request for specific personal information to be shared with Fexr.
+
+4. Verification process: The signed content request is then verified by Sky. Sky ensures that the content request was signed by the user's private key and that the user has authorized the sharing of their personal information with Fexr.
+
+5. Access token issued: If the verification process is successful, Sky issues an access token to the user's DID. This access token is a unique identifier that Fexr can use to access the user's personal information.
+
+6. Access granted: The user's self-custody wallet then grants access to Fexr, enabling Fexr to access the user's personal information.
+
+It's important to note that the private keys are never shared with Sky or any other central authority. The self-custody wallet stores the private keys, and the user controls access to their personal information by signing content requests and granting access tokens.
+
+This decentralized identity management system provides enhanced security and privacy for user identities and personal information. It ensures that users have full control over their personal information and can revoke access at any time.
+
 
 <!-- BUILDING -->
 ## Running Locally
