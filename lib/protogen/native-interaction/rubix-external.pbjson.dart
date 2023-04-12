@@ -8,32 +8,29 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
-
 @$core.Deprecated('Use authRequestDescriptor instead')
-const AuthRequest$json = {
+const AuthRequest$json = const {
   '1': 'AuthRequest',
-  '2': [
-    {'1': 'uuid', '3': 1, '4': 1, '5': 9, '10': 'uuid'},
+  '2': const [
+    const {'1': 'uuid', '3': 1, '4': 1, '5': 9, '10': 'uuid'},
   ],
 };
 
 /// Descriptor for `AuthRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List authRequestDescriptor =
-    $convert.base64Decode('CgtBdXRoUmVxdWVzdBISCgR1dWlkGAEgASgJUgR1dWlk');
+final $typed_data.Uint8List authRequestDescriptor = $convert.base64Decode('CgtBdXRoUmVxdWVzdBISCgR1dWlkGAEgASgJUgR1dWlk');
 @$core.Deprecated('Use txnRequestDescriptor instead')
-const TxnRequest$json = {
+const TxnRequest$json = const {
   '1': 'TxnRequest',
-  '2': [
-    {'1': 'receiver', '3': 1, '4': 1, '5': 9, '10': 'receiver'},
-    {'1': 'amount', '3': 2, '4': 1, '5': 1, '10': 'amount'},
-    {'1': 'comment', '3': 3, '4': 1, '5': 9, '10': 'comment'},
-    {'1': 'type', '3': 4, '4': 1, '5': 5, '10': 'type'},
-    {'1': 'purpose', '3': 5, '4': 1, '5': 9, '10': 'purpose'},
-    {'1': 'externalParty', '3': 6, '4': 1, '5': 9, '10': 'externalParty'},
-    {'1': 'ticker', '3': 7, '4': 1, '5': 9, '10': 'ticker'},
+  '2': const [
+    const {'1': 'receiver', '3': 1, '4': 1, '5': 9, '10': 'receiver'},
+    const {'1': 'amount', '3': 2, '4': 1, '5': 1, '10': 'amount'},
+    const {'1': 'comment', '3': 3, '4': 1, '5': 9, '10': 'comment'},
+    const {'1': 'type', '3': 4, '4': 1, '5': 5, '10': 'type'},
+    const {'1': 'purpose', '3': 5, '4': 1, '5': 9, '10': 'purpose'},
+    const {'1': 'externalParty', '3': 6, '4': 1, '5': 9, '10': 'externalParty'},
+    const {'1': 'ticker', '3': 7, '4': 1, '5': 9, '10': 'ticker'},
   ],
 };
 
 /// Descriptor for `TxnRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List txnRequestDescriptor = $convert.base64Decode(
-    'CgpUeG5SZXF1ZXN0EhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIWCgZhbW91bnQYAiABKAFSBmFtb3VudBIYCgdjb21tZW50GAMgASgJUgdjb21tZW50EhIKBHR5cGUYBCABKAVSBHR5cGUSGAoHcHVycG9zZRgFIAEoCVIHcHVycG9zZRIkCg1leHRlcm5hbFBhcnR5GAYgASgJUg1leHRlcm5hbFBhcnR5EhYKBnRpY2tlchgHIAEoCVIGdGlja2Vy');
+final $typed_data.Uint8List txnRequestDescriptor = $convert.base64Decode('CgpUeG5SZXF1ZXN0EhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIWCgZhbW91bnQYAiABKAFSBmFtb3VudBIYCgdjb21tZW50GAMgASgJUgdjb21tZW50EhIKBHR5cGUYBCABKAVSBHR5cGUSGAoHcHVycG9zZRgFIAEoCVIHcHVycG9zZRIkCg1leHRlcm5hbFBhcnR5GAYgASgJUg1leHRlcm5hbFBhcnR5EhYKBnRpY2tlchgHIAEoCVIGdGlja2Vy');

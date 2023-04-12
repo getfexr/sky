@@ -8,27 +8,24 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
-
 @$core.Deprecated('Use qRInfoRequestDescriptor instead')
-const QRInfoRequest$json = {
+const QRInfoRequest$json = const {
   '1': 'QRInfoRequest',
-  '2': [
-    {'1': 'payload', '3': 1, '4': 1, '5': 9, '10': 'payload'},
+  '2': const [
+    const {'1': 'payload', '3': 1, '4': 1, '5': 9, '10': 'payload'},
   ],
 };
 
 /// Descriptor for `QRInfoRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List qRInfoRequestDescriptor = $convert
-    .base64Decode('Cg1RUkluZm9SZXF1ZXN0EhgKB3BheWxvYWQYASABKAlSB3BheWxvYWQ=');
+final $typed_data.Uint8List qRInfoRequestDescriptor = $convert.base64Decode('Cg1RUkluZm9SZXF1ZXN0EhgKB3BheWxvYWQYASABKAlSB3BheWxvYWQ=');
 @$core.Deprecated('Use qRInfoResponseDescriptor instead')
-const QRInfoResponse$json = {
+const QRInfoResponse$json = const {
   '1': 'QRInfoResponse',
-  '2': [
-    {'1': 'purpose', '3': 1, '4': 1, '5': 9, '10': 'purpose'},
-    {'1': 'payload', '3': 2, '4': 1, '5': 9, '10': 'payload'},
+  '2': const [
+    const {'1': 'purpose', '3': 1, '4': 1, '5': 9, '10': 'purpose'},
+    const {'1': 'payload', '3': 2, '4': 1, '5': 9, '10': 'payload'},
   ],
 };
 
 /// Descriptor for `QRInfoResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List qRInfoResponseDescriptor = $convert.base64Decode(
-    'Cg5RUkluZm9SZXNwb25zZRIYCgdwdXJwb3NlGAEgASgJUgdwdXJwb3NlEhgKB3BheWxvYWQYAiABKAlSB3BheWxvYWQ=');
+final $typed_data.Uint8List qRInfoResponseDescriptor = $convert.base64Decode('Cg5RUkluZm9SZXNwb25zZRIYCgdwdXJwb3NlGAEgASgJUgdwdXJwb3NlEhgKB3BheWxvYWQYAiABKAlSB3BheWxvYWQ=');

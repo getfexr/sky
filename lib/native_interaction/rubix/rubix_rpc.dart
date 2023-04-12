@@ -161,4 +161,10 @@ class RubixService extends RubixServiceBase {
         accessToken: accessToken.token,
         expiry: Timestamp.fromDateTime(accessToken.expiry)));
   }
+  
+  @override
+  Future<TransactionHistory> getTransactionHistory(ServiceCall call, Empty request) {
+    // TODO: implement getTransactionHistory once rubix is ready
+    throw UnimplementedError();
+  }
 }

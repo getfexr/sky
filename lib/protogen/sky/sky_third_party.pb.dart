@@ -10,21 +10,10 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class QRInfoRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'QRInfoRequest',
-      package: const $pb.PackageName(
-          $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'protos'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'payload')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'QRInfoRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'payload')
+    ..hasRequiredFields = false
+  ;
 
   QRInfoRequest._() : super();
   factory QRInfoRequest({
@@ -36,40 +25,31 @@ class QRInfoRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory QRInfoRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory QRInfoRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory QRInfoRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory QRInfoRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   QRInfoRequest clone() => QRInfoRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  QRInfoRequest copyWith(void Function(QRInfoRequest) updates) =>
-      super.copyWith((message) => updates(message as QRInfoRequest))
-          as QRInfoRequest; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  QRInfoRequest copyWith(void Function(QRInfoRequest) updates) => super.copyWith((message) => updates(message as QRInfoRequest)) as QRInfoRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static QRInfoRequest create() => QRInfoRequest._();
   QRInfoRequest createEmptyInstance() => create();
-  static $pb.PbList<QRInfoRequest> createRepeated() =>
-      $pb.PbList<QRInfoRequest>();
+  static $pb.PbList<QRInfoRequest> createRepeated() => $pb.PbList<QRInfoRequest>();
   @$core.pragma('dart2js:noInline')
-  static QRInfoRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<QRInfoRequest>(create);
+  static QRInfoRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<QRInfoRequest>(create);
   static QRInfoRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get payload => $_getSZ(0);
   @$pb.TagNumber(1)
-  set payload($core.String v) {
-    $_setString(0, v);
-  }
-
+  set payload($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasPayload() => $_has(0);
   @$pb.TagNumber(1)
@@ -77,26 +57,11 @@ class QRInfoRequest extends $pb.GeneratedMessage {
 }
 
 class QRInfoResponse extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'QRInfoResponse',
-      package: const $pb.PackageName(
-          $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'protos'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'purpose')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'payload')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'QRInfoResponse', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'purpose')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'payload')
+    ..hasRequiredFields = false
+  ;
 
   QRInfoResponse._() : super();
   factory QRInfoResponse({
@@ -112,40 +77,31 @@ class QRInfoResponse extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory QRInfoResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory QRInfoResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  factory QRInfoResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory QRInfoResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   QRInfoResponse clone() => QRInfoResponse()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  QRInfoResponse copyWith(void Function(QRInfoResponse) updates) =>
-      super.copyWith((message) => updates(message as QRInfoResponse))
-          as QRInfoResponse; // ignore: deprecated_member_use
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  QRInfoResponse copyWith(void Function(QRInfoResponse) updates) => super.copyWith((message) => updates(message as QRInfoResponse)) as QRInfoResponse; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static QRInfoResponse create() => QRInfoResponse._();
   QRInfoResponse createEmptyInstance() => create();
-  static $pb.PbList<QRInfoResponse> createRepeated() =>
-      $pb.PbList<QRInfoResponse>();
+  static $pb.PbList<QRInfoResponse> createRepeated() => $pb.PbList<QRInfoResponse>();
   @$core.pragma('dart2js:noInline')
-  static QRInfoResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<QRInfoResponse>(create);
+  static QRInfoResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<QRInfoResponse>(create);
   static QRInfoResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get purpose => $_getSZ(0);
   @$pb.TagNumber(1)
-  set purpose($core.String v) {
-    $_setString(0, v);
-  }
-
+  set purpose($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasPurpose() => $_has(0);
   @$pb.TagNumber(1)
@@ -154,12 +110,10 @@ class QRInfoResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get payload => $_getSZ(1);
   @$pb.TagNumber(2)
-  set payload($core.String v) {
-    $_setString(1, v);
-  }
-
+  set payload($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasPayload() => $_has(1);
   @$pb.TagNumber(2)
   void clearPayload() => clearField(2);
 }
+

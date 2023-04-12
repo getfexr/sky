@@ -160,3 +160,34 @@ const IncomingTxnDetails$json = const {
 
 /// Descriptor for `IncomingTxnDetails`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List incomingTxnDetailsDescriptor = $convert.base64Decode('ChJJbmNvbWluZ1R4bkRldGFpbHMSFAoFdHhuSWQYASABKAlSBXR4bklkEhYKBnNlbmRlchgCIAEoCVIGc2VuZGVyEhoKCHJlY2VpdmVyGAMgASgJUghyZWNlaXZlchIWCgZhbW91bnQYBCABKAFSBmFtb3VudBIYCgdjb21tZW50GAUgASgJUgdjb21tZW50EhIKBHR5cGUYBiABKAVSBHR5cGUSOAoJdGltZXN0YW1wGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJdGltZXN0YW1wEh4KCnRpY2tlck5hbWUYCCABKAlSCnRpY2tlck5hbWUSEAoDZ2FzGAkgASgBUgNnYXM=');
+@$core.Deprecated('Use transactionDetailsDescriptor instead')
+const TransactionDetails$json = const {
+  '1': 'TransactionDetails',
+  '2': const [
+    const {'1': 'transactionId', '3': 1, '4': 1, '5': 9, '10': 'transactionId'},
+    const {'1': 'transactionType', '3': 2, '4': 1, '5': 9, '10': 'transactionType'},
+    const {'1': 'blockId', '3': 3, '4': 1, '5': 9, '10': 'blockId'},
+    const {'1': 'mode', '3': 4, '4': 1, '5': 5, '10': 'mode'},
+    const {'1': 'senderDID', '3': 5, '4': 1, '5': 9, '10': 'senderDID'},
+    const {'1': 'receiverDID', '3': 6, '4': 1, '5': 9, '10': 'receiverDID'},
+    const {'1': 'amount', '3': 7, '4': 1, '5': 1, '10': 'amount'},
+    const {'1': 'totalTime', '3': 8, '4': 1, '5': 1, '10': 'totalTime'},
+    const {'1': 'comment', '3': 9, '4': 1, '5': 9, '10': 'comment'},
+    const {'1': 'dateTime', '3': 10, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'dateTime'},
+    const {'1': 'status', '3': 11, '4': 1, '5': 8, '10': 'status'},
+  ],
+};
+
+/// Descriptor for `TransactionDetails`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List transactionDetailsDescriptor = $convert.base64Decode('ChJUcmFuc2FjdGlvbkRldGFpbHMSJAoNdHJhbnNhY3Rpb25JZBgBIAEoCVINdHJhbnNhY3Rpb25JZBIoCg90cmFuc2FjdGlvblR5cGUYAiABKAlSD3RyYW5zYWN0aW9uVHlwZRIYCgdibG9ja0lkGAMgASgJUgdibG9ja0lkEhIKBG1vZGUYBCABKAVSBG1vZGUSHAoJc2VuZGVyRElEGAUgASgJUglzZW5kZXJESUQSIAoLcmVjZWl2ZXJESUQYBiABKAlSC3JlY2VpdmVyRElEEhYKBmFtb3VudBgHIAEoAVIGYW1vdW50EhwKCXRvdGFsVGltZRgIIAEoAVIJdG90YWxUaW1lEhgKB2NvbW1lbnQYCSABKAlSB2NvbW1lbnQSNgoIZGF0ZVRpbWUYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUghkYXRlVGltZRIWCgZzdGF0dXMYCyABKAhSBnN0YXR1cw==');
+@$core.Deprecated('Use transactionHistoryDescriptor instead')
+const TransactionHistory$json = const {
+  '1': 'TransactionHistory',
+  '2': const [
+    const {'1': 'transactions', '3': 1, '4': 3, '5': 11, '6': '.protos.TransactionDetails', '10': 'transactions'},
+    const {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `TransactionHistory`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List transactionHistoryDescriptor = $convert.base64Decode('ChJUcmFuc2FjdGlvbkhpc3RvcnkSPgoMdHJhbnNhY3Rpb25zGAEgAygLMhoucHJvdG9zLlRyYW5zYWN0aW9uRGV0YWlsc1IMdHJhbnNhY3Rpb25zEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

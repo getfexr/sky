@@ -938,3 +938,247 @@ class IncomingTxnDetails extends $pb.GeneratedMessage {
   void clearGas() => clearField(9);
 }
 
+class TransactionDetails extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'TransactionDetails', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'transactionId', protoName: 'transactionId')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'transactionType', protoName: 'transactionType')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'blockId', protoName: 'blockId')
+    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mode', $pb.PbFieldType.O3)
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'senderDID', protoName: 'senderDID')
+    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'receiverDID', protoName: 'receiverDID')
+    ..a<$core.double>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'amount', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'totalTime', $pb.PbFieldType.OD, protoName: 'totalTime')
+    ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'comment')
+    ..aOM<$2.Timestamp>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'dateTime', protoName: 'dateTime', subBuilder: $2.Timestamp.create)
+    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status')
+    ..hasRequiredFields = false
+  ;
+
+  TransactionDetails._() : super();
+  factory TransactionDetails({
+    $core.String? transactionId,
+    $core.String? transactionType,
+    $core.String? blockId,
+    $core.int? mode,
+    $core.String? senderDID,
+    $core.String? receiverDID,
+    $core.double? amount,
+    $core.double? totalTime,
+    $core.String? comment,
+    $2.Timestamp? dateTime,
+    $core.bool? status,
+  }) {
+    final _result = create();
+    if (transactionId != null) {
+      _result.transactionId = transactionId;
+    }
+    if (transactionType != null) {
+      _result.transactionType = transactionType;
+    }
+    if (blockId != null) {
+      _result.blockId = blockId;
+    }
+    if (mode != null) {
+      _result.mode = mode;
+    }
+    if (senderDID != null) {
+      _result.senderDID = senderDID;
+    }
+    if (receiverDID != null) {
+      _result.receiverDID = receiverDID;
+    }
+    if (amount != null) {
+      _result.amount = amount;
+    }
+    if (totalTime != null) {
+      _result.totalTime = totalTime;
+    }
+    if (comment != null) {
+      _result.comment = comment;
+    }
+    if (dateTime != null) {
+      _result.dateTime = dateTime;
+    }
+    if (status != null) {
+      _result.status = status;
+    }
+    return _result;
+  }
+  factory TransactionDetails.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TransactionDetails.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TransactionDetails clone() => TransactionDetails()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TransactionDetails copyWith(void Function(TransactionDetails) updates) => super.copyWith((message) => updates(message as TransactionDetails)) as TransactionDetails; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static TransactionDetails create() => TransactionDetails._();
+  TransactionDetails createEmptyInstance() => create();
+  static $pb.PbList<TransactionDetails> createRepeated() => $pb.PbList<TransactionDetails>();
+  @$core.pragma('dart2js:noInline')
+  static TransactionDetails getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionDetails>(create);
+  static TransactionDetails? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get transactionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set transactionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTransactionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTransactionId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get transactionType => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set transactionType($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTransactionType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTransactionType() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get blockId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set blockId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasBlockId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBlockId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get mode => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set mode($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMode() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMode() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get senderDID => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set senderDID($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSenderDID() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSenderDID() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get receiverDID => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set receiverDID($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasReceiverDID() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearReceiverDID() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.double get amount => $_getN(6);
+  @$pb.TagNumber(7)
+  set amount($core.double v) { $_setDouble(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasAmount() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearAmount() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.double get totalTime => $_getN(7);
+  @$pb.TagNumber(8)
+  set totalTime($core.double v) { $_setDouble(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasTotalTime() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearTotalTime() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get comment => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set comment($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasComment() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearComment() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $2.Timestamp get dateTime => $_getN(9);
+  @$pb.TagNumber(10)
+  set dateTime($2.Timestamp v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasDateTime() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearDateTime() => clearField(10);
+  @$pb.TagNumber(10)
+  $2.Timestamp ensureDateTime() => $_ensure(9);
+
+  @$pb.TagNumber(11)
+  $core.bool get status => $_getBF(10);
+  @$pb.TagNumber(11)
+  set status($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasStatus() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearStatus() => clearField(11);
+}
+
+class TransactionHistory extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'TransactionHistory', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..pc<TransactionDetails>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'transactions', $pb.PbFieldType.PM, subBuilder: TransactionDetails.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'error')
+    ..hasRequiredFields = false
+  ;
+
+  TransactionHistory._() : super();
+  factory TransactionHistory({
+    $core.Iterable<TransactionDetails>? transactions,
+    $core.String? error,
+  }) {
+    final _result = create();
+    if (transactions != null) {
+      _result.transactions.addAll(transactions);
+    }
+    if (error != null) {
+      _result.error = error;
+    }
+    return _result;
+  }
+  factory TransactionHistory.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TransactionHistory.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TransactionHistory clone() => TransactionHistory()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TransactionHistory copyWith(void Function(TransactionHistory) updates) => super.copyWith((message) => updates(message as TransactionHistory)) as TransactionHistory; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static TransactionHistory create() => TransactionHistory._();
+  TransactionHistory createEmptyInstance() => create();
+  static $pb.PbList<TransactionHistory> createRepeated() => $pb.PbList<TransactionHistory>();
+  @$core.pragma('dart2js:noInline')
+  static TransactionHistory getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionHistory>(create);
+  static TransactionHistory? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<TransactionDetails> get transactions => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => clearField(2);
+}
+

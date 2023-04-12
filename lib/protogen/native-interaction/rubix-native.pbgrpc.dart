@@ -63,6 +63,12 @@ class RubixServiceClient extends $grpc.Client {
           '/protos.RubixService/GenerateAccessToken',
           ($0.SignedPayload value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $0.Token.fromBuffer(value));
+  static final _$getTransactionHistory =
+      $grpc.ClientMethod<$1.Empty, $0.TransactionHistory>(
+          '/protos.RubixService/GetTransactionHistory',
+          ($1.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.TransactionHistory.fromBuffer(value));
 
   RubixServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -120,6 +126,12 @@ class RubixServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Token> generateAccessToken($0.SignedPayload request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$generateAccessToken, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.TransactionHistory> getTransactionHistory(
+      $1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getTransactionHistory, request, options: options);
   }
 }
 
@@ -193,6 +205,13 @@ abstract class RubixServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.SignedPayload.fromBuffer(value),
         ($0.Token value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.TransactionHistory>(
+        'GetTransactionHistory',
+        getTransactionHistory_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.TransactionHistory value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ChallengeString> createDIDChallenge_Pre(
@@ -241,6 +260,11 @@ abstract class RubixServiceBase extends $grpc.Service {
     return generateAccessToken(call, await request);
   }
 
+  $async.Future<$0.TransactionHistory> getTransactionHistory_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return getTransactionHistory(call, await request);
+  }
+
   $async.Future<$0.ChallengeString> createDIDChallenge(
       $grpc.ServiceCall call, $0.ChallengeReq request);
   $async.Future<$0.CreateDIDRes> createDID(
@@ -259,4 +283,6 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$0.Token> generateAccessToken(
       $grpc.ServiceCall call, $0.SignedPayload request);
+  $async.Future<$0.TransactionHistory> getTransactionHistory(
+      $grpc.ServiceCall call, $1.Empty request);
 }
