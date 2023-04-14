@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:shelf_plus/shelf_plus.dart';
 import 'package:sky/external_interaction/rubix/rubix_txn_request_stream.dart';
 import 'package:sky/modules/auth_util.dart';
 import 'package:sky/modules/shelf_plus_module/shelf_mod_types.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';
-import 'package:http/http.dart' as http;
 
 var externalRubixApiHandlers = [
   CustomRoute(HttpVerb.get, '/ping', (Request request) => Response.ok('pong')),
@@ -27,27 +24,4 @@ Future<Response> handleTransactionRequest(Request request) async {
 
   return Response.ok('Transaction request received');
 }
-
-Future<bool> externalApi({required String did,required String peerId,required String orgName,required String callBackUrl,required Token orgAccessToken })async {
-    var bodyJsonStr = jsonEncode({
-      'did': did,
-      'peerId': peerId,
-      'orgName': orgName,
-    });
-  var response = await http.post(
-      Uri.http(callBackUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $orgAccessToken',
-      },
-      body: bodyJsonStr,
-    );
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-}
-
-
 //  TODO: write accesstoken test mode for testing app fexr
