@@ -164,7 +164,11 @@ class RubixService extends RubixServiceBase {
   
   @override
   Future<TransactionHistory> getTransactionHistory(ServiceCall call, Empty request) {
+<<<<<<< HEAD
     // TODO: implement getTransactionHistory once rubix is ready
+=======
+    // TODO: implement getTransactionHistory
+>>>>>>> a68e34c (Add external api)
     throw UnimplementedError();
   }
 }
