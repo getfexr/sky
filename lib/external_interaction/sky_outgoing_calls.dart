@@ -7,12 +7,12 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
     var bodyJsonStr = jsonEncode({
       'did': '$did.$peerId',
       'session_id': sessionId,
-      'token': orgAccessToken,
+      'token': orgAccessToken.token,
       'chain': chain,
     });
   try{
      var response = await http.post(
-      Uri.http(callBackUrl),
+      Uri.parse(callBackUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
