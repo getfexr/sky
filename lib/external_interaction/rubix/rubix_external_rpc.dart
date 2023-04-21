@@ -45,14 +45,13 @@ class RubixExternalService extends RubixExternalServiceBase {
   Future<OrgStatus> approveOrgAuthRequest(
       ServiceCall call, OrgAuthRequest request) async {
     var user = RubixService.getAuthUser(call);
-    const rubix = 'rubix';
     var did = user.getDid();
     var peerId = user.getPeerId();
     var orgName = request.orgName;
     var callBackUrl = request.callBackUrl;
     var sessionId = request.sessionId;
     final orgAccessToken = util.OrgAccessToken.get(did: did, peerId: peerId, orgName: orgName);
-    var response = await fireAuthCallback(did: did, peerId: peerId, callBackUrl: callBackUrl, orgAccessToken: orgAccessToken,sessionId: sessionId,chain: rubix);
+    var response = await fireAuthCallback(did: did, peerId: peerId, callBackUrl: callBackUrl, orgAccessToken: orgAccessToken,sessionId: sessionId,chain: 'rubix');
     return Future.value(OrgStatus(status: response));
   }
 }
