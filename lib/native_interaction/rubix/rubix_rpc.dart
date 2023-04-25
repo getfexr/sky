@@ -1,3 +1,4 @@
+import 'package:sky/external_interaction/rubix/rubix_sign_response_stream.dart';
 import 'package:sky/modules/auth_util.dart';
 import 'package:sky/modules/utils.dart' as util;
 import 'package:sky/native_interaction/rubix/rubix_platform_calls.dart';
@@ -166,5 +167,28 @@ class RubixService extends RubixServiceBase {
   Future<TransactionHistory> getTransactionHistory(ServiceCall call, Empty request) {
     // TODO: implement getTransactionHistory once rubix is ready
     throw UnimplementedError();
+  }
+  
+  @override
+  Stream<RequestTransactionPayloadRes> streamSignResponse(ServiceCall call, Empty request) {
+   var user = RubixService.getAuthUser(call);
+   var did = user.getDid();
+    var peerId = user.getPeerId();
+    return RubixSignResponseStream().getStream(did).map((event) {
+      return RequestTransactionPayloadRes(requestId: event.requestId,
+          hash: event.hash
+      );
+    });
+  }
+  
+  @override
+  Future<Status> signData(ServiceCall call, HashSigned request) {
+     try {
+      var user = getAuthUser(call);
+      return RubixPlatform()
+          .signResponse(request: request, peerId: user.getPeerId());
+    } catch (e, stackTrace) {
+      throw util.getGrpcError(e, stackTrace, 'Failed to sign response');
+    }
   }
 }

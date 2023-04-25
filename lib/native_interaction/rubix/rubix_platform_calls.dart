@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:grpc/grpc.dart';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/external_interaction/rubix/rubix_sign_response_stream.dart';
 import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
+import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
+import 'package:sky/protogen/google/protobuf/empty.pb.dart';
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
 import 'package:sky/protogen/native-interaction/rubix-native.pb.dart';
 
@@ -149,6 +153,67 @@ class RubixPlatform {
     var requestId = responseJson['result']['id'];
     return RequestTransactionPayloadRes(
         requestId: requestId, hash: hashForSign);
+  }
+
+  Future<Empty> createDataToken(
+      String userId,
+      String userInfo,
+      String committerDid,
+      String batchId,
+      String fileInfo,
+      List<int> fileContent) async {
+    var peerId = committerDid.split('.').first;
+    var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
+    var request =
+        http.MultipartRequest('POST', Uri.http(url, '/api/create-data-token'));
+    request.fields['UserID'] = userId;
+    request.fields['UserInfo'] = userInfo;
+    request.fields['CommitterDID'] = committerDid;
+    request.fields['BatchID'] = batchId;
+    request.fields['FileInfo'] = fileInfo;
+    request.files.add(http.MultipartFile.fromBytes('FileContent', fileContent,
+        filename: 'file'));
+    var response = await request.send();
+    var responseString = await response.stream.bytesToString();
+    Map<String, dynamic> responseJson = jsonDecode(responseString);
+    var status = responseJson['status'];
+    if (status == false) {
+      throw RubixException(responseJson['message']);
+    }
+    var hashForSign = responseJson['result']['hash'];
+    var requestId = responseJson['result']['id'];
+    var signRequest = RubixSignRequest(
+        did: committerDid, requestId: requestId, hash: hashForSign);
+    RubixSignResponseStream().add(signRequest);
+    return Future.value(Empty());
+  }
+
+  Future<Empty> commitDataToken(String did, String batchId) async {
+    var peerId = did.split('.').first;
+    var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
+    var bodyJsonStr = jsonEncode(<String, dynamic>{
+      'did': did,
+      'batchID': batchId,
+    });
+    var response = await http.post(
+      Uri.http(url, '/api/commit-data-token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: bodyJsonStr,
+    );
+    var responseString = response.body;
+    Map<String, dynamic> responseJson = jsonDecode(responseString);
+    var status = responseJson['status'];
+    if (status == false) {
+      throw RubixException(responseJson['message']);
+    }
+    var hashForSign = responseJson['result']['hash'];
+    var requestId = responseJson['result']['id'];
+    var signRequest =
+        RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
+    RubixSignResponseStream().add(signRequest);
+    return Future.value(Empty());
   }
 
   Stream<IncomingTxnDetails> streamIncomingTxn({

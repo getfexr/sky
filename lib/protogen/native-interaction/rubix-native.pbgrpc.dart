@@ -69,6 +69,16 @@ class RubixServiceClient extends $grpc.Client {
           ($1.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.TransactionHistory.fromBuffer(value));
+  static final _$streamSignResponse =
+      $grpc.ClientMethod<$1.Empty, $0.RequestTransactionPayloadRes>(
+          '/protos.RubixService/StreamSignResponse',
+          ($1.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.RequestTransactionPayloadRes.fromBuffer(value));
+  static final _$signData = $grpc.ClientMethod<$0.HashSigned, $0.Status>(
+      '/protos.RubixService/SignData',
+      ($0.HashSigned value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Status.fromBuffer(value));
 
   RubixServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -132,6 +142,19 @@ class RubixServiceClient extends $grpc.Client {
       $1.Empty request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getTransactionHistory, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.RequestTransactionPayloadRes> streamSignResponse(
+      $1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createStreamingCall(
+        _$streamSignResponse, $async.Stream.fromIterable([request]),
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Status> signData($0.HashSigned request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$signData, request, options: options);
   }
 }
 
@@ -212,6 +235,20 @@ abstract class RubixServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($0.TransactionHistory value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.RequestTransactionPayloadRes>(
+        'StreamSignResponse',
+        streamSignResponse_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.RequestTransactionPayloadRes value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.HashSigned, $0.Status>(
+        'SignData',
+        signData_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.HashSigned.fromBuffer(value),
+        ($0.Status value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ChallengeString> createDIDChallenge_Pre(
@@ -265,6 +302,16 @@ abstract class RubixServiceBase extends $grpc.Service {
     return getTransactionHistory(call, await request);
   }
 
+  $async.Stream<$0.RequestTransactionPayloadRes> streamSignResponse_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async* {
+    yield* streamSignResponse(call, await request);
+  }
+
+  $async.Future<$0.Status> signData_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.HashSigned> request) async {
+    return signData(call, await request);
+  }
+
   $async.Future<$0.ChallengeString> createDIDChallenge(
       $grpc.ServiceCall call, $0.ChallengeReq request);
   $async.Future<$0.CreateDIDRes> createDID(
@@ -285,4 +332,8 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.SignedPayload request);
   $async.Future<$0.TransactionHistory> getTransactionHistory(
       $grpc.ServiceCall call, $1.Empty request);
+  $async.Stream<$0.RequestTransactionPayloadRes> streamSignResponse(
+      $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$0.Status> signData(
+      $grpc.ServiceCall call, $0.HashSigned request);
 }
