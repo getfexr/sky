@@ -13,6 +13,8 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
       'chain': chain,
       'sky_url': skyUrl
     });
+    print('call Back Url ---------$callBackUrl');
+    print('bodyJsonStr ---------$bodyJsonStr');
   try{
      var response = await http.post(
       Uri.parse(callBackUrl),
