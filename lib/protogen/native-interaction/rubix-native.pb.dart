@@ -1355,3 +1355,44 @@ class OnChainAsset extends $pb.GeneratedMessage {
   void clearUrl() => clearField(10);
 }
 
+class Assets extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Assets', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'protos'), createEmptyInstance: create)
+    ..pc<OnChainAsset>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'assets', $pb.PbFieldType.PM, subBuilder: OnChainAsset.create)
+    ..hasRequiredFields = false
+  ;
+
+  Assets._() : super();
+  factory Assets({
+    $core.Iterable<OnChainAsset>? assets,
+  }) {
+    final _result = create();
+    if (assets != null) {
+      _result.assets.addAll(assets);
+    }
+    return _result;
+  }
+  factory Assets.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Assets.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Assets clone() => Assets()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Assets copyWith(void Function(Assets) updates) => super.copyWith((message) => updates(message as Assets)) as Assets; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Assets create() => Assets._();
+  Assets createEmptyInstance() => create();
+  static $pb.PbList<Assets> createRepeated() => $pb.PbList<Assets>();
+  @$core.pragma('dart2js:noInline')
+  static Assets getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Assets>(create);
+  static Assets? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<OnChainAsset> get assets => $_getList(0);
+}
+

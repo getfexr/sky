@@ -193,11 +193,10 @@ class RubixService extends RubixServiceBase {
   }
   
   @override
-  Future<OnChainAsset> getAsset(ServiceCall call, Empty request) {
+  Future<Assets> getAsset(ServiceCall call, Empty request) {
     try {
       var user = getAuthUser(call);
-      return RubixPlatform()
-          .getAsset(did: user.getDid(),peerId: user.getPeerId());
+      return RubixPlatform().getAsset(did: user.getDid(), peerId: user.getPeerId());
   } catch (e,stackTrace) {
       throw util.getGrpcError(e, stackTrace, 'Failed to get asset');
     }

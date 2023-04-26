@@ -327,7 +327,7 @@ class RubixPlatform {
     }
   }
 
-  Future<OnChainAsset> getAsset({required String did, required String peerId}) async {
+  Future<Assets> getAsset({required String did, required String peerId}) async {
     var url = Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
         '/api/get-data-token', {"did": did});
     var response = await http.get(
@@ -344,11 +344,28 @@ class RubixPlatform {
     }
     // get an array from a json
     var tokens = responseJson['tokens'];
-    var tokenId = tokens['TokenID'];
-    var didreceived = tokens['DID'];
-    var committerDID = tokens['CommitterDID'];
-    var batchID = tokens['BatchID'];
-    var tokenStatus = tokens['TokenStatus'];
-    return OnChainAsset(timsstamp: '',assetName: 'V-guard-poc',creatorName: 'Test',creatorDID: committerDID,price: '0',note: tokenId,status: tokenStatus,hash: batchID,chain: 'rubix',url: 'example.com');
+    //iterate through the content of array tokens
+    Assets assets = Assets();
+    for (var token in tokens) {
+      var tokenId = token['TokenID'];
+      var didreceived = token['DID'];
+      var committerDID = token['CommitterDID'];
+      var batchID = token['BatchID'];
+      var tokenStatus = token['TokenStatus'];
+      var asset = OnChainAsset(
+          timsstamp: '',
+          assetName: 'V-guard-poc',
+          creatorName: 'Test',
+          creatorDID: committerDID,
+          price: '0',
+          note: tokenId,
+          status: tokenStatus,
+          hash: batchID,
+          chain: 'rubix',
+          url: 'example.com');
+      assets.assets.add(asset);
+    }
+    return assets;
+
   }
 }

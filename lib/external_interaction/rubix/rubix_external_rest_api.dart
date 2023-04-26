@@ -15,6 +15,7 @@ var externalRubixApiHandlers = [
   CustomRoute(HttpVerb.post, 'request-transaction', handleTransactionRequest),
   CustomRoute(HttpVerb.post, '/create-data-token', createDataToken),
   CustomRoute(HttpVerb.post, '/commit-data-token',commitDataToken ),
+  CustomRoute(HttpVerb.get, '/get-data-token', getDataToken)
 ];
 
 ExternalAccessTokenJWTClaim getExternalUser(Request request) {
@@ -89,7 +90,15 @@ Future<Response> handleTransactionRequest(Request request) async {
 //   // RubixPlatform().createDataToken(userId, userInfo, committerDid, batchId, fileInfo, fileContent);
 //   return Response.ok('Data token created');
 // }
-
+Future<Response> getDataToken(Request request) async {
+  var user = getOrgUser(request);
+  var peerId = user.getPeerId();
+  var did = user.getDID();
+  var orgName = user.getOrgName(); 
+  var response = await RubixPlatform().getAsset(did: did, peerId: peerId);
+  var batchID = response.assets.toString();
+  return Response.ok('Got Data Token');
+}
 Future<Response> createDataToken(Request request) async {
   var body = await request.body.asJson;
   print('body in createdatatoken ${body.toString()}');
