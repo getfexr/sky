@@ -156,7 +156,7 @@ class RubixPlatform {
         requestId: requestId, hash: hashForSign);
   }
 
-  Future<Empty> createDataToken(
+  Future<String> createDataToken(
       String userId,
       String userInfo,
       String committerDid,
@@ -183,13 +183,15 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var signRequest = RubixSignRequest(
-        did: committerDid, requestId: requestId, hash: hashForSign);
-    RubixSignResponseStream().add(signRequest);
-    return Future.value(Empty());
+    var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: committerDid,amount: 0,comment: 'Create Data Token Request');
+    RubixTransactionRequestStream().add(transactionRequest);
+    // var signRequest = RubixSignRequest(
+    //     did: committerDid, requestId: requestId, hash: hashForSign);
+    // RubixSignResponseStream().add(signRequest);
+    return Future.value('Data Token Created');
   }
 
-  Future<Empty> commitDataToken(String did, String batchId, String token) async {
+  Future<String> commitDataToken(String did, String batchId, String token) async {
     var peerId = did.split('.').first;
     var token = 'test-token';
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
@@ -212,12 +214,12 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: '',amount: 0,comment: '');
+    var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request');
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest =
     //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
     // RubixSignResponseStream().add(signRequest);
-    return Future.value(Empty());
+    return Future.value('Data token Commited');
   }
 
   Stream<IncomingTxnDetails> streamIncomingTxn({
@@ -323,5 +325,30 @@ class RubixPlatform {
     } catch (e) {
       throw RubixException('could not find account info for did: $dId');
     }
+  }
+
+  Future<OnChainAsset> getAsset({required String did, required String peerId}) async {
+    var url = Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
+        '/api/get-data-token', {"did": did});
+    var response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    var responseJson = jsonDecode(response.body);
+    RubixLog().appendLog("Get Asset response from rubix: $responseJson");
+    var status = responseJson['status'];
+    if (status == false) {
+      throw RubixException(responseJson['message']);
+    }
+    // get an array from a json
+    var tokens = responseJson['tokens'];
+    var tokenId = tokens['TokenID'];
+    var didreceived = tokens['DID'];
+    var committerDID = tokens['CommitterDID'];
+    var batchID = tokens['BatchID'];
+    var tokenStatus = tokens['TokenStatus'];
+    return OnChainAsset(timsstamp: '',assetName: 'V-guard-poc',creatorName: 'Test',creatorDID: committerDID,price: '0',note: tokenId,status: tokenStatus,hash: batchID,chain: 'rubix',url: 'example.com');
   }
 }

@@ -2,6 +2,7 @@ import 'package:grpc/grpc.dart' as grpc;
 import 'package:sky/background.dart';
 import 'package:sky/config.dart';
 import 'package:sky/external_interaction/rubix/rubix_external_rpc.dart';
+import 'package:sky/external_interaction/sky_outgoing_calls.dart';
 import 'package:sky/router/router.dart' as shelf;
 
 import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
@@ -17,7 +18,7 @@ void startRPCDaemon() async {
 
   await RubixNodeBalancer().setCurrentPortIndex();
   final port = Config().port;
-
+  
   await Future.wait([
     server.serve(port: port),
     shelf.serve(port + 1),

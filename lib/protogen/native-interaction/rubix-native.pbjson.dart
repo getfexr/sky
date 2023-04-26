@@ -191,3 +191,22 @@ const TransactionHistory$json = const {
 
 /// Descriptor for `TransactionHistory`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List transactionHistoryDescriptor = $convert.base64Decode('ChJUcmFuc2FjdGlvbkhpc3RvcnkSPgoMdHJhbnNhY3Rpb25zGAEgAygLMhoucHJvdG9zLlRyYW5zYWN0aW9uRGV0YWlsc1IMdHJhbnNhY3Rpb25zEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+@$core.Deprecated('Use onChainAssetDescriptor instead')
+const OnChainAsset$json = const {
+  '1': 'OnChainAsset',
+  '2': const [
+    const {'1': 'timsstamp', '3': 1, '4': 1, '5': 9, '10': 'timsstamp'},
+    const {'1': 'assetName', '3': 2, '4': 1, '5': 9, '10': 'assetName'},
+    const {'1': 'creatorName', '3': 3, '4': 1, '5': 9, '10': 'creatorName'},
+    const {'1': 'creatorDID', '3': 4, '4': 1, '5': 9, '10': 'creatorDID'},
+    const {'1': 'price', '3': 5, '4': 1, '5': 9, '10': 'price'},
+    const {'1': 'note', '3': 6, '4': 1, '5': 9, '10': 'note'},
+    const {'1': 'status', '3': 7, '4': 1, '5': 9, '10': 'status'},
+    const {'1': 'hash', '3': 8, '4': 1, '5': 9, '10': 'hash'},
+    const {'1': 'chain', '3': 9, '4': 1, '5': 9, '10': 'chain'},
+    const {'1': 'url', '3': 10, '4': 1, '5': 9, '10': 'url'},
+  ],
+};
+
+/// Descriptor for `OnChainAsset`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List onChainAssetDescriptor = $convert.base64Decode('CgxPbkNoYWluQXNzZXQSHAoJdGltc3N0YW1wGAEgASgJUgl0aW1zc3RhbXASHAoJYXNzZXROYW1lGAIgASgJUglhc3NldE5hbWUSIAoLY3JlYXRvck5hbWUYAyABKAlSC2NyZWF0b3JOYW1lEh4KCmNyZWF0b3JESUQYBCABKAlSCmNyZWF0b3JESUQSFAoFcHJpY2UYBSABKAlSBXByaWNlEhIKBG5vdGUYBiABKAlSBG5vdGUSFgoGc3RhdHVzGAcgASgJUgZzdGF0dXMSEgoEaGFzaBgIIAEoCVIEaGFzaBIUCgVjaGFpbhgJIAEoCVIFY2hhaW4SEAoDdXJsGAogASgJUgN1cmw=');

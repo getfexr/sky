@@ -19,6 +19,8 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
       },
       body: bodyJsonStr,
     );
+    print(response.toString());
+    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {

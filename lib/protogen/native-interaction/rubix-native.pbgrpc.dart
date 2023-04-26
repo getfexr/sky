@@ -79,6 +79,10 @@ class RubixServiceClient extends $grpc.Client {
       '/protos.RubixService/SignData',
       ($0.HashSigned value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Status.fromBuffer(value));
+  static final _$getAsset = $grpc.ClientMethod<$1.Empty, $0.OnChainAsset>(
+      '/protos.RubixService/getAsset',
+      ($1.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.OnChainAsset.fromBuffer(value));
 
   RubixServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -155,6 +159,11 @@ class RubixServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Status> signData($0.HashSigned request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$signData, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.OnChainAsset> getAsset($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getAsset, request, options: options);
   }
 }
 
@@ -249,6 +258,13 @@ abstract class RubixServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.HashSigned.fromBuffer(value),
         ($0.Status value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $0.OnChainAsset>(
+        'getAsset',
+        getAsset_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($0.OnChainAsset value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ChallengeString> createDIDChallenge_Pre(
@@ -312,6 +328,11 @@ abstract class RubixServiceBase extends $grpc.Service {
     return signData(call, await request);
   }
 
+  $async.Future<$0.OnChainAsset> getAsset_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return getAsset(call, await request);
+  }
+
   $async.Future<$0.ChallengeString> createDIDChallenge(
       $grpc.ServiceCall call, $0.ChallengeReq request);
   $async.Future<$0.CreateDIDRes> createDID(
@@ -336,4 +357,6 @@ abstract class RubixServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$0.Status> signData(
       $grpc.ServiceCall call, $0.HashSigned request);
+  $async.Future<$0.OnChainAsset> getAsset(
+      $grpc.ServiceCall call, $1.Empty request);
 }

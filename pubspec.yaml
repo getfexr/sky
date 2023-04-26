@@ -27,6 +27,7 @@ dependencies:
   shelf_plus: ^1.7.0
   shelf_cors_headers: ^0.1.4
   uuid: ^3.0.7
+  http_server: ^1.0.0
 
 lint_staged:
   .dart: dart format --fix && dart fix --apply

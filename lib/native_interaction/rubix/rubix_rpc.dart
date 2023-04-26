@@ -191,4 +191,15 @@ class RubixService extends RubixServiceBase {
       throw util.getGrpcError(e, stackTrace, 'Failed to sign response');
     }
   }
+  
+  @override
+  Future<OnChainAsset> getAsset(ServiceCall call, Empty request) {
+    try {
+      var user = getAuthUser(call);
+      return RubixPlatform()
+          .getAsset(did: user.getDid(),peerId: user.getPeerId());
+  } catch (e,stackTrace) {
+      throw util.getGrpcError(e, stackTrace, 'Failed to get asset');
+    }
+  }
 }

@@ -68,7 +68,7 @@ class RubixTransactionRequestStream {
   Stream<RubixTransactionPayload> get stream => _controller.stream;
 
   void add(RubixTransactionPayload txnRequestPayload) {
-    print("Adding txn request fpr sender: ${txnRequestPayload.sender}");
+    print("Adding txn request for sender: ${txnRequestPayload.sender}");
     _controller.add(txnRequestPayload);
   }
 
