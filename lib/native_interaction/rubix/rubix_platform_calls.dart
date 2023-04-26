@@ -4,6 +4,7 @@ import 'package:grpc/grpc.dart';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
 import 'package:sky/external_interaction/rubix/rubix_sign_response_stream.dart';
+import 'package:sky/external_interaction/rubix/rubix_txn_request_stream.dart';
 import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
 import 'package:sky/native_interaction/rubix/rubix_rpc.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
@@ -188,8 +189,9 @@ class RubixPlatform {
     return Future.value(Empty());
   }
 
-  Future<Empty> commitDataToken(String did, String batchId) async {
+  Future<Empty> commitDataToken(String did, String batchId, String token) async {
     var peerId = did.split('.').first;
+    var token = 'test-token';
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'did': did,
@@ -210,9 +212,11 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var signRequest =
-        RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
-    RubixSignResponseStream().add(signRequest);
+    var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: '',amount: 0,comment: '');
+    RubixTransactionRequestStream().add(transactionRequest);
+    // var signRequest =
+    //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
+    // RubixSignResponseStream().add(signRequest);
     return Future.value(Empty());
   }
 

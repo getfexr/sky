@@ -2,14 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 
 class RubixTransactionRequest {
-  String receiver;
-  double amount;
-  String comment;
+  String? receiver;
+  double? amount;
+  String? comment;
+  String? requestId;
+  String? hash;
 
   RubixTransactionRequest({
-    required this.receiver,
-    required this.amount,
-    required this.comment,
+     this.receiver,
+     this.amount,
+     this.comment,
+     this.requestId,
+     this.hash
   });
 
   factory RubixTransactionRequest.fromJson(Map<String, dynamic> json) {
@@ -31,10 +35,12 @@ class RubixTransactionPayload extends RubixTransactionRequest {
   RubixTransactionPayload({
     required this.sender,
     required this.uuid,
-    required String receiver,
-    required double amount,
-    required String comment,
-  }) : super(receiver: receiver, amount: amount, comment: comment);
+    required String? receiver,
+    required double? amount,
+    required String? comment,
+    String? requestId,
+    String? hash,
+  }) : super(receiver: receiver, amount: amount, comment: comment, requestId: requestId,hash: hash);
 
   factory RubixTransactionPayload.fromRequest(
       RubixTransactionRequest request, String sender, String uuid) {

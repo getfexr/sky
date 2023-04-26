@@ -35,9 +35,9 @@ class RubixExternalService extends RubixExternalServiceBase {
         comment = "$comment (uuid: ${event.uuid})";
       }
       return TxnRequest()
-        ..amount = event.amount
-        ..comment = comment
-        ..receiver = event.receiver;
+        ..amount = event.amount!
+        ..comment = comment!
+        ..receiver = event.receiver!;
     });
   }
 

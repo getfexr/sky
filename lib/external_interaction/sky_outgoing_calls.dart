@@ -9,6 +9,7 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
       'session_id': sessionId,
       'token': orgAccessToken.token,
       'chain': chain,
+      'skyURl': ''
     });
   try{
      var response = await http.post(

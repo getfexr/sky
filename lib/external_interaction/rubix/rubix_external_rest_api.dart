@@ -20,9 +20,13 @@ ExternalAccessTokenJWTClaim getExternalUser(Request request) {
   return ExternalAccessTokenJWTClaim.fromToken(token);
 }
 
-OrgAccessTokenJWTClaim getOrgUser(Request request) {
+// OrgAccessTokenJWTClaim getOrgUser(Request request) {
+//   var token = extractBearerTokenFromRequest(request);
+//   return OrgAccessTokenJWTClaim.fromToken(token);
+// }
+String getOrgUser(Request request) {
   var token = extractBearerTokenFromRequest(request);
-  return OrgAccessTokenJWTClaim.fromToken(token);
+  return token;
 }
 
 Future<Response> handleTransactionRequest(Request request) async {
@@ -37,17 +41,19 @@ Future<Response> handleTransactionRequest(Request request) async {
 }
 
 Future<Response> createDataToken(Request request) async {
-  var body = await request.body.asJson;
+  print(request.toString());
+  var body = request.body;
   print('body in createdatatoken ${body.toString()}');
-  var orgUser = getOrgUser(request);
+ // var orgUser = getOrgUser(request);
   var payload = jsonEncode(request.body);
-  var userId = jsonEncode(body['UserID']);
-  var userInfo = jsonEncode(body['UserInfo']);
-  var committerDid = jsonEncode(body['CommitterDID']);
-  var batchId = jsonEncode(body['BatchID']);
-  var fileInfo = jsonEncode(body['FileInfo']);
-  var fileContent = body['FileContent'];
-  RubixPlatform().createDataToken(userId, userInfo, committerDid, batchId, fileInfo, fileContent);
+  print('payload body = $payload');
+  // var userId = body.
+  // var userInfo = jsonEncode(body['UserInfo']);
+  // var committerDid = jsonEncode(body['CommitterDID']);
+  // var batchId = jsonEncode(body['BatchID']);
+  // var fileInfo = jsonEncode(body['FileInfo']);
+  // var fileContent = body['FileContent'];
+  // RubixPlatform().createDataToken(userId, userInfo, committerDid, batchId, fileInfo, fileContent);
   return Response.ok('Data token created');
 }
 
@@ -57,7 +63,7 @@ Future<Response> commitDataToken(Request request) async {
   var orgUser = getOrgUser(request);
   var did = jsonEncode(body['did']);
   var batchId = jsonEncode(body['batchID']);
-  RubixPlatform().commitDataToken(did, batchId);
+  RubixPlatform().commitDataToken(did, batchId,'test-token');
   return Response.ok('Data token committed');
 }
 //  TODO: write accesstoken test mode for testing app fexr
