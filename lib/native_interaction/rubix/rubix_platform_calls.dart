@@ -165,6 +165,12 @@ class RubixPlatform {
       String peerId) async {
    // var peerId = committerDid.split('.').first;
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
+    print(userId);
+    print(userInfo);
+    print(committerDid);
+    print(batchId);
+    print(fileInfo);
+    
     var request =
         http.MultipartRequest('POST', Uri.http(url, '/api/create-data-token',{"did": committerDid}));
     request.fields['UserID'] = userId;
