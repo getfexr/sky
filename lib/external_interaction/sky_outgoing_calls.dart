@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 Future<bool> fireAuthCallback({required String did,required String peerId,required String callBackUrl,required Token orgAccessToken,required String sessionId,required String chain })async {
   final skyUrl = Config().skyUrl;
     var bodyJsonStr = jsonEncode({
-      'did': '$did.$peerId',
+      'did': '$peerId.$did',
       'session_id': sessionId,
       'token': orgAccessToken.token,
       'chain': chain,
