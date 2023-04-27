@@ -166,7 +166,7 @@ class RubixPlatform {
    // var peerId = committerDid.split('.').first;
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
     var request =
-        http.MultipartRequest('POST', Uri.http(url, '/api/create-data-token'));
+        http.MultipartRequest('POST', Uri.http(url, '/api/create-data-token',{"did": committerDid}));
     request.fields['UserID'] = userId;
     request.fields['UserInfo'] = userInfo;
     request.fields['CommitterDID'] = committerDid;
@@ -194,7 +194,7 @@ class RubixPlatform {
 
   Future<String> commitDataToken(String did, String batchId, String token) async {
     var peerId = did.split('.').first;
-    var token = 'test-token';
+    var orgtoken = token;
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
     var bodyJsonStr = jsonEncode(<String, dynamic>{
       'did': did,
