@@ -170,7 +170,7 @@ class RubixPlatform {
     print(committerDid);
     print(batchId);
     print(fileInfo);
-    
+
     var request =
         http.MultipartRequest('POST', Uri.http(url, '/api/create-data-token',{"did": committerDid}));
     request.fields['UserID'] = userId;
@@ -191,6 +191,7 @@ class RubixPlatform {
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
     var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: committerDid,amount: 0,comment: 'Create Data Token Request');
+
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest = RubixSignRequest(
     //     did: committerDid, requestId: requestId, hash: hashForSign);
@@ -222,7 +223,7 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var transactionRequest = RubixTransactionPayload(sender:'V-guard',uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request');
+    var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request');
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest =
     //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
