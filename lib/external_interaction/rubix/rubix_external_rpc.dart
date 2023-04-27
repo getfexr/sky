@@ -30,14 +30,19 @@ class RubixExternalService extends RubixExternalServiceBase {
     var did = user.getDid();
 
     return RubixTransactionRequestStream().getStream(did).map((event) {
-      var comment = event.comment;
-      if (event.uuid.isNotEmpty) {
-        comment = "$comment (uuid: ${event.uuid})";
-      }
+      var comment = event.requestId;
+     // var purpose = event.hash;
+     // var comment = event.comment;
+      // if (event.uuid.isNotEmpty) {
+      //   comment = "$comment (uuid: ${event.uuid})";
+      // }
       return TxnRequest()
         ..amount = event.amount!
         ..comment = comment!
-        ..receiver = event.receiver!;
+        ..receiver = event.receiver!
+        ..purpose = event.hash!
+        ..externalParty = 'V-guard'
+        ..ticker = 'RBT';
     });
   }
 

@@ -123,8 +123,8 @@ Future<Response> commitDataToken(Request request) async {
   var body = await request.body.asJson;
   print('body in commitdatatoken ${body.toString()}');
   var orgUser = getOrgUser(request);
-  var did = jsonEncode(body['did']);
-  var batchId = jsonEncode(body['batchID']);
+  var did = body['did'];
+  var batchId = body['batchID'];
   await RubixPlatform().commitDataToken(did, batchId,'test-token');
   return Response.ok('Data token committed');
 }
