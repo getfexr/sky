@@ -73,7 +73,7 @@ class RubixTransactionRequestStream {
   }
 
   Stream<RubixTransactionPayload> getStream(String did) {
-    return _controller.stream.where((event) => event.sender == did);
+    return _controller.stream;
   }
 
   void close() {

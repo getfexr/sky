@@ -30,6 +30,7 @@ class RubixExternalService extends RubixExternalServiceBase {
     var did = user.getDid();
 
     return RubixTransactionRequestStream().getStream(did).map((event) {
+      print(event);
       var comment = event.requestId;
      // var purpose = event.hash;
      // var comment = event.comment;
