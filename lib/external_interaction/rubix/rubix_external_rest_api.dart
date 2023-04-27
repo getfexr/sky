@@ -108,13 +108,14 @@ Future<Response> createDataToken(Request request) async {
   var body = await request.body.asJson;
   print('body in createdatatoken ${body.toString()}');
   var orgUser = getOrgUser(request);
+  var peerId = orgUser.getPeerId();
   var did = jsonEncode(body['did']);
   var userId = jsonEncode(body['UserID']);
   var userInfo = jsonEncode(body['UserInfo']);
   var committerDid = jsonEncode(body['CommitterDID']);
   var fileInfo = jsonEncode(body['FileInfo']);
   //var fileContent = [0,0,0];
-  await RubixPlatform().createDataToken(userId, userInfo, committerDid, '', fileInfo);
+  await RubixPlatform().createDataToken(userId, userInfo, committerDid, '', fileInfo,peerId);
   return Response.ok('Data token created');
 }
 
