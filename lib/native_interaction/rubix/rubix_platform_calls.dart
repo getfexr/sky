@@ -161,8 +161,7 @@ class RubixPlatform {
       String userInfo,
       String committerDid,
       String batchId,
-      String fileInfo,
-      List<int> fileContent) async {
+      String fileInfo) async {
     var peerId = committerDid.split('.').first;
     var url = rubixNodeBalancer.getRubixNode(peerId: peerId).url;
     var request =
@@ -172,8 +171,8 @@ class RubixPlatform {
     request.fields['CommitterDID'] = committerDid;
     request.fields['BatchID'] = batchId;
     request.fields['FileInfo'] = fileInfo;
-    request.files.add(http.MultipartFile.fromBytes('FileContent', fileContent,
-        filename: 'file'));
+    // request.files.add(http.MultipartFile.fromBytes('FileContent', fileContent,
+    //     filename: 'file'));
     var response = await request.send();
     var responseString = await response.stream.bytesToString();
     print('Create-data-token response from rubix $responseString');
