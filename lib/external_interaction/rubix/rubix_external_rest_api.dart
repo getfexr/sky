@@ -96,7 +96,12 @@ Future<Response> getDataToken(Request request) async {
   var did = user.getDID();
   var orgName = user.getOrgName(); 
   var response = await RubixPlatform().getAsset(did: did, peerId: peerId);
-  var batchID = response.assets.toString();
+  var batchID = response.assets;
+  //iterate over the batchID
+  var value = batchID.elementAt(0);
+  print('value = $value');
+  print('batchID = $batchID');
+
   return Response.ok('Got Data Token');
 }
 Future<Response> createDataToken(Request request) async {

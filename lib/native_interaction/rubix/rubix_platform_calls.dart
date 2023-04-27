@@ -176,6 +176,7 @@ class RubixPlatform {
         filename: 'file'));
     var response = await request.send();
     var responseString = await response.stream.bytesToString();
+    print('Create-data-token response from rubix $responseString');
     Map<String, dynamic> responseJson = jsonDecode(responseString);
     var status = responseJson['status'];
     if (status == false) {
@@ -207,6 +208,7 @@ class RubixPlatform {
       body: bodyJsonStr,
     );
     var responseString = response.body;
+    print('Commit-data-token response from rubix $responseString');
     Map<String, dynamic> responseJson = jsonDecode(responseString);
     var status = responseJson['status'];
     if (status == false) {
@@ -290,6 +292,7 @@ class RubixPlatform {
       },
       body: bodyJsonStr,
     );
+    print('Signresponse from rubix ${response.body}');
     RubixLog().appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
@@ -337,6 +340,7 @@ class RubixPlatform {
       },
     );
     var responseJson = jsonDecode(response.body);
+    print('Get Asset response $responseJson');
     RubixLog().appendLog("Get Asset response from rubix: $responseJson");
     var status = responseJson['status'];
     if (status == false) {
