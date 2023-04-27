@@ -23,9 +23,7 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
       },
       body: bodyJsonStr,
     );
-    var res = jsonDecode(response.toString());
     var res1 = jsonDecode(response.body);
-    print('res : $res');
     print('res1 : $res1');
     print(response.toString());
     print(response.body);
