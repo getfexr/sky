@@ -280,7 +280,7 @@ class RubixPlatform {
   }
 
   Future<Status> signResponse(
-      {required HashSigned request, required String peerId}) async {
+      {required HashSigned request, required String peerId, required String did}) async {
     var signature = <String, dynamic>{
       'Signature': request.pvtSign,
       'Pixels': request.imgSign,
@@ -303,6 +303,14 @@ class RubixPlatform {
     RubixLog().appendLog("sigResponse response from rubix: ${response.body}");
     var responseJson = jsonDecode(response.body);
     var status = responseJson['status'];
+    var message = responseJson['message'];
+    if (message == 'Signature needed'){
+      var hashForSign = responseJson['result']['hash'];
+      var requestId = responseJson['result']['id'];
+      var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request');
+      RubixTransactionRequestStream().add(transactionRequest);
+
+    }
     if (status == false) {
       throw RubixException(responseJson['message']);
     }

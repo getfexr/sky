@@ -86,7 +86,7 @@ class RubixService extends RubixServiceBase {
     try {
       var user = getAuthUser(call);
       return RubixPlatform()
-          .signResponse(request: request, peerId: user.getPeerId());
+          .signResponse(request: request, peerId: user.getPeerId(),did: user.getDid());
     } catch (e, stackTrace) {
       throw util.getGrpcError(e, stackTrace, 'Failed to sign response');
     }
@@ -186,7 +186,7 @@ class RubixService extends RubixServiceBase {
      try {
       var user = getAuthUser(call);
       return RubixPlatform()
-          .signResponse(request: request, peerId: user.getPeerId());
+          .signResponse(request: request, peerId: user.getPeerId(),did: user.getDid());
     } catch (e, stackTrace) {
       throw util.getGrpcError(e, stackTrace, 'Failed to sign response');
     }
