@@ -376,6 +376,7 @@ class RubixPlatform {
           url: 'example.com');
       assets.assets.add(asset);
     }
+    print(assets);
     return assets;
 
   }
