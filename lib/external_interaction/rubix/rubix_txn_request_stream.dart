@@ -69,11 +69,12 @@ class RubixTransactionRequestStream {
 
   void add(RubixTransactionPayload txnRequestPayload) {
     print("Adding txn request for sender: ${txnRequestPayload.sender}");
+    print(txnRequestPayload);
     _controller.add(txnRequestPayload);
   }
 
   Stream<RubixTransactionPayload> getStream(String did) {
-    return _controller.stream;
+    return _controller.stream.where((event) => event.sender == did);
   }
 
   void close() {

@@ -123,9 +123,10 @@ Future<Response> commitDataToken(Request request) async {
   var body = await request.body.asJson;
   print('body in commitdatatoken ${body.toString()}');
   var orgUser = getOrgUser(request);
+  var peerId = orgUser.getPeerId();
   var did = body['did'];
   var batchId = body['batchID'];
-  await RubixPlatform().commitDataToken(did, batchId,'test-token');
+  await RubixPlatform().commitDataToken(did, batchId,peerId);
   return Response.ok('Data token committed');
 }
 //  TODO: write accesstoken test mode for testing app fexr
