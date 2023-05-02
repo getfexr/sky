@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:grpc/grpc.dart';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/external_interaction/rubix/rubix_internal_stream.dart';
 import 'package:sky/external_interaction/rubix/rubix_sign_response_stream.dart';
 import 'package:sky/external_interaction/rubix/rubix_txn_request_stream.dart';
 import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
@@ -313,6 +314,12 @@ class RubixPlatform {
     }
     if (status == false) {
       throw RubixException(responseJson['message']);
+    }
+    if (message == 'Data Token Created'|| message == 'Data Token Committed'){
+      print(message);
+      var result = responseJson['result'];
+      var signResponse = RubixSignResponse(message: message, result: result, status: status);
+      RubixSignResponseStream().add(signResponse);
     }
     return Status(status: status);
   }

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:http_server/http_server.dart';
 import 'package:shelf_plus/shelf_plus.dart';
+import 'package:sky/external_interaction/rubix/rubix_internal_stream.dart';
+import 'package:sky/external_interaction/rubix/rubix_sign_response_stream.dart';
 import 'package:sky/external_interaction/rubix/rubix_txn_request_stream.dart';
 import 'package:sky/modules/auth_util.dart';
 import 'package:sky/modules/shelf_plus_module/shelf_mod_types.dart';
@@ -115,8 +117,19 @@ Future<Response> createDataToken(Request request) async {
   var committerDid = body['comitter_did'];
   var fileInfo = body['file_info'];
   //var fileContent = [0,0,0];
-  await RubixPlatform().createDataToken(userId, userInfo, committerDid, '', fileInfo,peerId);
-  return Response.ok('Data token created');
+  RubixPlatform().createDataToken(userId, userInfo, committerDid, '', fileInfo,peerId);
+  var signResponse = RubixSignResponseStream().getStream(did);
+  var value = await signResponse.first;
+  print('value = $value');
+  var message = value.message;
+  var status = value.status;
+  var result = value.result;
+  var response = jsonEncode(<String, dynamic>{
+      'message': message,
+      'status': status,
+      'result': result,
+    });
+  return Response.ok(response);
 }
 
 Future<Response> commitDataToken(Request request) async {
@@ -127,6 +140,18 @@ Future<Response> commitDataToken(Request request) async {
   var did = body['did'];
   var batchId = body['batchID'];
   await RubixPlatform().commitDataToken(did, batchId,peerId);
-  return Response.ok('Data token committed');
+  var signResponse = RubixSignResponseStream().getStream(did);
+  var value = await signResponse.first;
+  print('value = $value');
+  var message = value.message;
+  var status = value.status;
+  var result = value.result;
+  var response = jsonEncode(<String, dynamic>{
+      'message': message,
+      'status': status,
+      'result': result,
+    });
+  return Response.ok(response);
+  // return Response.ok('Data token committed');
 }
 //  TODO: write accesstoken test mode for testing app fexr

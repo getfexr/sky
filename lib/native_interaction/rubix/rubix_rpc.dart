@@ -171,14 +171,15 @@ class RubixService extends RubixServiceBase {
   
   @override
   Stream<RequestTransactionPayloadRes> streamSignResponse(ServiceCall call, Empty request) {
-   var user = RubixService.getAuthUser(call);
-   var did = user.getDid();
-    var peerId = user.getPeerId();
-    return RubixSignResponseStream().getStream(did).map((event) {
-      return RequestTransactionPayloadRes(requestId: event.requestId,
-          hash: event.hash
-      );
-    });
+  //  var user = RubixService.getAuthUser(call);
+  //  var did = user.getDid();
+  //   var peerId = user.getPeerId();
+  //   return RubixSignResponseStream().getStream(did).map((event) {
+  //     return RequestTransactionPayloadRes(requestId: event.requestId,
+  //         hash: event.hash
+  //     );
+  //   });
+  throw UnimplementedError();
   }
   
   @override
