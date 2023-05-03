@@ -307,7 +307,7 @@ class RubixPlatform {
     var message = responseJson['message'];
     if (message == 'Signature needed'){
       //give a delay of 5 seconds
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 10));
       var hashForSign = responseJson['result']['hash'];
       var requestId = responseJson['result']['id'];
       var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKeyOnly: false);
