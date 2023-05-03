@@ -191,7 +191,7 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var transactionRequest = RubixTransactionPayload(sender:committerDid,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: committerDid,amount: 0,comment: 'Create Data Token Request',privateKey: true);
+    var transactionRequest = RubixTransactionPayload(sender:committerDid,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: committerDid,amount: 0,comment: 'Create Data Token Request',privateKeyOnly: true);
 
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest = RubixSignRequest(
@@ -224,7 +224,7 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKey: true);
+    var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKeyOnly: true);
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest =
     //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
@@ -308,7 +308,7 @@ class RubixPlatform {
     if (message == 'Signature needed'){
       var hashForSign = responseJson['result']['hash'];
       var requestId = responseJson['result']['id'];
-      var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKey: false);
+      var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKeyOnly: false);
       RubixTransactionRequestStream().add(transactionRequest);
 
     }

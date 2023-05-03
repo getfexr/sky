@@ -31,7 +31,7 @@ class RubixExternalService extends RubixExternalServiceBase {
 
     return RubixTransactionRequestStream().getStream(did).map((event) {
       print(event);
-      print('private key value = ${event.privateKey}');
+      print('private key value = ${event.privateKeyOnly}');
       var comment = event.requestId;
      // var purpose = event.hash;
      // var comment = event.comment;
@@ -45,7 +45,7 @@ class RubixExternalService extends RubixExternalServiceBase {
         ..purpose = event.hash!
         ..externalParty = 'V-guard'
         ..ticker = 'RBT'
-        ..privateKeyOnly = event.privateKey!;
+        ..privateKeyOnly = event.privateKeyOnly!;
     });
   }
 
