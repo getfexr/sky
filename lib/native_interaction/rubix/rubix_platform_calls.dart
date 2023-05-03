@@ -308,7 +308,7 @@ class RubixPlatform {
     if (message == 'Signature needed'){
       var hashForSign = responseJson['result']['hash'];
       var requestId = responseJson['result']['id'];
-      var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request');
+      var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKey: false);
       RubixTransactionRequestStream().add(transactionRequest);
 
     }

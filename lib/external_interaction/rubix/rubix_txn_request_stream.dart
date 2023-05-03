@@ -7,13 +7,15 @@ class RubixTransactionRequest {
   String? comment;
   String? requestId;
   String? hash;
+  bool? privateKey;
 
   RubixTransactionRequest({
      this.receiver,
      this.amount,
      this.comment,
      this.requestId,
-     this.hash
+     this.hash,
+     this.privateKey
   });
 
   factory RubixTransactionRequest.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class RubixTransactionPayload extends RubixTransactionRequest {
     required String? comment,
     String? requestId,
     String? hash,
+    bool privateKey = true,
   }) : super(receiver: receiver, amount: amount, comment: comment, requestId: requestId,hash: hash);
 
   factory RubixTransactionPayload.fromRequest(
