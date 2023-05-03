@@ -42,8 +42,8 @@ class RubixTransactionPayload extends RubixTransactionRequest {
     required String? comment,
     String? requestId,
     String? hash,
-    bool privateKey = true,
-  }) : super(receiver: receiver, amount: amount, comment: comment, requestId: requestId,hash: hash);
+    bool? privateKey,
+  }) : super(receiver: receiver, amount: amount, comment: comment, requestId: requestId,hash: hash,privateKey: privateKey);
 
   factory RubixTransactionPayload.fromRequest(
       RubixTransactionRequest request, String sender, String uuid) {
