@@ -44,7 +44,7 @@ class RubixExternalService extends RubixExternalServiceBase {
         ..purpose = event.hash!
         ..externalParty = 'V-guard'
         ..ticker = 'RBT'
-        ..privateKey = event.privateKey!;
+        ..privateKeyOnly = event.privateKey!;
     });
   }
 

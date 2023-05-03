@@ -187,7 +187,7 @@ class TxnRequest extends $pb.GeneratedMessage {
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'purpose')
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'externalParty', protoName: 'externalParty')
     ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'ticker')
-    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'privateKey', protoName: 'privateKey')
+    ..aOB(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'privateKeyOnly', protoName: 'privateKeyOnly')
     ..hasRequiredFields = false
   ;
 
@@ -200,7 +200,7 @@ class TxnRequest extends $pb.GeneratedMessage {
     $core.String? purpose,
     $core.String? externalParty,
     $core.String? ticker,
-    $core.bool? privateKey,
+    $core.bool? privateKeyOnly,
   }) {
     final _result = create();
     if (receiver != null) {
@@ -224,8 +224,8 @@ class TxnRequest extends $pb.GeneratedMessage {
     if (ticker != null) {
       _result.ticker = ticker;
     }
-    if (privateKey != null) {
-      _result.privateKey = privateKey;
+    if (privateKeyOnly != null) {
+      _result.privateKeyOnly = privateKeyOnly;
     }
     return _result;
   }
@@ -314,12 +314,12 @@ class TxnRequest extends $pb.GeneratedMessage {
   void clearTicker() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.bool get privateKey => $_getBF(7);
+  $core.bool get privateKeyOnly => $_getBF(7);
   @$pb.TagNumber(8)
-  set privateKey($core.bool v) { $_setBool(7, v); }
+  set privateKeyOnly($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasPrivateKey() => $_has(7);
+  $core.bool hasPrivateKeyOnly() => $_has(7);
   @$pb.TagNumber(8)
-  void clearPrivateKey() => clearField(8);
+  void clearPrivateKeyOnly() => clearField(8);
 }
 

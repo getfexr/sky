@@ -51,9 +51,9 @@ const TxnRequest$json = const {
     const {'1': 'purpose', '3': 5, '4': 1, '5': 9, '10': 'purpose'},
     const {'1': 'externalParty', '3': 6, '4': 1, '5': 9, '10': 'externalParty'},
     const {'1': 'ticker', '3': 7, '4': 1, '5': 9, '10': 'ticker'},
-    const {'1': 'privateKey', '3': 8, '4': 1, '5': 8, '10': 'privateKey'},
+    const {'1': 'privateKeyOnly', '3': 8, '4': 1, '5': 8, '10': 'privateKeyOnly'},
   ],
 };
 
 /// Descriptor for `TxnRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List txnRequestDescriptor = $convert.base64Decode('CgpUeG5SZXF1ZXN0EhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIWCgZhbW91bnQYAiABKAFSBmFtb3VudBIYCgdjb21tZW50GAMgASgJUgdjb21tZW50EhIKBHR5cGUYBCABKAVSBHR5cGUSGAoHcHVycG9zZRgFIAEoCVIHcHVycG9zZRIkCg1leHRlcm5hbFBhcnR5GAYgASgJUg1leHRlcm5hbFBhcnR5EhYKBnRpY2tlchgHIAEoCVIGdGlja2VyEh4KCnByaXZhdGVLZXkYCCABKAhSCnByaXZhdGVLZXk=');
+final $typed_data.Uint8List txnRequestDescriptor = $convert.base64Decode('CgpUeG5SZXF1ZXN0EhoKCHJlY2VpdmVyGAEgASgJUghyZWNlaXZlchIWCgZhbW91bnQYAiABKAFSBmFtb3VudBIYCgdjb21tZW50GAMgASgJUgdjb21tZW50EhIKBHR5cGUYBCABKAVSBHR5cGUSGAoHcHVycG9zZRgFIAEoCVIHcHVycG9zZRIkCg1leHRlcm5hbFBhcnR5GAYgASgJUg1leHRlcm5hbFBhcnR5EhYKBnRpY2tlchgHIAEoCVIGdGlja2VyEiYKDnByaXZhdGVLZXlPbmx5GAggASgIUg5wcml2YXRlS2V5T25seQ==');
