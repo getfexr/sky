@@ -4,12 +4,14 @@ import 'dart:async';
 class RubixSignResponse {
   String message;
   String result;
+  String did;
   bool status;
 
   RubixSignResponse({
     required this.message,
     required this.result,
     required this.status,
+    required this.did,
   });
 
 }
@@ -25,10 +27,12 @@ class RubixSignResponseStream {
       StreamController<RubixSignResponse>.broadcast();
   Stream<RubixSignResponse> get stream => _controller.stream;
   void add(RubixSignResponse request) {
+    print('request added is $request');
     _controller.add(request);
   }
   Stream<RubixSignResponse> getStream(String did) {
-    return _controller.stream.where((event) => event.status == true);
+    print('did in stream is $did');
+    return _controller.stream.where((event) => event.did == did);
   }
 
   void close() {

@@ -318,7 +318,9 @@ class RubixPlatform {
     if (message == 'Data Token Created'|| message == 'Data Token Committed'){
       print(message);
       var result = responseJson['result'];
-      var signResponse = RubixSignResponse(message: message, result: result, status: status);
+      var signResponse = RubixSignResponse(message: message, result: result, status: status, did: did);
+      print('sigResponse in Data Token part is $signResponse');
+      print('SigResponse added to tthe stream is $signResponse');
       RubixSignResponseStream().add(signResponse);
     }
     return Status(status: status);
