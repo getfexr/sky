@@ -26,9 +26,10 @@ class RubixExternalService extends RubixExternalServiceBase {
 
   @override
   Stream<TxnRequest> streamTransactionRequest(ServiceCall call, Empty request) {
+    print('Stream Transaction Request Stream is opened');
     var user = RubixService.getAuthUser(call);
     var did = user.getDid();
-
+    
     return RubixTransactionRequestStream().getStream(did).map((event) {
       print(event);
       print('private key value = ${event.privateKeyOnly}');
