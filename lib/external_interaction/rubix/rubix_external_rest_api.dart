@@ -129,6 +129,7 @@ Future<Response> createDataToken(Request request) async {
       'status': status,
       'result': result,
     });
+    print('response is $response');
   return Response.ok(response);
 }
 
@@ -146,11 +147,14 @@ Future<Response> commitDataToken(Request request) async {
   var message = value.message;
   var status = value.status;
   var result = value.result;
+  
   var response = jsonEncode(<String, dynamic>{
       'message': message,
       'status': status,
       'result': result,
     });
+
+    print('response in commit-data-token is $response');
   return Response.ok(response);
   // return Response.ok('Data token committed');
 }
