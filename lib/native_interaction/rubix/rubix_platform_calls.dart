@@ -319,7 +319,7 @@ class RubixPlatform {
     if (status == false) {
       throw RubixException(responseJson['message']);
     }
-    if (message == 'Data Token Created'|| message == 'Data Token Committed'){
+    if (message.toString().contains('Qm')){
       print(message);
       var result = responseJson['result'];
       var signResponse = RubixSignResponse(message: message, result: result, status: status, did: did);
