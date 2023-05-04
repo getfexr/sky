@@ -322,7 +322,7 @@ class RubixPlatform {
     if (message.toString().contains('Qm')){
       print(message);
       var result = responseJson['result'];
-      var signResponse = RubixSignResponse(message: message, result: result, status: status, did: did);
+      var signResponse = RubixSignResponse(message: message, result: result.toString(), status: status, did: did);
       print('sigResponse in Data Token part is $signResponse');
       print('SigResponse added to tthe stream is $signResponse');
       RubixSignResponseStream().add(signResponse);
