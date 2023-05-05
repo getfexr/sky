@@ -177,7 +177,6 @@ class RubixPlatform {
     request.fields['UserID'] = userId;
     request.fields['UserInfo'] = userInfo;
     request.fields['CommitterDID'] = committerDid;
-    request.fields['BatchID'] = batchId;
     request.fields['FileInfo'] = fileInfo;
     // request.files.add(http.MultipartFile.fromBytes('FileContent', fileContent,
     //     filename: 'file'));
