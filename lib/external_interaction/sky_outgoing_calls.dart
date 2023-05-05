@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:http/io_client.dart';
 import 'package:sky/config.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart';
 import 'package:http/http.dart' as http;
@@ -16,8 +18,12 @@ Future<bool> fireAuthCallback({required String did,required String peerId,requir
     print('call Back Url ---------$callBackUrl');
     print('bodyJsonStr ---------$bodyJsonStr');
   try{
-     var response = await http.post(
+    HttpClient httpClient = HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = IOClient(httpClient);
+
+     var response = await ioClient.post(
       Uri.parse(callBackUrl),
+      
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
