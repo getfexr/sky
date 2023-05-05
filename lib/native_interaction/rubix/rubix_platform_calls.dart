@@ -212,7 +212,7 @@ class RubixPlatform {
       Uri.http(url, '/api/commit-data-token',{"did":did,"batchID":batchId}),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-      },
+      }
     );
     var responseString = response.body;
     print('Commit-data-token response from rubix $responseString');
@@ -223,7 +223,7 @@ class RubixPlatform {
     }
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
-    var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Create Data Token Request',privateKeyOnly: true);
+    var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Commit Data Token Request',privateKeyOnly: true);
     RubixTransactionRequestStream().add(transactionRequest);
     // var signRequest =
     //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
