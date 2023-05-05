@@ -209,11 +209,10 @@ class RubixPlatform {
       'batchID': batchId,
     });
     var response = await http.post(
-      Uri.http(url, '/api/commit-data-token'),
+      Uri.http(url, '/api/commit-data-token',{"did":did,"batchID":batchId}),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: bodyJsonStr,
     );
     var responseString = response.body;
     print('Commit-data-token response from rubix $responseString');
