@@ -223,7 +223,10 @@ class RubixPlatform {
     var hashForSign = responseJson['result']['hash'];
     var requestId = responseJson['result']['id'];
     var transactionRequest = RubixTransactionPayload(sender:did,uuid: 'peerId.did', requestId: requestId,hash: hashForSign,receiver: did,amount: 0,comment: 'Commit Data Token Request',privateKeyOnly: true);
-    RubixTransactionRequestStream().add(transactionRequest);
+    //RubixTransactionRequestStream().add(transactionRequest);
+    Future.delayed(Duration(seconds: 5),(){
+        RubixTransactionRequestStream().add(transactionRequest);
+      });
     // var signRequest =
     //     RubixSignRequest(did: did, requestId: requestId, hash: hashForSign);
     // RubixSignResponseStream().add(signRequest);
