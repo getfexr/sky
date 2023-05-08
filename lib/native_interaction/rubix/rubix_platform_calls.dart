@@ -320,7 +320,7 @@ class RubixPlatform {
     if (status == false) {
       throw RubixException(responseJson['message']);
     }
-    if (message.toString().contains('Qm')){
+    if (message.toString().contains('Qm') || (message == 'Data committed successfully')){
       print(message);
       var result = responseJson['result'];
       var signResponse = RubixSignResponse(message: message, result: result.toString(), status: status, did: did);
