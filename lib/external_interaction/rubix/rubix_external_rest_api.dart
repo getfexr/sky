@@ -120,7 +120,6 @@ Future<Response> createDataToken(Request request) async {
   RubixPlatform().createDataToken(userId, userInfo, committerDid, '', fileInfo,peerId);
   var signResponse = RubixSignResponseStream().getStream(did);
   var value = await signResponse.first;
-  RubixSignResponseStream().close();
   print('value = $value');
   var message = value.message;
   var status = value.status;
@@ -144,7 +143,6 @@ Future<Response> commitDataToken(Request request) async {
   await RubixPlatform().commitDataToken(did, batchId,peerId);
   var signResponse = RubixSignResponseStream().getStream(did);
   var value = await signResponse.first;
-  RubixSignResponseStream().close();
   print('value = $value');
   var message = value.message;
   var status = value.status;
