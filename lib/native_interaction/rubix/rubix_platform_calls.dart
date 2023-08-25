@@ -230,29 +230,34 @@ class RubixPlatform {
 
   Future<GetBalanceRes> getBalance(
       {required String dId, required String peerId}) async {
-    var url = Uri.http(rubixNodeBalancer.getRubixNode(peerId: peerId).url,
-        'api/get-account-info', {"did": dId});
+    var url = Uri.http(
+      rubixNodeBalancer.getRubixNode(peerId: peerId).url,
+      'api/get-account-info',
+      {"did": dId},
+    );
+
     var response = await http.get(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+
     var responseJson = jsonDecode(response.body);
     RubixLog().appendLog("Get Balance response from rubix: $responseJson");
 
-    util.AccountInfoResponse allBalance =
-        util.AccountInfoResponse.fromJson(responseJson);
-    try {
-      var currentAccountbalance = allBalance.accountInfo[0];
-      int whole = currentAccountbalance.wholeRbt;
-      int fraction = currentAccountbalance.partRbt;
-      double wholeDouble = whole.toDouble();
-      double fractionDouble = fraction.toDouble();
-      double total = wholeDouble + fractionDouble;
-      return GetBalanceRes(balance: total);
-    } catch (e) {
-      throw RubixException('could not find account info for did: $dId');
+    if (responseJson['status'] == true) {
+      var accountInfoList = responseJson['account_info'] as List<dynamic>;
+      if (accountInfoList.isNotEmpty) {
+        var currentAccountBalance = accountInfoList[0];
+        int rbtAmount = currentAccountBalance['rbt_amount'];
+        double balance = rbtAmount.toDouble();
+        return GetBalanceRes(balance: balance);
+      } else {
+        throw RubixException('No account info found for did: $dId');
+      }
+    } else {
+      throw RubixException('Failed to get account info for did: $dId');
     }
   }
 }
