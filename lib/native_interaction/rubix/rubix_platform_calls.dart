@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sky/config.dart';
+import 'package:sky/modules/utils.dart';
 import 'package:sky/native_interaction/rubix/rubix_incoming_events.dart';
 import 'package:sky/native_interaction/rubix/rubix_util.dart' as util;
 import 'package:sky/protogen/google/protobuf/timestamp.pb.dart';
@@ -36,7 +37,7 @@ class RubixLog {
     }
     File logFile = File(fileName);
     RandomAccessFile raf = logFile.openSync(mode: FileMode.append);
-    String dateTime = DateTime.now().toIso8601String();
+    String dateTime = DateTimeV2.now().toIso8601String();
     raf.writeStringSync("$dateTime :: $className \n $line \n");
     raf.closeSync();
   }
